@@ -9,16 +9,31 @@ const router = express.Router();
 
 
 // Log In
+
+// Show Log In page
 router.get('/login', async (req, res) => {
     try {
-      res.render("user/login.ejs",{});
+      res.render("user/login.ejs",{message: "hello!"});
     } catch (err) {
       throw err;
     }
   });
   
-  module.exports = router;
+module.exports = router;
+
+// Handle Login
+router.get('/login', async (req, res) => {
+    try {
+      // Get form data
+      // Attempt to login using model and auth middleware
+    } catch (err) {
+      throw err;
+    }
+  });
   
+module.exports = router;
+  
+
 // Log Out
 
 

@@ -46,3 +46,6 @@ const router = express.Router();
 // View Trash
 
 // Empty Trash
+
+
+module.exports = router;
