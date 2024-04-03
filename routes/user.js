@@ -20,8 +20,6 @@ router.get('/login', async (req, res) => {
     }
   });
   
-  module.exports = router;
-  
 // Log Out
 
 
@@ -42,3 +40,7 @@ router.get('/login', async (req, res) => {
 // DASHBOARD
 
 // View Dashbard
+
+
+// Export router
+module.exports = router;

@@ -50,3 +50,7 @@ const router = express.Router();
 // View Trash
 
 // Empty Trash
+
+
+// Export router
+module.exports = router;
