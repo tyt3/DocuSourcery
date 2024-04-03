@@ -8,7 +8,7 @@ const router = express.Router()
 // Index
 router.get('/', async (req,res) => {
     try {
-      res.render("/static/index.ejs",{ });
+      res.render("static/index.ejs",{ });
     } catch (err) {
       throw err;
     }
@@ -18,7 +18,7 @@ router.get('/', async (req,res) => {
 // About
 router.get('/about', async (req,res) => {
     try {
-      res.render("/static/about.ejs",{ });
+      res.render("static/about.ejs",{ });
     } catch (err) {
       throw err;
     }
