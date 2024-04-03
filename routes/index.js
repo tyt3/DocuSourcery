@@ -8,7 +8,7 @@ const Book = require("../models/book");
 router.get('/', async (req,res) => {
   try {
     const data = await Book.find({});
-    res.render("main/index.ejs",{books:data});
+    res.render("index.ejs",{books:data});
   } catch (err) {
     throw err;
   }
