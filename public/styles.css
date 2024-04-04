@@ -79,6 +79,9 @@ img.item-thumbnail {
   border-color: var(--secondary-color-dark);
 }
 
+.btn-nav {
+  width: 6em;
+}
 
 .badge {
   .close {
