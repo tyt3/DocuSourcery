@@ -7,8 +7,6 @@ const bodyParser = require('body-parser');
 const { connectDB } = require('./DBconnect');
 
 const app = express();
-
-// Middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
@@ -33,7 +31,7 @@ app.use("/", projectRouter);
 app.use("/api/book", apiRouter); // TODO: Update this
 
 
-// Start the server
+// listen for requests :)
 const listener = app.listen(process.env.PORT, function() {
   console.log('Your app is listening on port ' + listener.address().port);
 });

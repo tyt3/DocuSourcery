@@ -9,6 +9,13 @@ const router = express.Router();
 // PROJECT
 
 // View Project
+router.get('/project', async (req, res) => {
+    try {
+        res.render("project/project.ejs", {});
+    } catch (err) {
+        throw err;
+    }
+});
 
 // Create Project
 
@@ -18,10 +25,28 @@ const router = express.Router();
 
 // Restore Project
 
+// View Published Projects
+
+router.get('/projects', async (req, res) => {
+    try {
+        res.render("project/projects.ejs", {});
+    } catch (err) {
+        throw err;
+    }
+});
+
+
 
 // DOCUMENT
 
 // View Document
+router.get('/document', async (req, res) => {
+    try {
+        res.render("project/document.ejs", {});
+    } catch (err) {
+        throw err;
+    }
+});
 
 // Create Document
 
@@ -35,6 +60,13 @@ const router = express.Router();
 // PAGE
 
 // View Page
+router.get('/page', async (req, res) => {
+    try {
+        res.render("project/page.ejs", {});
+    } catch (err) {
+        throw err;
+    }
+});
 
 // Create Page
 
@@ -48,6 +80,13 @@ const router = express.Router();
 // TRASH
 
 // View Trash
+router.get('/trash', async (req, res) => {
+    try {
+        res.render("project/trash.ejs", {});
+    } catch (err) {
+        throw err;
+    }
+});
 
 // Empty Trash
 

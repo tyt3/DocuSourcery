@@ -1,3 +1,11 @@
+:root {
+  --primary-color: #4d0d89;
+  --secondary-color: #F7B1C0;
+  --secondary-color-dark: #e494a6;
+  --tertiary-color: #6c757d;
+}
+
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
@@ -47,6 +55,32 @@ img.item-thumbnail {
   align-items: center;
   object-fit: contain;
   height: 100%;
+}
+
+.ds-btn-secondary {
+  background-color: var(--secondary-color);
+  color: var(--primary-color);
+  border-color: var(--secondary-color);
+}
+
+.ds-btn-secondary:hover {
+  background-color:var(--secondary-color-dark);
+  border-color: var(--secondary-color-dark);
+}
+
+.ds-btn-outline-secondary {
+  color: var(--secondary-color);
+  border-color: var(--secondary-color);
+}
+
+.ds-btn-outline-secondary:hover {
+  background-color: var(--secondary-color-dark);
+  color: var(--primary-color);
+  border-color: var(--secondary-color-dark);
+}
+
+.btn-nav {
+  width: 6em;
 }
 
 .badge {
@@ -102,118 +136,48 @@ img.item-thumbnail {
   font-size: 0.75rem;
 }
 
-/* Pitt Branding Palettes */
+/* DocuSourcery Branding Palette */
 
 /* Backgrounds */
 
-.bg-pitt-royal {
-  background-color: #003594;
+.bg-ds-primary {
+  background-color: var(--primary-color);
 }
 
-.bg-pitt-gold {
-  background-color: #ffb81c;
+.bg-ds-secondary {
+  background-color: var(--secondary-color);
 }
 
-.bg-pitt-dark-blue {
-  background-color: #141b4d;
+.bg-ds-tertiary {
+  background-color: var(--tertiary-color);
 }
 
-.bg-pitt-medium-blue {
-  background-color: #00205b;
-}
-
-.bg-pitt-dark-gold {
-  background-color: #b58500;
-}
-
-.bg-pitt-charcoal {
-  background-color: #75787b;
-}
-
-.bg-pitt-gray {
-  background-color: #97999b;
-}
-
-.bg-pitt-light-gray {
-  background-color: #c8c9c7;
-}
-
-.bg-light-gray {
-  background-color: #f4f4f4;
-}
 
 /* Borders */
 
-.border-pitt-royal {
-  border-color: #003594;
+.border-ds-primary {
+  border-color: var(--primary-color);
 }
 
-.border-pitt-gold {
-  border-color: #ffb81c;
+.border-ds-secondary {
+  border-color: var(--secondary-color);
 }
 
-.border-pitt-dark-blue {
-  border-color: #141b4d;
+.border-ds-tertiary {
+  border-color: var(--tertiary-color);
 }
 
-.border-pitt-medium-blue {
-  border-color: #00205b;
-}
-
-.border-pitt-dark-gold {
-  border-color: #b58500;
-}
-
-.border-pitt-charcoal {
-  border-color: #75787b;
-}
-
-.border-pitt-gray {
-  border-color: #97999b;
-}
-
-.border-pitt-light-gray {
-  border-color: #c8c9c7;
-}
-
-.border-light-gray {
-  border-color: #f4f4f4;
-}
 
 /* Text */
 
-.text-pitt-royal {
-  color: #003594;
+.text-ds-primary {
+  color: var(--primary-color);
 }
 
-.text-pitt-gold {
-  color: #ffb81c;
+.text-ds-secondary {
+  color: var(--secondary-color);
 }
 
-.text-pitt-dark-blue {
-  color: #141b4d;
-}
-
-.text-pitt-medium-blue {
-  color: #00205b;
-}
-
-.text-pitt-dark-gold {
-  color: #b58500;
-}
-
-.text-pitt-charcoal {
-  color: #75787b;
-}
-
-.text-pitt-gray {
-  color: #97999b;
-}
-
-.text-pitt-light-gray {
-  color: #c8c9c7;
-}
-
-.text-light-gray {
-  color: #f4f4f4;
+.text-pitt-tertiary {
+  color: var(--tertiary-color);
 }
