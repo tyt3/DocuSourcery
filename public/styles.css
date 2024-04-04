@@ -156,15 +156,15 @@ img.item-thumbnail {
 /* Borders */
 
 .border-ds-primary {
-  border-color: var(--primary-color);
+  border: 2px solid var(--primary-color);
 }
 
 .border-ds-secondary {
-  border-color: var(--secondary-color);
+  border: 2px solid var(--secondary-color);
 }
 
 .border-ds-tertiary {
-  border-color: var(--tertiary-color);
+  border: 2px solid var(--tertiary-color);
 }
 
 
