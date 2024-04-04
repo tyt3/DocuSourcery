@@ -9,23 +9,42 @@ const router = express.Router();
 // AUTH
 
 // Sign Up
-
+router.get('/signup', async (req, res) => {
+    try {
+        res.render("user/signup.ejs", {});
+    } catch (err) {
+        throw err;
+    }
+});
 
 // Log In
 router.get('/login', async (req, res) => {
     try {
-      res.render("user/login.ejs",{});
+        res.render("user/login.ejs", {});
     } catch (err) {
-      throw err;
+        throw err;
     }
-  });
-  
-// Log Out
+});
 
+// Log Out
+router.get('/logout', async (req, res) => {
+    try {
+        res.render("user/logout.ejs", {});
+    } catch (err) {
+        throw err;
+    }
+});
 
 // ACCOUNT
 
 // View Account
+router.get('/account', async (req, res) => {
+    try {
+        res.render("user/account.ejs", {});
+    } catch (err) {
+        throw err;
+    }
+});
 
 // Edit Account
 
@@ -33,6 +52,13 @@ router.get('/login', async (req, res) => {
 // PROFILE
 
 // View Profile
+router.get('/profile', async (req, res) => {
+    try {
+        res.render("user/profile.ejs", {});
+    } catch (err) {
+        throw err;
+    }
+});
 
 // Edit Profile
 
@@ -40,7 +66,13 @@ router.get('/login', async (req, res) => {
 // DASHBOARD
 
 // View Dashbard
-
+router.get('/dashboard', async (req, res) => {
+    try {
+        res.render("user/dashboard.ejs", {});
+    } catch (err) {
+        throw err;
+    }
+});
 
 // Export router
 module.exports = router;
