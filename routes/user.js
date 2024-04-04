@@ -1,5 +1,4 @@
 // Route handlers
-
 const express = require("express");
 const router = express.Router();
 
@@ -8,6 +7,7 @@ const bcrypt = require('bcrypt');
 
 // Import data model
 const User = require('../models/user');
+
 
 // AUTH
 
@@ -94,6 +94,7 @@ router.get('/logout', async (req, res) => {
     }
 });
 
+
 // ACCOUNT
 
 // View Account
@@ -108,6 +109,7 @@ router.get('/account', async (req, res) => {
 // Edit Account
 
 
+
 // PROFILE
 
 // View Profile
@@ -120,6 +122,7 @@ router.get('/profile', async (req, res) => {
 });
 
 // Edit Profile
+
 
 
 // DASHBOARD
