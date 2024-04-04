@@ -1,7 +1,7 @@
 :root {
   --primary-color: #4d0d89;
   --secondary-color: #F7B1C0;
-  --secondary-color-dark: #cc5c74;
+  --secondary-color-dark: #e494a6;
   --tertiary-color: #6c757d;
 }
 
@@ -65,7 +65,6 @@ img.item-thumbnail {
 
 .ds-btn-secondary:hover {
   background-color:var(--secondary-color-dark);
-  color: white;
   border-color: var(--secondary-color-dark);
 }
 
