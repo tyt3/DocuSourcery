@@ -29,7 +29,7 @@ router.get('/login', async (req, res) => {
 // Log Out
 router.get('/logout', async (req, res) => {
     try {
-        res.render("user/logout.ejs", {});
+        res.render("user/index.ejs", {});
     } catch (err) {
         throw err;
     }
