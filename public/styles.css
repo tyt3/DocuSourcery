@@ -1,6 +1,7 @@
 :root {
   --primary-color: #4d0d89;
   --secondary-color: #F7B1C0;
+  --secondary-color-dark: #cc5c74;
   --tertiary-color: #6c757d;
 }
 
@@ -55,6 +56,30 @@ img.item-thumbnail {
   object-fit: contain;
   height: 100%;
 }
+
+.ds-btn-secondary {
+  background-color: var(--secondary-color);
+  color: var(--primary-color);
+  border-color: var(--secondary-color);
+}
+
+.ds-btn-secondary:hover {
+  background-color:var(--secondary-color-dark);
+  color: white;
+  border-color: var(--secondary-color-dark);
+}
+
+.ds-btn-outline-secondary {
+  color: var(--secondary-color);
+  border-color: var(--secondary-color);
+}
+
+.ds-btn-outline-secondary:hover {
+  background-color: var(--secondary-color-dark);
+  color: var(--primary-color);
+  border-color: var(--secondary-color-dark);
+}
+
 
 .badge {
   .close {
