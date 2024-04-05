@@ -41,6 +41,16 @@ span.required-field {
   margin-bottom: 1.5em;
 }
 
+#profileFormSwitch {
+  border-color: rgba(77, 13, 137, 1);
+  box-shadow: 0 0 0 3px rgba(77, 13, 137, 0.1);
+  /*Change circle color*/
+}
+
+#profileFormSwitch:checked {
+  background-color: rgba(77, 13, 137, 0.9);
+}
+
 p.contact {
   display: block;
   margin-top: 0.5em;
