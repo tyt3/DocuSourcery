@@ -66,6 +66,7 @@ img.item-thumbnail {
 
 .btn-ds-primary:hover {
   background-color:var(--primary-color-dark);
+  color: white;
   border-color: var(--primary-color-dark);
 }
 
