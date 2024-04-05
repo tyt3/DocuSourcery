@@ -37,6 +37,10 @@ span.required-field {
   color: #d93025;
 }
 
+.form-group {
+  margin-bottom: 1.5em;
+}
+
 p.contact {
   display: block;
   margin-top: 0.5em;
