@@ -65,9 +65,9 @@ img.item-thumbnail {
 }
 
 .btn-ds-primary:hover {
-  background-color:var(--primary-color-dark);
-  color: white;
-  border-color: var(--primary-color-dark);
+  background-color:var(--secondary-color);
+  color: var(--primary-color-dark);
+  border-color: var(--secondary-color);
 }
 
 .btn-ds-outline-primary {
