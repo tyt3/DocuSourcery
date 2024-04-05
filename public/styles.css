@@ -83,6 +83,11 @@ img.item-thumbnail {
   width: 6em;
 }
 
+.nav-item-ds:hover {
+  background-color: var(--secondary-color);
+  color: var(--primary-color);
+}
+
 .badge {
   .close {
     margin-left: 0.25rem;
