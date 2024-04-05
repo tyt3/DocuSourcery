@@ -1,5 +1,6 @@
 :root {
   --primary-color: #4d0d89;
+  --primary-color--dark: #3b056e;
   --secondary-color: #F7B1C0;
   --secondary-color-dark: #e494a6;
   --tertiary-color: #6c757d;
@@ -57,23 +58,45 @@ img.item-thumbnail {
   height: 100%;
 }
 
-.ds-btn-secondary {
+.btn-ds-primary {
+  background-color: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+}
+
+.btn-ds-primary:hover {
+  background-color:var(--primary-color-dark);
+  border-color: var(--primary-color-dark);
+}
+
+.btn-ds-outline-primary {
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.btn-ds-outline-primary:hover {
+  background-color: var(--primary-color-dark);
+  color: white;
+  border-color: var(--primary-color-dark);
+}
+
+.btn-ds-secondary {
   background-color: var(--secondary-color);
   color: var(--primary-color);
   border-color: var(--secondary-color);
 }
 
-.ds-btn-secondary:hover {
+.btn-ds-secondary:hover {
   background-color:var(--secondary-color-dark);
   border-color: var(--secondary-color-dark);
 }
 
-.ds-btn-outline-secondary {
+.btn-ds-outline-secondary {
   color: var(--secondary-color);
   border-color: var(--secondary-color);
 }
 
-.ds-btn-outline-secondary:hover {
+.btn-ds-outline-secondary:hover {
   background-color: var(--secondary-color-dark);
   color: var(--primary-color);
   border-color: var(--secondary-color-dark);
