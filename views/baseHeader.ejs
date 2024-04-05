@@ -37,16 +37,16 @@
           </li>
         </ul>
         <ul class="navbar-nav ms-auto mb-2 mb-xl-0 me-xl-4">
-          <div class="d-flex align-items-center">
+          <div class="d-xl-flex align-items-xl-center">
             <li class="nav-item">
-              <a class="btn ds-btn-outline-secondary btn-nav ms-xl-2 mt-2 mb-2 my-xl-0" role="button" href="/login">Log In</a>
+              <a class="btn btn-ds-outline-secondary btn-6 ms-xl-2 mt-2 mb-2 my-xl-0" role="button" href="/login">Log In</a>
             </li>
             <li class="nav-item">
-              <a class="btn ds-btn-secondary btn-nav ms-xl-2 mb-3 my-xl-0" role="button" href="/signup">Sign Up</a>
+              <a class="btn btn-ds-secondary btn-6 ms-xl-2 mb-3 my-xl-0" role="button" href="/signup">Sign Up</a>
             </li>
           </div>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle bg-ds-primary" data-bs-toggle="dropdown" href="#" role="button"
+            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
               aria-expanded="false">
               Hi, OpenSourcerers!
               <img <% if (true) { %>
@@ -54,14 +54,14 @@
               <% } else { %>
                 src="https://upload.wikimedia.org/wikipedia/commons/8/86/Grey_-_Rounded_borded_-_Add_user_%28Deus_WikiProject%29.png"
                 <% } %>
-                  class="rounded-circle border border-2 border-ds-secondary"
+                  class="rounded-circle border-ds-secondary"
                   style="width: 2em; height: 2em; object-fit: cover;"
                   alt="...">
             </a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="/dashboard">Dashboard</a></li>
-              <li><a class="dropdown-item" href="/profile">Profile</a></li>
-              <li><a class="dropdown-item" href="/logout">Logout</a></li>
+            <ul class="dropdown-menu bg-ds-primary">
+              <li><a class="dropdown-item nav-item-ds" href="/dashboard">Dashboard</a></li>
+              <li><a class="dropdown-item nav-item-ds" href="/profile">Profile</a></li>
+              <li><a class="dropdown-item nav-item-ds" href="/logout">Logout</a></li>
             </ul>
           </li>
         </ul>

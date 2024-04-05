@@ -1,5 +1,6 @@
 :root {
   --primary-color: #4d0d89;
+  --primary-color-dark: #3b056e;
   --secondary-color: #F7B1C0;
   --secondary-color-dark: #e494a6;
   --tertiary-color: #6c757d;
@@ -36,6 +37,22 @@ span.required-field {
   color: #d93025;
 }
 
+.form-group {
+  margin-bottom: 1.5em;
+}
+
+#profileFormSwitch {
+  border-color: rgba(77, 13, 137, 1);
+  box-shadow: 0 0 0 4px rgba(77, 13, 137, 0.1);
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgba%2877, 13, 137, 0.5%29'/%3e%3c/svg%3e");
+}
+
+#profileFormSwitch:checked {
+  background-color: rgba(77, 13, 137, 0.9);
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='white'/%3e%3c/svg%3e");
+  
+}
+
 p.contact {
   display: block;
   margin-top: 0.5em;
@@ -57,30 +74,58 @@ img.item-thumbnail {
   height: 100%;
 }
 
-.ds-btn-secondary {
+.btn-ds-primary {
+  background-color: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+}
+
+.btn-ds-primary:hover {
+  background-color:var(--secondary-color);
+  color: var(--primary-color-dark);
+  border-color: var(--secondary-color);
+}
+
+.btn-ds-outline-primary {
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.btn-ds-outline-primary:hover {
+  background-color: var(--primary-color-dark);
+  color: white;
+  border-color: var(--primary-color-dark);
+}
+
+.btn-ds-secondary {
   background-color: var(--secondary-color);
   color: var(--primary-color);
   border-color: var(--secondary-color);
 }
 
-.ds-btn-secondary:hover {
+.btn-ds-secondary:hover {
   background-color:var(--secondary-color-dark);
   border-color: var(--secondary-color-dark);
 }
 
-.ds-btn-outline-secondary {
+.btn-ds-outline-secondary {
   color: var(--secondary-color);
   border-color: var(--secondary-color);
 }
 
-.ds-btn-outline-secondary:hover {
+.btn-ds-outline-secondary:hover {
   background-color: var(--secondary-color-dark);
   color: var(--primary-color);
   border-color: var(--secondary-color-dark);
 }
 
-.btn-nav {
+.btn-6 {
   width: 6em;
+}
+
+.nav-item-ds:hover {
+  background-color: var(--secondary-color);
+  color: var(--primary-color);
 }
 
 .badge {
@@ -156,15 +201,15 @@ img.item-thumbnail {
 /* Borders */
 
 .border-ds-primary {
-  border-color: var(--primary-color);
+  border: 2px solid var(--primary-color);
 }
 
 .border-ds-secondary {
-  border-color: var(--secondary-color);
+  border: 2px solid var(--secondary-color);
 }
 
 .border-ds-tertiary {
-  border-color: var(--tertiary-color);
+  border: 2px solid var(--tertiary-color);
 }
 
 
