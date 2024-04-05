@@ -4,7 +4,22 @@ const Schema = mongoose.Schema;
 
 // Define Project model
 const ProjectSchema = new mongoose.Schema({
-    title: {type: String}
+    slug: { type: String, required: true },
+    admins: [
+        { type: Schema.Types.ObjectId, ref: "user", required: true }
+    ],
+    editors: [
+        { type: Schema.Types.ObjectId, ref: "user" }
+    ],
+    viewers: [
+        { type: Schema.Types.ObjectId, ref: "user" }
+    ],
+    invitees: [
+        { type: Schema.Types.ObjectId, ref: "user" }
+    ],
+    documents:  [
+        { type: Schema.Types.ObjectId, ref: "document", required: true }
+    ]
 });
 
 // Export model
