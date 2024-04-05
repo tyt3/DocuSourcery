@@ -43,12 +43,14 @@ span.required-field {
 
 #profileFormSwitch {
   border-color: rgba(77, 13, 137, 1);
-  box-shadow: 0 0 0 3px rgba(77, 13, 137, 0.1);
-  /*Change circle color*/
+  box-shadow: 0 0 0 5px rgba(77, 13, 137, 0.1);
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgba%2877, 13, 137, 0.5%29'/%3e%3c/svg%3e");
 }
 
 #profileFormSwitch:checked {
   background-color: rgba(77, 13, 137, 0.9);
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='white'/%3e%3c/svg%3e");
+  
 }
 
 p.contact {
