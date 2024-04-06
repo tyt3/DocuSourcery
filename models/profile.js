@@ -11,8 +11,8 @@ const ProfileSchema = new mongoose.Schema({
     bio: { type: String },
     profile_photo_url: { type: String },
     profile_public: { type: Boolean, default: false },
-    following: { type: Map },
-    followers: { type: Map },
+    following: { type: Array },
+    followers: { type: Array },
     user_id: { type: Schema.Types.ObjectId, ref: "user", required: true, unique: true }
 });
 
