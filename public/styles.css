@@ -37,6 +37,14 @@ span.required-field {
   color: #d93025;
 }
 
+.tab-link {
+  color: var(--primary-color);
+}
+
+.tab-link:hover {
+  color: var(--primary-color-dark);
+}
+
 .form-group {
   margin-bottom: 1.25em;
 }
