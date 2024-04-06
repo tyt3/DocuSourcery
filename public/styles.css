@@ -139,6 +139,10 @@ img.item-thumbnail {
   width: 12em;
 }
 
+.navbar-brand:hover {
+  color: var(--secondary-color);
+}
+
 .nav-item-ds:hover {
   background-color: var(--secondary-color);
   color: var(--primary-color);
