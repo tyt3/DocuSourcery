@@ -1,5 +1,111 @@
 <%- include('../baseHeader') -%>
-    <h1>
-      Dashboard
-    </h1>
-<%- include('../baseFooter') -%>
+  <!-- <h1>
+    Dashboard
+  </h1> -->
+
+  <div class="row gy-4">
+    <!-- Dashboard -->
+    <div class="col-12 col-lg-8">
+      <h1>Dashboard</h1>
+
+      <!-- Tabs: My Projects, Pinned Projects -->
+      <div class="card shadow-sm bg-light-gray mt-4">
+        <div class="card-header">
+          <ul class="nav nav-tabs" id="assetsTablist" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="my-projects-tab" data-bs-toggle="tab"
+                data-bs-target="#my-projects-pane" type="button" role="tab" aria-controls="my-projects-tab"
+                aria-selected="true">
+                My Projects
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="pinned-projects-tab" data-bs-toggle="tab"
+                data-bs-target="#pinned-projects-pane" type="button" role="tab" aria-controls="pinned-projects-tab"
+                aria-selected="false">
+                Pinned Projects
+              </button>
+            </li>
+          </ul>
+        </div>
+        <div class="card-body">
+          <!-- Tab Panels -->
+          <!-- My Projects Pane -->
+          <div class="tab-content mt-3" id="tabContent">
+            <div class="tab-pane fade show active" id="my-projects-pane" role="tabpanel"
+              aria-labelledby="my-projects-pane">
+              <% if (false) { %>
+                <ul class="list-group">
+                  <!-- Loop through projects -->
+                  <li class="list-group-item bg-light-gray ">
+                    <div class="row">
+                      <div class="col-md-3 col-xxl-2 d-none d-md-block">
+                        <!-- <% include '../snippets/pin-project-icon.ejs' %>
+                        <% include '../snippets/tag-project-icon.ejs' %>
+                        <% include '../snippets/edit-project-icon.ejs' %>
+                        <% include '../snippets/delete-project-icon.ejs' %> -->
+                      </div>
+                      <div class="col-12 col-md-9 col-xxl-10">
+                        <a href="#">Project Title</a>
+                      </div>
+                    </div>
+                  </li>
+                  <!-- End of Loop-->
+                </ul>
+                <% } else { %>
+                <p class="text-center">
+                  <em>You don't have any projects yet.</em>
+                </p>
+                <div class="d-grid gap-2 d-md-flex justify-content-center">
+                  <a class="btn btn-primary btn-12 bg-pitt-royal border-pitt-royal" role="button" href="#">Create
+                    a Project</a>
+                </div>
+                <% } %>
+            </div>
+            <!-- Pinned Projects Pane -->
+            <div class="tab-pane fade" id="pinned-projects-pane" role="tabpanel" aria-labelledby="pinned-projects-pane">
+              <% if (true) { %>
+                <ul class="list-group">
+                  <!-- Loop through pinned projects -->
+                  <li class="list-group-item bg-light-gray ">
+                    <div class="row">
+                      <div class="col-3 col-md-2 d-none d-md-block">
+                        <!-- <% include '../snippets/pin-project-icon.ejs' %>
+                        <% include '../snippets/edit-project-icon.ejs' %>
+                        <% include '../snippets/delete-project-icon.ejs' %> -->
+                      </div>
+                      <div class="col-12 col-md-10">
+                        <a href="#">[Project Title ]</a>
+                      </div>
+                    </div>
+                  </li>
+                  <!-- End Loop -->
+                </ul>
+                <% } else { %>
+                <p class="text-center"><em>You don't have any pinned projects yet.</em></p>
+                <div class="d-grid gap-2 d-md-flex justify-content-center">
+                  <a class="btn btn-ds-primary btn-12" role="button" href="#">
+                    Browse Projects
+                  </a>
+                </div>
+                <% } %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Account -->
+    <div class="col-md col-lg-4">
+      <h1>Account</h1>
+      <div class="card shadow-sm bg-light-gray">
+        <div class="card-body">
+          <div class="col-md-12 text-center">
+            [Account Information]
+            <button class="btn btn-ds-primary">Update</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <%- include('../baseFooter') -%>

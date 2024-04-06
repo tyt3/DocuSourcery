@@ -123,6 +123,10 @@ img.item-thumbnail {
   width: 6em;
 }
 
+.btn-12 {
+  width: 12em;
+}
+
 .nav-item-ds:hover {
   background-color: var(--secondary-color);
   color: var(--primary-color);
@@ -195,6 +199,18 @@ img.item-thumbnail {
 
 .bg-ds-tertiary {
   background-color: var(--tertiary-color);
+}
+
+.bg-pitt-gray {
+  background-color: #97999B;
+}
+
+.bg-pitt-light-gray {
+  background-color: #C8C9C7;
+}
+
+.bg-light-gray {
+  background-color: #F4F4F4;
 }
 
 
