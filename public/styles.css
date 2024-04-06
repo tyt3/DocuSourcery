@@ -46,6 +46,10 @@ span.required-field {
   color: var(--primary-color-dark);
 }
 
+.card-header, .card-footer {
+  background-color: white;
+}
+
 .form-group {
   margin-bottom: 1.25em;
 }
