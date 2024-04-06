@@ -6,18 +6,20 @@
   <!-- Form -->
   <div class="row">
     <div class="mx-auto col-sm-10 col-md-8 col-lg-6 col-xxl-4">
-      <form method="POST">
-        <% if (true) { %>
-          <div class="form-group">
-            <label for="username" class="bold">Email
-              <span class="required-field">*
-            </label>
-            <input type="email" class="form-control" id="email" name="email" required>
-            <small>
-              <a class="text-decoration-none" href="/login/">Log in with username</a>
-            </small>
-          </div>
-          <% } else { %>
+      <div class="card shadow-sm"> 
+        <div class="card-body">
+          <form method="POST">
+            <% if (true) { %>
+            <div class="form-group">
+              <label for="username" class="bold">Email
+                <span class="required-field">*
+              </label>
+              <input type="email" class="form-control" id="email" name="email" required>
+              <small>
+                <a class="text-decoration-none" href="/login/">Log in with username</a>
+              </small>
+            </div>
+            <% } else { %>
             <div class="form-group">
               <label for="username" class="bold">Username
                 <span class="required-field">*
@@ -28,19 +30,21 @@
               </small>
             </div>
             <% } %>
-              <div class="form-group mt-2">
-                <label for="password" class="bold">Password
-                  <span class="required-field">*
-                </label>
-                <input type="password" class="form-control" id="password" name="password" required>
-                <small>
-                  <a class="text-decoration-none" href="/password_reset/">Forgot password?</a>
-                </small>
-              </div>
-              <div class="col-md-12 text-center">
-                <button type="submit" class="btn btn-6 btn-ds-primary">Log In</button>
-              </div>
-      </form>
+            <div class="form-group mt-2">
+              <label for="password" class="bold">Password
+                <span class="required-field">*
+              </label>
+              <input type="password" class="form-control" id="password" name="password" required>
+              <small>
+                <a class="text-decoration-none" href="/password_reset/">Forgot password?</a>
+              </small>
+            </div>
+            <div class="col-md-12 text-center">
+              <button type="submit" class="btn btn-6 btn-ds-primary">Log In</button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
   </div>
   <%- include('../baseFooter') -%>
