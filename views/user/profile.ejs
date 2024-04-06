@@ -4,5 +4,115 @@
   </h1>
 
   <!-- Form -->
+  <!-- Contact Information -->
+  <h2>Taylor Klein</h2>
+  <% if (false) { %>
+  <img style="margin: 10px 0 10px 0; max-width: 25%;" src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png">
+  <% } else { %>
+  <img style="margin: 10px 0 10px 0; max-width: 10em;"
+    src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png">
+  <% } %>
+  <br />
+  <p class="contact"><strong>Pronouns:</strong> they/them</p>
+  <p class="contact"><strong>Title:</strong> Software Developer</p>
+  <p class="contact"><strong>Email:</strong> <a href="#">taylor.klein@domain.com</a></p>
+  <% if (true) { %>
+  <p class="contact"><strong>Website:</strong> 
+    <a href="#" target="_blank">taylorklein.com</a>
+  </p>
+  <% } %>
+  <% if (true) { %>
+  <p class="contact"><strong>Bio:</strong> 
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer id semper lorem. Morbi pretium velit non ex laoreet fringilla. Morbi finibus pharetra nisi in volutpat. Praesent cursus consectetur turpis, sit amet dapibus felis finibus sed. Vivamus in magna pretium, vulputate massa at, rhoncus nulla. Nam ut viverra enim, vitae tempor mauris. Phasellus ullamcorper sem sed justo fringilla, ut vulputate ipsum viverra. Nunc pharetra congue ipsum ac auctor. Fusce suscipit lectus eu tincidunt mollis. Aliquam eget arcu mauris. Interdum et malesuada fames ac ante ipsum primis in faucibus.
+    <br>
+    Phasellus at tempor dui. Duis quis risus nec elit laoreet rhoncus. Nam tincidunt, enim a dignissim tincidunt, elit tortor mollis turpis, id hendrerit lacus velit sed ligula. Integer a scelerisque lectus, ac sagittis justo. Suspendisse faucibus lacus quis tortor mattis consequat. Maecenas vestibulum facilisis mauris nec malesuada. Fusce mi ipsum, ultrices at mattis sed, dictum id dui. Duis justo ipsum, suscipit eget commodo sit amet, tempor mollis velit. Donec eget purus quis ex eleifend dictum non ac diam. Phasellus ut fermentum sem. Ut faucibus, quam a gravida gravida, purus risus lacinia quam, at efficitur diam tortor pellentesque ex. Ut euismod diam eu odio sagittis, dictum lacinia tellus luctus. Etiam eget leo non velit interdum cursus. Praesent non pulvinar tellus.
+    <br>
+    Cras placerat placerat lorem, id rhoncus erat dapibus et. Nulla consectetur fermentum urna, eget pharetra arcu dapibus non. Nulla at lectus dictum, aliquet tortor quis, semper risus. Nulla dapibus odio et metus maximus ornare. Duis vestibulum elit sed ligula molestie dictum. Curabitur tempor eros non odio pulvinar, ut congue ante posuere. Nam ut tempor felis, ac porta turpis. Nam ac mollis urna. Fusce vestibulum ipsum in tristique lobortis. Pellentesque ornare dolor nisl, eu congue odio lacinia vitae.
+  </p>
+  <% } %>
+  <% if (true) { %>
+  <div class="d-grid gap-2 d-md-flex justify-content-center justify-content-md-start mt-4">
+    <button type="button" class="btn btn-12 btn-ds-primary" data-bs-toggle="modal"
+      data-bs-target="#updateProfileModal">
+      Update Profile
+    </button>
+  </div>
+  <% } %>
 
-<%- include('../baseFooter') -%>
+  <!-- Projects -->
+  <hr class="mt-4" />
+  <h4 class="mb-4">Projects</h4>
+  <% if (true) { %>
+  <div class="row gy-4">
+    <!-- Loop through projects -->
+    <div class="col-md-6 col-xl-4">
+      <div class="card h-100 shadow-sm bg-light-gray">
+        <div class="card-header">
+          <div class="row">
+            <div class="col text-end">
+              <span class="material-symbols-outlined">keep</span>
+              <span class="material-symbols-outlined">tag</span>
+              <span class="material-symbols-outlined">edit</span>
+              <span class="material-symbols-outlined">delete</span>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">
+            <a href="#">[Project Title]</a>
+          </h5>
+          <h* class="card-subtitle">
+            [Subtitle]
+          <p class="card-text mt-2">
+            <strong>Last modified</strong>: 2024-04-05
+          </p>
+        </div>
+        <div class="card-footer bg-light-gray border-top-0 mb-2">
+          <a class="btn btn-ds-primary" data-bs-toggle="modal"
+            data-bs-target="#" role="button" href="#">View Project</a>
+        </div>
+      </div>
+    </div>
+    <!-- End loop -->
+  </div>
+  <%  } else { %>
+  <% if (true) { %>
+  <p>
+    <em>You haven't published any projects yet.</em>
+  </p>
+  <div class="d-grid gap-2 d-md-flex justify-content-center justify-content-lg-start">
+    <a class="btn btn-ds-primary btn-12" role="button" href="#">
+      Create a Project
+    </a>
+  </div>
+  <% } else { %>
+  <p><em>[FirstName] hasn't published any projects yet.</em></p>
+  <% } %>
+  <% } %>
+
+  <!-- Update Profile Form Modal -->
+  <div class="modal fade" id="updateProfileModal" name="updateProfileModal" tabindex="-1"
+    aria-labelledby="updateProfileModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title fs-5" id="updateProfileModalLabel">Update Profile</h2>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <!-- Profile Form -->
+          <div id="update_profile_form">
+            <form method="POST" target="_self">
+              <% include "../snippets/profile-form.html" %>
+              <div class="col-md-12 text-center">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-ds-primary">Update</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <%- include('../baseFooter') -%>
