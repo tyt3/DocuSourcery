@@ -11,6 +11,19 @@ const User = require('../models/user');
 
 // AUTH
 
+
+// testing Retrieve all user msg
+router.get("/alllllUsers", async function (req, res) {
+  await User.find({})
+    .then((user_list) => {
+      res.json(user_list);
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
+});
+
+
 // Sign Up
 router.get('/signup', async (req, res) => {
     try {
