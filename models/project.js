@@ -5,6 +5,8 @@ const Schema = mongoose.Schema;
 // Define Project model
 const ProjectSchema = new mongoose.Schema({
     slug: { type: String, required: true },
+    created_date: { type: Date },
+    modified_date: { type: Date },
     admins: [
         { type: Schema.Types.ObjectId, ref: "user", required: true }
     ],
