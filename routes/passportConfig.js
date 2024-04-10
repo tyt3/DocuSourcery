@@ -1,5 +1,5 @@
 // passport logic
-// helper for the login function of user.js 
+// helper for the login function of user.js
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const bcrypt = require("bcrypt");
@@ -9,18 +9,15 @@ const User = require("../models/user");
 passport.use(
   new LocalStrategy(
     {
-      usernameField: "email", // use 'login' to accept both email and username
+      usernameField: "login", // use 'login' to accept both email and username
       passwordField: "password",
     },
-    async (email, password, done) => {
+    async (login, password, done) => {
       let user;
       try {
         // Check if login is a username or email
         user = await User.findOne({
-          $or: [
-            { email: email },
-            //{ username: login }
-          ],
+          $or: [{ email: login }, { username: login }],
         });
 
         if (!user) {
