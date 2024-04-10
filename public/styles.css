@@ -298,14 +298,4 @@ img.item-thumbnail {
 .sticky {
   position: sticky;
   top: 0;
-  animation: moveUpDown 2s infinite alternate; /* Add vertical animation */
-}
-
-@keyframes moveUpDown {
-  0% {
-    transform: translateY(0);
-  }
-  100% {
-    transform: translateY(-10px); /* Adjust the distance */
-  }
 }
