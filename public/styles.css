@@ -1,3 +1,4 @@
+/* Global Variables */
 :root {
   --primary-color: #4d0d89;
   --primary-color-dark: #3b056e;
@@ -5,7 +6,6 @@
   --secondary-color-dark: #e494a6;
   --tertiary-color: #6c757d;
 }
-
 
 body {
   margin: 0;
@@ -17,8 +17,8 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* .main-content {
-} */
+
+/* Text */
 
 h1 {
   text-align: center;
@@ -30,13 +30,36 @@ code {
     monospace;
 }
 
-a.badge-tag:link {
-  text-decoration: none;
+.bold {
+  font-weight: 500;
 }
 
-span.required-field {
-  color: #d93025;
+.light {
+  font-weight: 350;
 }
+
+.small {
+  font-size: 0.75rem;
+}
+
+
+/* Navigation Bar */
+
+.navbar-brand:hover {
+  color: var(--secondary-color);
+}
+
+.nav-item-ds {
+  color: rgb(193, 171, 214);
+}
+
+.nav-item-ds:hover {
+  background-color: var(--secondary-color);
+  color: var(--primary-color);
+}
+
+
+/* Cards */
 
 .tab-link {
   color: var(--primary-color);
@@ -50,9 +73,28 @@ span.required-field {
   background-color: white;
 }
 
+.fixed-card {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 1000;
+}
+
+
+/* Forms */
+
+/* All Forms */ 
+
 .form-group {
   margin-bottom: 1.2em;
 }
+
+.item-checkbox {
+  width: 1em;
+  height: 1em;
+}
+
+/* Profile Form */
 
 #profileFormSwitch {
   border-color: rgba(77, 13, 137, 1);
@@ -66,25 +108,28 @@ span.required-field {
   
 }
 
-p.contact {
-  display: block;
-  margin-top: 0.5em;
-  margin-bottom: 0.5em;
-  margin-left: 0;
-  margin-right: 0;
-  line-height: 1.3em;
+
+/* Buttons */
+
+.btn-6 {
+  width: 6em;
 }
 
-img.card-header-icons {
-  max-height: 1.25em;
+.btn-12 {
+  width: 12em;
 }
 
-img.item-thumbnail {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  object-fit: contain;
-  height: 100%;
+.btn-tag {
+  width: 0.75em;
+  height: 0.75em;
+  margin-top: 0.25em;
+  padding: 0;
+}
+
+.btn-contact {
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.75);
 }
 
 .btn-ds-primary {
@@ -132,26 +177,8 @@ img.item-thumbnail {
   border-color: var(--secondary-color-dark);
 }
 
-.btn-6 {
-  width: 6em;
-}
 
-.btn-12 {
-  width: 12em;
-}
-
-.navbar-brand:hover {
-  color: var(--secondary-color);
-}
-
-.nav-item-ds {
-  color: rgb(193, 171, 214);
-}
-
-.nav-item-ds:hover {
-  background-color: var(--secondary-color);
-  color: var(--primary-color);
-}
+/* Badges */
 
 .badge {
   .close {
@@ -162,11 +189,8 @@ img.item-thumbnail {
   }
 }
 
-.btn-tag {
-  width: 0.75em;
-  height: 0.75em;
-  margin-top: 0.25em;
-  padding: 0;
+a.badge-tag:link {
+  text-decoration: none;
 }
 
 .card-list-item {
@@ -175,38 +199,15 @@ img.item-thumbnail {
   border-left: 0;
 }
 
-.btn-contact {
-  border-bottom-left-radius: 0px;
-  border-bottom-right-radius: 0px;
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.75);
-}
 
-#accordionCollapse {
+/* Accordions */
+
+#accordionCollapse , .accordionCollapse {
   transition: none;
 }
 
-.accordionCollapse {
-  transition: none;
-}
 
-.item-checkbox {
-  width: 1em;
-  height: 1em;
-}
-
-.bold {
-  font-weight: 500;
-}
-
-.light {
-  font-weight: 350;
-}
-
-.small {
-  font-size: 0.75rem;
-}
-
-/* DocuSourcery Branding Palette */
+/* Branding Palette Items */
 
 /* Backgrounds */
 
@@ -234,7 +235,6 @@ img.item-thumbnail {
   background-color: #F4F4F4;
 }
 
-
 /* Borders */
 
 .border-ds-primary {
@@ -249,7 +249,6 @@ img.item-thumbnail {
   border: 2px solid var(--tertiary-color);
 }
 
-
 /* Text */
 
 .text-ds-primary {
@@ -262,4 +261,30 @@ img.item-thumbnail {
 
 .text-pitt-tertiary {
   color: var(--tertiary-color);
+}
+
+
+/* Pages */
+
+/* Profile Page */
+
+p.contact {
+  display: block;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  margin-left: 0;
+  margin-right: 0;
+  line-height: 1.3em;
+}
+
+img.card-header-icons {
+  max-height: 1.25em;
+}
+
+img.item-thumbnail {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  object-fit: contain;
+  height: 100%;
 }
