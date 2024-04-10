@@ -1,5 +1,63 @@
 <%- include('../baseHeader') -%>
-    <h1>
-      Project
-    </h1>
-<%- include('../baseFooter') -%>
+  <h1>
+    Create Project
+  </h1>
+  <div class="container mt-5">
+    <form>
+      <div class="form-group row">
+        <label for="title" class="col-sm-2 col-form-label">Title</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="title" placeholder="Enter title">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="subtitle" class="col-sm-2 col-form-label">Subtitle</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="subtitle" placeholder="Enter subtitle">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="slug" class="col-sm-2 col-form-label">Slug</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="slug" placeholder="Enter slug">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="description" class="col-sm-2 col-form-label">Description</label>
+        <div class="col-sm-10">
+          <textarea class="form-control" id="description" rows="3" placeholder="Enter description"></textarea>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Tags</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" placeholder="Enter tags">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Permissions</label>
+        <div class="col-sm-10">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="noLogin" value="noLogin">
+            <label class="form-check-label" for="noLogin">No login required</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="canDuplicate" value="canDuplicate">
+            <label class="form-check-label" for="canDuplicate">Can be duplicated by you and others</label>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-sm-10 offset-sm-2">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="summaryPage" value="summaryPage">
+            <label class="form-check-label" for="summaryPage">Start the project on the summary page. If unchecked, the
+              landing page will contain a table of contents.</label>
+          </div>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>
+  <%- include('../baseFooter') -%>
+  
