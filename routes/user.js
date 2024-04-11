@@ -151,10 +151,22 @@ router.get("/account", async (req, res) => {
 
 // View Profile
 router.get("/profile", async (req, res) => {
+  if (!req.user || !req.isAuthenticated()) {
+    return res.redirect('/login');
+  }
+
   try {
-    res.render("user/profile.ejs", {});
+    const userProfile = await Profile.findOne({ user_id: req.user._id });
+    if (!userProfile) {
+      return res.redirect('/create-profile');
+    }
+    res.render("user/profile.ejs", {
+      profile: userProfile,
+      user: req.user
+    });
   } catch (err) {
-    throw err;
+    console.error(err);
+    res.status(500).send("An error occurred while fetching the user profile.");
   }
 });
 
