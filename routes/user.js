@@ -158,7 +158,7 @@ router.get("/profile", async (req, res) => {
   try {
     const userProfile = await Profile.findOne({ user_id: req.user._id });
     if (!userProfile) {
-      return res.redirect('/create-profile');
+      return res.redirect('/edit');
     }
     res.render("user/profile.ejs", {
       profile: userProfile,
