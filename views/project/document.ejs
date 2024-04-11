@@ -1,5 +1,89 @@
 <%- include('../baseHeader') -%>
-    <h1>
-      Document
-    </h1>
-<%- include('../baseFooter') -%>
+  <h1>
+    Create Document
+  </h1>
+  <div class="container mt-5">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h2>Document Metadata</h2>
+        <form>
+          <div class="row gy-4 mt-2">
+            <div class="col-12 col-md-8 col-xxl-9">
+              <div class="form-group row">
+                <label for="title" class="col-sm-2 col-form-label bold">Title</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="title" placeholder="Enter title">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="subtitle" class="col-sm-2 col-form-label bold">Subtitle</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="subtitle" placeholder="Enter subtitle">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="slug" class="col-sm-2 col-form-label bold">Slug</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="slug" placeholder="Enter slug">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="description" class="col-sm-2 col-form-label bold">Description</label>
+                <div class="col-sm-10">
+                  <textarea class="form-control" id="description" rows="3" placeholder="Enter description"></textarea>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-2 col-form-label bold">Tags</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" placeholder="Enter tags">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-2 col-form-label bold">Permissions</label>
+                <div class="col-sm-10">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="noLogin" value="noLogin">
+                    <label class="form-check-label" for="noLogin">No login required</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="canDuplicate" value="canDuplicate">
+                    <label class="form-check-label" for="canDuplicate">Can be duplicated by you and others</label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-sm-10 offset-sm-2">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="summaryPage" value="summaryPage">
+                    <label class="form-check-label" for="summaryPage">
+                      Start the document on a summary page. If unchecked, the 
+                      document's landing page will contain a table of contents.
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <hr class="my-4">
+              <h2>Pages</h2>
+              <p>There are no pages.</p>
+              <button type="button" class="btn btn-ds-primary">
+                Add Page
+              </button>
+            </div>
+            <div class="col-12 col-md-4 col-xxl-3 relative">
+              <div class="card sticky">
+                <div class="card-body">
+                  <div class="d-grid gap-2 col-12 mx-auto">
+                    <button type="submit" class="btn btn-block btn-success">Save Document</button>
+                    <button type="button" class="btn btn-block btn-danger">Delete Document</button>
+                    <button type="button" class="btn btn-block btn-secondary">View Document</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <%- include('../baseFooter') -%>
