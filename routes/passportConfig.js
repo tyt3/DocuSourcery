@@ -1,16 +1,16 @@
 // passport logic
 // helper for the login function of user.js
-const passport = require("passport");
-const LocalStrategy = require("passport-local").Strategy;
-const bcrypt = require("bcrypt");
-const User = require("../models/user");
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+const bcrypt = require('bcrypt');
+const User = require('../models/user');
 
 // Configure passport local strategy
 passport.use(
   new LocalStrategy(
     {
-      usernameField: "login", // use 'login' to accept both email and username
-      passwordField: "password",
+      usernameField: 'login', // use 'login' to accept both email and username
+      passwordField: 'password',
     },
     async (login, password, done) => {
       let user;
@@ -22,14 +22,14 @@ passport.use(
 
         if (!user) {
           return done(null, false, {
-            message: "The email or username you entered is not registered.",
+            message: 'The email or username you entered is not registered.',
           });
         }
         // Compare hashed password
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
           return done(null, false, {
-            message: "You entered invalid login credentials.",
+            message: 'You entered invalid login credentials.',
           });
         }
         return done(null, user);
