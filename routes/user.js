@@ -150,11 +150,14 @@ router.get('/account', async (req, res) => {
 // PROFILE
 
 // View Profile
-router.get('/profile', async (req, res) => {
+router.get('/profile/:id', async (req, res) => {
+  // Ensure that user is signed in
   if (!req.user || !req.isAuthenticated()) {
     return res.redirect('/login');
   }
 
+  // Get user profile
+  const profileId = req.params.id;
   try {
     const userProfile = await Profile.findOne({ user_id: req.user._id });
     if (!userProfile) {
