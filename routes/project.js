@@ -2,6 +2,8 @@
 const express = require('express');
 const router = express.Router();
 
+// Import middleware
+const middleware = require('./middleware');
 
 // Import data models
 const User = require('../models/user');

@@ -2,7 +2,10 @@
 const express = require('express');
 const router = express.Router()
 
-// //import data models
+// Import middleware
+const middleware = require('./middleware');
+
+// Import data models
 // const Book = require('../models/book');
 
 // AUTH

@@ -1,7 +1,9 @@
-// Route handlers
+// Import route handlers
 const express = require('express');
-const router = express.Router()
+const router = express.Router();
 
+// Import middleware
+const middleware = require('./middleware');
 
 // Import data models
 
