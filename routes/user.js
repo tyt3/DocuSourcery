@@ -151,14 +151,43 @@ router.get("/account", async (req, res) => {
 
 // View Profile
 router.get("/profile", async (req, res) => {
+  if (!req.user || !req.isAuthenticated()) {
+    return res.redirect('/login');
+  }
+
   try {
-    res.render("user/profile.ejs", {});
+    const userProfile = await Profile.findOne({ user_id: req.user._id });
+    if (!userProfile) {
+      return res.redirect('/edit');
+    }
+    res.render("user/profile.ejs", {
+      profile: userProfile,
+      user: req.user
+    });
   } catch (err) {
-    throw err;
+    console.error(err);
+    res.status(500).send("An error occurred while fetching the user profile.");
   }
 });
 
 // Edit Profile
+router.post('/profile', async (req, res) => {
+   if (!req.user || !req.isAuthenticated()) {
+    return res.redirect('/login');
+  }
+    try {
+        const { pronouns, title, website, bio, profilePhotoURL } = req.body;
+        const updatedProfile = await Profile.findOneAndUpdate(
+            { user_id: req.user._id },
+            { $set: { pronouns, title, website, bio, profilePhotoURL }},
+            { new: true, runValidators: true }
+        );
+        res.redirect('/profile');
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server error');
+    }
+});
 
 // DASHBOARD
 
