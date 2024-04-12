@@ -18,7 +18,7 @@ const PageSchema = new Schema({
 });
 
 // Apply middleware to populate createdBy, updatedBy, and deletedBy fields before saving
-pageSchema.pre('save', populateCreatedBy);
+PageSchema.pre('save', populateCreatedBy);
 
 
 // Export model
