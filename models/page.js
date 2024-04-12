@@ -23,4 +23,4 @@ PageSchema.pre('save', populateCurrentUser);
 
 
 // Export model
-module.exports = model("page", PageSchema);
+module.exports = mongoose.model("page", PageSchema);
