@@ -171,6 +171,23 @@ router.get("/profile", async (req, res) => {
 });
 
 // Edit Profile
+router.post('/profile', async (req, res) => {
+   if (!req.user || !req.isAuthenticated()) {
+    return res.redirect('/login');
+  }
+    try {
+        const { pronouns, title, website, bio, profilePhotoURL } = req.body;
+        const updatedProfile = await Profile.findOneAndUpdate(
+            { user_id: req.user._id },
+            { $set: { pronouns, title, website, bio, profilePhotoURL }},
+            { new: true, runValidators: true }
+        );
+        res.redirect('/profile');
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server error');
+    }
+});
 
 // DASHBOARD
 
