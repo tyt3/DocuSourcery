@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const { populateCreatedBy: populateCurrentUser } = require('./middleware');
+const { populateCurrentUser: populateCurrentUser } = require('../routes/middleware');
 
 
 // Define User model
