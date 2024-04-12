@@ -4,7 +4,10 @@ const Schema = mongoose.Schema;
 
 // Define Project model
 const ProjectSchema = new mongoose.Schema({
-    slug: { type: String, required: true },
+    slug: { type: String, required: true, unique: true },
+    title: { type: String, required: true },
+    subtitle: { type: String },
+    description: { type: String },
     created_date: { type: Date },
     modified_date: { type: Date },
     admins: [
