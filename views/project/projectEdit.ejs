@@ -5,41 +5,41 @@
 <div class="container mt-5">
   <div class="card shadow-sm">
     <div class="card-body">
+      <!-- Tabs -->
+      <ul class="nav nav-tabs" id="assetsTablist" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link tab-link active" id="properties-tab" 
+            data-bs-toggle="tab" data-bs-target="#properties-pane" type="button" 
+            role="tab" aria-controls="properties-tab" aria-selected="true">
+            Properties
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link tab-link" id="content-tab" data-bs-toggle="tab" 
+            data-bs-target="#content-pane" type="button" role="tab" 
+            aria-controls="content-tab" aria-selected="false">
+            Content
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link tab-link" id="content-tab" data-bs-toggle="tab" 
+            data-bs-target="#content-pane" type="button" role="tab"  
+            role="tab" aria-controls="styline-tab" aria-selected="true">
+            Content
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link tab-link" id="users-tab" 
+            data-bs-toggle="tab" data-bs-target="#users-pane" type="button" 
+            role="tab" aria-controls="users-tab" aria-selected="true">
+            Users
+          </button>
+        </li>
+      </ul>
       <form>
         <div class="row gy-4">
+          <!-- Tab Panels -->
           <div class="col-12 col-md-8 col-xxl-9">
-            <!-- Tabs -->
-            <ul class="nav nav-tabs" id="assetsTablist" role="tablist">
-              <li class="nav-item" role="presentation">
-                <button class="nav-link tab-link active" id="properties-tab" 
-                  data-bs-toggle="tab" data-bs-target="#properties-pane" type="button" 
-                  role="tab" aria-controls="properties-tab" aria-selected="true">
-                  Properties
-                </button>
-              </li>
-              <li class="nav-item" role="presentation">
-                <button class="nav-link tab-link" id="content-tab" data-bs-toggle="tab" 
-                  data-bs-target="#content-pane" type="button" role="tab" 
-                  aria-controls="content-tab" aria-selected="false">
-                  Content
-                </button>
-              </li>
-              <li class="nav-item" role="presentation">
-                <button class="nav-link tab-link" id="content-tab" data-bs-toggle="tab" 
-                  data-bs-target="#content-pane" type="button" role="tab"  
-                  role="tab" aria-controls="styline-tab" aria-selected="true">
-                  Content
-                </button>
-              </li>
-              <li class="nav-item" role="presentation">
-                <button class="nav-link tab-link" id="users-tab" 
-                  data-bs-toggle="tab" data-bs-target="#users-pane" type="button" 
-                  role="tab" aria-controls="users-tab" aria-selected="true">
-                  Users
-                </button>
-              </li>
-            </ul>
-            <!-- Tab Panels -->
             <!-- Properties -->
             <div class="tab-content mt-3" id="tabContent">
               <div class="tab-pane fade show active" id="properties-pane" 
