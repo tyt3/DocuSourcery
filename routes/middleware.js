@@ -3,7 +3,7 @@
 // Check if the user is authenticated
 function ensureAuth(req, res, next) {
   if (req.isAuthenticated()) {
-    return next(); // User is authenticated, continue to the next middleware or route handler
+    return next(); 
   } else {
     // User is not authenticated, redirect to login page with flash message
     req.flash('error', 'You must be logged in to access this page.');
@@ -14,7 +14,7 @@ function ensureAuth(req, res, next) {
 // Check if the user is already authenticated
 function ensureNotAuth(req, res, next) {
   if (!req.isAuthenticated()) {
-    return next(); // User is not authenticated, continue to the next middleware or route handler
+    return next();
   } else {
     // User is already authenticated, redirect to dashboard with flash message
     req.flash('error', 'You are already logged in.');
