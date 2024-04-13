@@ -154,11 +154,15 @@ router.get('/account', middleware.ensureAuth, async (req, res) => {
 router.get('/profile/:id', async (req, res) => {
   // Get user profile
   const profileId = req.params.id;
+  console.log(profileId);
   try {
-    const userProfile = await Profile.findOne({ user_id: req.user._id });
+    // Find user profile based on profileId
+    const userProfile = await Profile.findOne({ _id: profileId });
+    
     if (!userProfile) {
       return res.redirect('/');
     }
+    // Render profile page
     res.render('user/profile.ejs', {
       profile: userProfile,
       user: req.user,
