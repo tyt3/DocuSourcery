@@ -37,7 +37,7 @@ router.get('/alllllProfiles', async function (req, res) {
 // Sign Up
 router.get('/signup', middleware.ensureNotAuth, async (req, res) => {
   try {
-    res.render('user/signup.ejs', {});
+    res.render('user/signup.ejs', { user: null });
   } catch (err) {
     throw err;
   }
@@ -121,7 +121,7 @@ router.post('/login', middleware.ensureNotAuth, (req, res, next) => {
         console.error('Login Error: ', err);
         return next(err);
       }
-      return res.redirect('/dashboard', { user: user}); 
+      return res.redirect('/dashboard'); 
     });
   })(req, res, next);
 });
@@ -140,7 +140,7 @@ router.get('/logout', middleware.ensureAuth, async (req, res) => {
 // View Account
 router.get('/account', middleware.ensureAuth, async (req, res) => {
   try {
-    res.render('user/account.ejs', {});
+    res.render('user/account.ejs', { user: req.user });
   } catch (err) {
     throw err;
   }
@@ -190,7 +190,7 @@ router.post('/profile', middleware.ensureAuth, async (req, res) => {
 // View Dashbard
 router.get('/dashboard', middleware.ensureAuth, async (req, res) => {
   try {
-    res.render('user/dashboard.ejs', {});
+    res.render('user/dashboard.ejs', { user: req.user });
   } catch (err) {
     throw err;
   }
