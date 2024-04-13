@@ -17,11 +17,7 @@ const Page = require('../models/page');
 router.get('/project/:id', async (req, res) => {
   const projectId = req.params.id;
   try {
-    // Add data to send to frontend
-    const data = {
-
-    }
-    res.render('project/projectEdit.ejs', { data });
+    res.render('project/projectEdit.ejs', {});
   } catch (err) {
     throw err;
   }
@@ -34,7 +30,7 @@ router.get('/project/create', async (req, res) => {
     const data = {
       mode: 'create',
     }
-    res.render('project/projectEdit.ejs', { data });
+    res.render('project/projectEdit.ejs', {});
   } catch (err) {
     throw err;
   }
@@ -69,7 +65,7 @@ router.get('/project/edit/:id', async (req, res) => {
     const data = {
       mode: 'edit',
     }
-    res.render('project/projectEdit.ejs', { data });
+    res.render('project/projectEdit.ejs', {});
   } catch (err) {
     throw err;
   }
@@ -108,11 +104,7 @@ router.put('/project/restore/:id', async (req, res) => {
 // View Published Projects
 router.get('/projects', async (req, res) => {
   try {
-    // Add data to send to frontend
-    const data = {
-
-    }
-    res.render('project/projects.ejs', { data });
+    res.render('project/projects.ejs', {});
   } catch (err) {
     throw err;
   }
@@ -125,11 +117,7 @@ router.get('/projects', async (req, res) => {
 router.get('/document/:id', async (req, res) => {
   const documentId = req.params.id;
   try {
-    // Add data to send to frontend
-    const data = {
-
-    }
-    res.render('project/documentEdit.ejs', { data });
+    res.render('project/documentEdit.ejs', {});
   } catch (err) {
     throw err;
   }
@@ -142,7 +130,7 @@ router.get('/document/create', async (req, res) => {
     const data = {
       mode: 'create',
     }
-    res.render('project/documentEdit.ejs', { data });
+    res.render('project/documentEdit.ejs', {});
   } catch (err) {
     throw err;
   }
@@ -178,7 +166,7 @@ router.get('/document/edit/:id', async (req, res) => {
     const data = {
       mode: 'edit',
     }
-    res.render('project/documentEdit.ejs', { data });
+    res.render('project/documentEdit.ejs', {});
   } catch (err) {
     throw err;
   }
@@ -221,11 +209,7 @@ router.put('/document/restore/:id', async (req, res) => {
 router.get('/page/:id', async (req, res) => {
   const pageId = req.params.id;
   try {
-    // Add data to send to frontend
-    const data = {
-
-    }
-    res.render('project/page.ejs', { data });
+    res.render('project/page.ejs', {});
   } catch (err) {
     throw err;
   }
@@ -238,7 +222,7 @@ router.get('/page/create', async (req, res) => {
     const data = {
       mode: 'create',
     }
-    res.render('project/pageEdit.ejs', { data });
+    res.render('project/pageEdit.ejs', {});
   } catch (err) {
     throw err;
   }
@@ -274,7 +258,7 @@ router.get('/page/edit/:id', async (req, res) => {
     const data = {
       mode: 'edit',
     }
-    res.render('project/pageEdit.ejs', { data });
+    res.render('project/pageEdit.ejs', {});
   } catch (err) {
     throw err;
   }
@@ -316,11 +300,7 @@ router.put('/page/restore/:id', async (req, res) => {
 // View User Trash
 router.get('/trash', async (req, res) => {
   try {
-    // Add data to send to frontend
-    const data = {
-
-    }
-    res.render('project/trash.ejs', { data });
+    res.render('project/trash.ejs', {});
   } catch (err) {
     throw err;
   }

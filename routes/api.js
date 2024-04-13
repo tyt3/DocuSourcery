@@ -9,8 +9,8 @@ const middleware = require('./middleware');
 // const Book = require('../models/book');
 
 // AUTH
-router.get('/login', async function(req, res){
- console.log('hello!', req.body);
+router.get('/login', async function (req, res) {
+	console.log('hello!', req.body);
 });
 
 // // RETREIVE all books
