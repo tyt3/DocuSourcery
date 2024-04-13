@@ -76,20 +76,20 @@
   </div>
   <%  } else { %>
   <div class="col-md-6 col-xl-3">
-      <div class="card h-100 shadow-sm">
-        <div class="card-header text-center">
-          <% if (profile.user_id.toString() === user.id.toString()) { %>
-          <p>
-            <em>You haven't published any projects yet.</em>
-          </p>
-          <div class="d-grid gap-2 d-md-flex justify-content-center">
-            <a class="btn btn-ds-primary btn-12" role="button" href="/project/create">
-              Create a Project
-            </a>
-          </div>
-          <% } else { %>
-          <p><em>profile.first_name hasn't published any projects yet.</em></p>
-          <% } %>
+    <div class="card h-100 shadow-sm">
+      <div class="card-header text-center">
+        <% if (profile.user_id.toString() === user.id.toString()) { %>
+        <p>
+          <em>You haven't published any projects yet.</em>
+        </p>
+        <div class="d-grid gap-2 d-md-flex mb-2 justify-content-center">
+          <a class="btn btn-ds-primary btn-12" role="button" href="/project/create">
+            Create a Project
+          </a>
+        </div>
+        <% } else { %>
+        <p><em>profile.first_name hasn't published any projects yet.</em></p>
+        <% } %>
       </div>
     </div>
   </div>
