@@ -106,7 +106,7 @@ router.get('/login', middleware.ensureNotAuth, async (req, res) => {
   }
 });
 
-router.post('/login', middleware.ensureNotAuth, (req, res, next) => {
+router.post('/login', (req, res, next) => {
   passport.authenticate('local', (err, user, info) => {
     if (err) {
       console.error('Authentication Error: ', err);
