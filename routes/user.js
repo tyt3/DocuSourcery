@@ -37,7 +37,7 @@ router.get('/alllllProfiles', async function (req, res) {
 // Sign Up
 router.get('/signup', middleware.ensureNotAuth, async (req, res) => {
   try {
-    res.render('user/signup.ejs', { user: null });
+    res.render('user/signup.ejs', {});
   } catch (err) {
     throw err;
   }
@@ -58,7 +58,7 @@ router.post('/signup', middleware.ensureNotAuth, async (req, res) => {
       message += (existingUserByEmail && existingUserByUsername) ? ' and ' : '';
       message += existingUserByUsername ? 'username' : '';
       message += ' already exists.';
-      return res.status(400).render('user/signup.ejs', { message: message, user: null });
+      return res.status(400).render('user/signup.ejs', { message: message });
     }
 
     // Hash the password
@@ -89,7 +89,7 @@ router.post('/signup', middleware.ensureNotAuth, async (req, res) => {
     await newUser.save();
 
     // Redirect or log the user in directly
-    res.redirect('/dashboard', { user: null });
+    res.redirect('/dashboard');
   } catch (err) {
     console.error(err);
     res.status(500).send('An error occurred during sign up.');
@@ -100,7 +100,8 @@ router.post('/signup', middleware.ensureNotAuth, async (req, res) => {
 router.get('/login', middleware.ensureNotAuth, async (req, res) => {
   try {
     const useEmail = req.query.email === 'true';
-    res.render('user/login.ejs', { useEmail: useEmail, user: null });
+    res.render('user/login.ejs', { 
+      useEmail: useEmail});
   } catch (err) {
     throw err;
   }
@@ -114,14 +115,14 @@ router.post('/login', middleware.ensureNotAuth, (req, res, next) => {
     }
     if (!user) {
       console.log('Login Failed: ', info);
-      return res.redirect('/login', { user: null }); 
+      return res.redirect('/login'); 
     }
     req.logIn(user, (err) => {
       if (err) {
         console.error('Login Error: ', err);
         return next(err);
       }
-      return res.redirect('/dashboard', { user: req.user }); 
+      return res.redirect('/dashboard'); 
     });
   })(req, res, next);
 });
@@ -129,7 +130,7 @@ router.post('/login', middleware.ensureNotAuth, (req, res, next) => {
 // Log Out
 router.get('/logout', middleware.ensureAuth, async (req, res) => {
   try {
-    res.redirect('/', { user: null });
+    res.redirect('/');
   } catch (err) {
     throw err;
   }
@@ -140,7 +141,7 @@ router.get('/logout', middleware.ensureAuth, async (req, res) => {
 // View Account
 router.get('/account', middleware.ensureAuth, async (req, res) => {
   try {
-    res.render('user/account.ejs', { user: req.user });
+    res.render('user/account.ejs', {});
   } catch (err) {
     throw err;
   }
@@ -151,14 +152,13 @@ router.get('/account', middleware.ensureAuth, async (req, res) => {
 // PROFILE
 
 // View Profile
-router.get('/profile/:id', middleware.ensureAuth, async (req, res) => {
+router.get('/profile/:id', async (req, res) => {
   // Get user profile
   const profileId = req.params.id;
   try {
     const userProfile = await Profile.findOne({ user_id: req.user._id });
     if (!userProfile) {
-      req.flash('error', 'That profile does not exist.');
-      return res.redirect('/', { user: req.user });
+      return res.redirect('/edit');
     }
     res.render('user/profile.ejs', {
       profile: userProfile,
@@ -179,7 +179,7 @@ router.post('/profile', middleware.ensureAuth, async (req, res) => {
             { $set: { pronouns, title, website, bio, profilePhotoURL }},
             { new: true, runValidators: true }
         );
-        res.redirect('/profile', { user: req.user });
+        res.redirect('/profile');
     } catch (err) {
         console.error(err);
         res.status(500).send('Server error');
@@ -191,7 +191,7 @@ router.post('/profile', middleware.ensureAuth, async (req, res) => {
 // View Dashbard
 router.get('/dashboard', middleware.ensureAuth, async (req, res) => {
   try {
-    res.render('user/dashboard.ejs', { user: req.user });
+    res.render('user/dashboard.ejs', {});
   } catch (err) {
     throw err;
   }
