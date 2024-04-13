@@ -121,7 +121,7 @@ router.post('/login', middleware.ensureNotAuth, (req, res, next) => {
         console.error('Login Error: ', err);
         return next(err);
       }
-      return res.redirect('/dashboard', { user: req.user}); 
+      return res.redirect('/dashboard', { user: user}); 
     });
   })(req, res, next);
 });
