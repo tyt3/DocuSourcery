@@ -14,30 +14,30 @@ const Page = require('../models/page');
 // PROJECT
 
 // View Project
-router.get('/project/:id', async (req, res) => {
+router.get('/project/:id', middleware.ensureNotAuth, async (req, res) => {
   const projectId = req.params.id;
   try {
-    res.render('project/projectEdit.ejs', {});
+    res.render('project/projectEdit.ejs', { user: req.user });
   } catch (err) {
     throw err;
   }
 });
 
 // Create Project View
-router.get('/project/create', async (req, res) => {
+router.get('/project/create', middleware.ensureNotAuth, async (req, res) => {
   try {
     // Add data to send to frontend
     const data = {
       mode: 'create',
     }
-    res.render('project/projectEdit.ejs', {});
+    res.render('project/projectEdit.ejs', { user: req.user });
   } catch (err) {
     throw err;
   }
 });
 
 // Create Project
-router.post('/project/create', async (req, res) => {
+router.post('/project/create', middleware.ensureNotAuth, async (req, res) => {
   const { title } = req.body; // TODO: Add remaining fields
 
   // Validate form fields
@@ -57,7 +57,7 @@ router.post('/project/create', async (req, res) => {
 });
 
 // Edit Project View
-router.get('/project/edit/:id', async (req, res) => {
+router.get('/project/edit/:id', middleware.ensureNotAuth, async (req, res) => {
   const projectId = req.params.id;
   try {
     // TODO: Get project object and send to frontend
@@ -65,14 +65,14 @@ router.get('/project/edit/:id', async (req, res) => {
     const data = {
       mode: 'edit',
     }
-    res.render('project/projectEdit.ejs', {});
+    res.render('project/projectEdit.ejs', { user: req.user });
   } catch (err) {
     throw err;
   }
 });
 
 // Edit Project
-router.put('/project/:id', async (req, res) => {
+router.put('/project/:id', middleware.ensureNotAuth, async (req, res) => {
   const projectId = req.params.id;
   try {
     // TODO: Implement
@@ -82,7 +82,7 @@ router.put('/project/:id', async (req, res) => {
 });
 
 // Delete Project
-router.delete('/project/:id', async (req, res) => {
+router.delete('/project/:id', middleware.ensureNotAuth, async (req, res) => {
   const projectId = req.params.id;
   try {
     // TODO: Implement
@@ -92,7 +92,7 @@ router.delete('/project/:id', async (req, res) => {
 });
 
 // Restore Project
-router.put('/project/restore/:id', async (req, res) => {
+router.put('/project/restore/:id', middleware.ensureNotAuth, async (req, res) => {
   const projectId = req.params.id;
   try {
     // TODO: Implement
@@ -102,9 +102,9 @@ router.put('/project/restore/:id', async (req, res) => {
 });
 
 // View Published Projects
-router.get('/projects', async (req, res) => {
+router.get('/projects', middleware.ensureNotAuth, async (req, res) => {
   try {
-    res.render('project/projects.ejs', {});
+    res.render('project/projects.ejs', { user: req.user });
   } catch (err) {
     throw err;
   }
@@ -114,30 +114,30 @@ router.get('/projects', async (req, res) => {
 // DOCUMENT
 
 // View Document
-router.get('/document/:id', async (req, res) => {
+router.get('/document/:id', middleware.ensureNotAuth, async (req, res) => {
   const documentId = req.params.id;
   try {
-    res.render('project/documentEdit.ejs', {});
+    res.render('project/documentEdit.ejs', { user: req.user });
   } catch (err) {
     throw err;
   }
 });
 
 // Create Document View
-router.get('/document/create', async (req, res) => {
+router.get('/document/create', middleware.ensureNotAuth, async (req, res) => {
   try {
     // Add data to send to frontend
     const data = {
       mode: 'create',
     }
-    res.render('project/documentEdit.ejs', {});
+    res.render('project/documentEdit.ejs', { user: req.user });
   } catch (err) {
     throw err;
   }
 });
 
 // Create Document
-router.post('/document/create/:id', async (req, res) => {
+router.post('/document/create/:id', middleware.ensureNotAuth, async (req, res) => {
   const projectId = req.params.id;
   const { title } = req.body; // TODO: Add remaining fields
 
@@ -158,7 +158,7 @@ router.post('/document/create/:id', async (req, res) => {
 });
 
 // Edit Document View
-router.get('/document/edit/:id', async (req, res) => {
+router.get('/document/edit/:id', middleware.ensureNotAuth, async (req, res) => {
   const documentId = req.params.id;
   try {
     // TODO: Get document object and send to frontend
@@ -166,14 +166,14 @@ router.get('/document/edit/:id', async (req, res) => {
     const data = {
       mode: 'edit',
     }
-    res.render('project/documentEdit.ejs', {});
+    res.render('project/documentEdit.ejs', { user: req.user });
   } catch (err) {
     throw err;
   }
 });
 
 // Edit Document
-router.put('/document/:id', async (req, res) => {
+router.put('/document/:id', middleware.ensureNotAuth, async (req, res) => {
   const documentId = req.params.id;
   try {
     // TODO: Implement
@@ -183,7 +183,7 @@ router.put('/document/:id', async (req, res) => {
 });
 
 // Delete Document
-router.delete('/document/:id', async (req, res) => {
+router.delete('/document/:id', middleware.ensureNotAuth, async (req, res) => {
   const documentId = req.params.id;
   try {
     // TODO: Implement
@@ -193,7 +193,7 @@ router.delete('/document/:id', async (req, res) => {
 });
 
 // Restore Document
-router.put('/document/restore/:id', async (req, res) => {
+router.put('/document/restore/:id', middleware.ensureNotAuth, async (req, res) => {
   const documentId = req.params.id;
   try {
     // TODO: Implement
@@ -206,30 +206,30 @@ router.put('/document/restore/:id', async (req, res) => {
 // PAGE
 
 // View Page
-router.get('/page/:id', async (req, res) => {
+router.get('/page/:id', middleware.ensureNotAuth, async (req, res) => {
   const pageId = req.params.id;
   try {
-    res.render('project/page.ejs', {});
+    res.render('project/page.ejs', { user: req.user });
   } catch (err) {
     throw err;
   }
 });
 
 // Create Page View
-router.get('/page/create', async (req, res) => {
+router.get('/page/create', middleware.ensureNotAuth, async (req, res) => {
   try {
     // Add data to send to frontend
     const data = {
       mode: 'create',
     }
-    res.render('project/pageEdit.ejs', {});
+    res.render('project/pageEdit.ejs', { user: req.user });
   } catch (err) {
     throw err;
   }
 });
 
 // Create Page
-router.post('/page/create/:id', async (req, res) => {
+router.post('/page/create/:id', middleware.ensureNotAuth, async (req, res) => {
   const documentId = req.params.id;
   const { title } = req.body; // TODO: Add remaining fields
 
@@ -250,7 +250,7 @@ router.post('/page/create/:id', async (req, res) => {
 });
 
 // Edit Page View
-router.get('/page/edit/:id', async (req, res) => {
+router.get('/page/edit/:id', middleware.ensureNotAuth, async (req, res) => {
   const pageId = req.params.id;
   try {
     // TODO: Get page object and send to frontend
@@ -258,14 +258,14 @@ router.get('/page/edit/:id', async (req, res) => {
     const data = {
       mode: 'edit',
     }
-    res.render('project/pageEdit.ejs', {});
+    res.render('project/pageEdit.ejs', { user: req.user });
   } catch (err) {
     throw err;
   }
 });
 
 // Edit Page
-router.put('/page/:id', async (req, res) => {
+router.put('/page/:id', middleware.ensureNotAuth, async (req, res) => {
   const pageId = req.params.id;
   try {
     // TODO: Implement
@@ -275,7 +275,7 @@ router.put('/page/:id', async (req, res) => {
 });
 
 // Delete Page
-router.delete('/page/:id', async (req, res) => {
+router.delete('/page/:id', middleware.ensureNotAuth, async (req, res) => {
   const pageId = req.params.id;
   try {
     // TODO: Implement
@@ -285,7 +285,7 @@ router.delete('/page/:id', async (req, res) => {
 });
 
 // Restore Page
-router.put('/page/restore/:id', async (req, res) => {
+router.put('/page/restore/:id', middleware.ensureNotAuth, async (req, res) => {
   const pageId = req.params.id;
   try {
     // TODO: Implement
@@ -298,16 +298,16 @@ router.put('/page/restore/:id', async (req, res) => {
 // TRASH
 
 // View User Trash
-router.get('/trash', async (req, res) => {
+router.get('/trash', middleware.ensureNotAuth, async (req, res) => {
   try {
-    res.render('project/trash.ejs', {});
+    res.render('project/trash.ejs', { user: req.user });
   } catch (err) {
     throw err;
   }
 });
 
 // Empty User Trash
-router.delete('/trash', async (req, res) => {
+router.delete('/trash', middleware.ensureNotAuth, async (req, res) => {
   try {
     // TODO: Delete all of user's projects where role=3 and deleted=true
   } catch (err) {
@@ -316,7 +316,7 @@ router.delete('/trash', async (req, res) => {
 });
 
 // Empty Project Trash
-router.delete('/project/trash/:id', async (req, res) => {
+router.delete('/project/trash/:id', middleware.ensureNotAuth, async (req, res) => {
   const projectId = req.params.id;
   try {
     // TODO: Delete all project documents and pages where role=3 and deleted=true
