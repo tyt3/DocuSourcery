@@ -4,7 +4,7 @@ const router = express.Router();
 const passport = require('./passportConfig');
 
 // Import middleware
-const middleware = require('./middleware');
+const { ensureNotAuth, validatePassword, ensureAuth } = require('./middleware');
 const bcrypt = require('bcrypt');
 
 // Import data model
@@ -35,7 +35,7 @@ router.get('/alllllProfiles', async function (req, res) {
 });
 
 // Sign Up
-router.get('/signup', middleware.ensureNotAuth, async (req, res) => {
+router.get('/signup', ensureNotAuth, async (req, res) => {
   try {
     res.render('user/signup.ejs', { user: null });
   } catch (err) {
@@ -43,7 +43,7 @@ router.get('/signup', middleware.ensureNotAuth, async (req, res) => {
   }
 });
 
-router.post('/signup', middleware.ensureNotAuth, async (req, res) => {
+router.post('/signup', ensureNotAuth, validatePassword, async (req, res) => {
   const { first_name, last_name, email, password, username } = req.body;
 
   try {
@@ -97,7 +97,7 @@ router.post('/signup', middleware.ensureNotAuth, async (req, res) => {
 });
 
 // Log In
-router.get('/login', middleware.ensureNotAuth, async (req, res) => {
+router.get('/login', ensureNotAuth, async (req, res) => {
   try {
     const useEmail = req.query.email === 'true';
     res.render('user/login.ejs', { useEmail: useEmail, user: null });
@@ -106,28 +106,28 @@ router.get('/login', middleware.ensureNotAuth, async (req, res) => {
   }
 });
 
-router.post('/login', middleware.ensureNotAuth, (req, res, next) => {
+router.post('/login', ensureNotAuth, (req, res, next) => {
   passport.authenticate('local', (err, user, info) => {
     if (err) {
       console.error('Authentication Error: ', err);
-      return next(err); 
+      return next(err);
     }
     if (!user) {
       console.log('Login Failed: ', info);
-      return res.redirect('/login'); 
+      return res.redirect('/login');
     }
     req.logIn(user, (err) => {
       if (err) {
         console.error('Login Error: ', err);
         return next(err);
       }
-      return res.redirect('/dashboard'); 
+      return res.redirect('/dashboard');
     });
   })(req, res, next);
 });
 
 // Log Out
-router.get('/logout', middleware.ensureAuth, async (req, res) => {
+router.get('/logout', ensureAuth, async (req, res) => {
   try {
     res.redirect('/');
   } catch (err) {
@@ -138,7 +138,7 @@ router.get('/logout', middleware.ensureAuth, async (req, res) => {
 // ACCOUNT
 
 // View Account
-router.get('/account', middleware.ensureAuth, async (req, res) => {
+router.get('/account', ensureAuth, async (req, res) => {
   try {
     res.render('user/account.ejs', { user: req.user });
   } catch (err) {
@@ -147,17 +147,25 @@ router.get('/account', middleware.ensureAuth, async (req, res) => {
 });
 
 // Edit Account
+router.push('/account', ensureAuth, validatePassword, async (req, res) => {
+  // TODO: Get form data
+  try {
+    // TODO: Implement
+  } catch (err) {
+    throw err;
+  }
+});
 
 // PROFILE
 
 // View Profile
-router.get('/profile/:id', middleware.ensureAuth, async (req, res) => {
+router.get('/profile/:id', ensureAuth, async (req, res) => {
   // Get user profile
   const profileId = req.params.id;
   try {
     // Find user profile based on profileId
     const userProfile = await Profile.findOne({ _id: profileId });
-    
+
     if (!userProfile) {
       return res.redirect('/');
     }
@@ -174,25 +182,25 @@ router.get('/profile/:id', middleware.ensureAuth, async (req, res) => {
 });
 
 // Edit Profile
-router.post('/profile', middleware.ensureAuth, async (req, res) => {
-    try {
-        const { pronouns, title, website, bio, profilePhotoURL } = req.body;
-        const updatedProfile = await Profile.findOneAndUpdate(
-            { user_id: req.user._id },
-            { $set: { pronouns, title, website, bio, profilePhotoURL }},
-            { new: true, runValidators: true }
-        );
-        res.redirect('/profile');
-    } catch (err) {
-        console.error(err);
-        res.status(500).send('Server error');
-    }
+router.post('/profile', ensureAuth, async (req, res) => {
+  try {
+    const { pronouns, title, website, bio, profilePhotoURL } = req.body;
+    const updatedProfile = await Profile.findOneAndUpdate(
+      { user_id: req.user._id },
+      { $set: { pronouns, title, website, bio, profilePhotoURL } },
+      { new: true, runValidators: true }
+    );
+    res.redirect('/profile');
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Server error');
+  }
 });
 
 // DASHBOARD
 
 // View Dashbard
-router.get('/dashboard', middleware.ensureAuth, async (req, res) => {
+router.get('/dashboard', ensureAuth, async (req, res) => {
   try {
     res.render('user/dashboard.ejs', { user: req.user });
   } catch (err) {
