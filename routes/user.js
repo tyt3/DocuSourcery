@@ -37,7 +37,7 @@ router.get('/alllllProfiles', async function (req, res) {
 // Sign Up
 router.get('/signup', middleware.ensureNotAuth, async (req, res) => {
   try {
-    res.render('user/signup.ejs', { user: null });
+    res.render('user/signup.ejs', {});
   } catch (err) {
     throw err;
   }
@@ -58,7 +58,7 @@ router.post('/signup', middleware.ensureNotAuth, async (req, res) => {
       message += (existingUserByEmail && existingUserByUsername) ? ' and ' : '';
       message += existingUserByUsername ? 'username' : '';
       message += ' already exists.';
-      return res.status(400).render('user/signup.ejs', { message: message, user: null });
+      return res.status(400).render('user/signup.ejs', { message: message });
     }
 
     // Hash the password
@@ -100,13 +100,13 @@ router.post('/signup', middleware.ensureNotAuth, async (req, res) => {
 router.get('/login', middleware.ensureNotAuth, async (req, res) => {
   try {
     const useEmail = req.query.email === 'true';
-    res.render('user/login.ejs', { useEmail: useEmail, user: req.user });
+    res.render('user/login.ejs', { useEmail: useEmail });
   } catch (err) {
     throw err;
   }
 });
 
-router.post('/login', async (req, res, next) => {
+router.post('/login', middleware.ensureNotAuth, (req, res, next) => {
   passport.authenticate('local', (err, user, info) => {
     if (err) {
       console.error('Authentication Error: ', err);
@@ -114,14 +114,14 @@ router.post('/login', async (req, res, next) => {
     }
     if (!user) {
       console.log('Login Failed: ', info);
-      return res.redirect('/login', { user: null }); 
+      return res.redirect('/login'); 
     }
     req.logIn(user, (err) => {
       if (err) {
         console.error('Login Error: ', err);
         return next(err);
       }
-      return res.redirect('/dashboard', { user: req.user }); 
+      return res.redirect('/dashboard'); 
     });
   })(req, res, next);
 });
@@ -129,7 +129,7 @@ router.post('/login', async (req, res, next) => {
 // Log Out
 router.get('/logout', middleware.ensureAuth, async (req, res) => {
   try {
-    res.redirect('/', { user: null });
+    res.redirect('/');
   } catch (err) {
     throw err;
   }
@@ -140,7 +140,7 @@ router.get('/logout', middleware.ensureAuth, async (req, res) => {
 // View Account
 router.get('/account', middleware.ensureAuth, async (req, res) => {
   try {
-    res.render('user/account.ejs', { user: req.user });
+    res.render('user/account.ejs', {});
   } catch (err) {
     throw err;
   }
@@ -157,7 +157,7 @@ router.get('/profile/:id', async (req, res) => {
   try {
     const userProfile = await Profile.findOne({ user_id: req.user._id });
     if (!userProfile) {
-      return res.redirect('/', { user: null });
+      return res.redirect('/edit');
     }
     res.render('user/profile.ejs', {
       profile: userProfile,
@@ -170,7 +170,7 @@ router.get('/profile/:id', async (req, res) => {
 });
 
 // Edit Profile
-router.post('/profile/:id', middleware.ensureAuth, async (req, res) => {
+router.post('/profile', middleware.ensureAuth, async (req, res) => {
     try {
         const { pronouns, title, website, bio, profilePhotoURL } = req.body;
         const updatedProfile = await Profile.findOneAndUpdate(
@@ -178,7 +178,7 @@ router.post('/profile/:id', middleware.ensureAuth, async (req, res) => {
             { $set: { pronouns, title, website, bio, profilePhotoURL }},
             { new: true, runValidators: true }
         );
-        res.redirect('/profile/req.user.id', { user: req.user });
+        res.redirect('/profile');
     } catch (err) {
         console.error(err);
         res.status(500).send('Server error');
@@ -190,7 +190,7 @@ router.post('/profile/:id', middleware.ensureAuth, async (req, res) => {
 // View Dashbard
 router.get('/dashboard', middleware.ensureAuth, async (req, res) => {
   try {
-    res.render('user/dashboard.ejs', { user: req.user });
+    res.render('user/dashboard.ejs', {});
   } catch (err) {
     throw err;
   }
