@@ -147,7 +147,7 @@ router.get('/account', ensureAuth, async (req, res) => {
 });
 
 // Edit Account
-router.push('/account', ensureAuth, validatePassword, async (req, res) => {
+router.put('/account', ensureAuth, validatePassword, async (req, res) => {
   // TODO: Get form data
   try {
     // TODO: Implement
