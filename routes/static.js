@@ -10,17 +10,26 @@ const middleware = require('./middleware');
 // Index
 router.get('/', async (req, res) => {
   try {
-    res.render('static/index.ejs', {});
+    if (req.isAuthenticated()) {
+      res.render('static/index.ejs', { user: req.user });
+    } else {
+      res.render('static/index.ejs', { user: null });
+    }
   } catch (err) {
     throw err;
   }
 });
 
 
+
 // About
 router.get('/about', async (req, res) => {
   try {
-    res.render('static/about.ejs', {});
+    if (req.isAuthenticated()) {
+      res.render('static/about.ejs', { user: req.user });
+    } else {
+      res.render('static/about.ejs', { user: null });
+    }
   } catch (err) {
     throw err;
   }
@@ -30,11 +39,16 @@ router.get('/about', async (req, res) => {
 // API Documentation
 router.get('/api-documentation', async (req, res) => {
   try {
-    res.render('static/api-documentation.ejs', {});
+    if (req.isAuthenticated()) {
+      res.render('static/api-documentation.ejs', { user: req.user });
+    } else {
+      res.render('static/api-documentation.ejs', { user: null });
+    }
   } catch (err) {
     throw err;
   }
 });
+
 
 
 // Export router
