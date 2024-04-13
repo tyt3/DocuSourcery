@@ -26,7 +26,7 @@
       <p class="contact"><strong>Bio:</strong> 
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer id semper lorem. Morbi pretium velit non ex laoreet fringilla. Morbi finibus pharetra nisi in volutpat. Praesent cursus consectetur turpis, sit amet dapibus felis finibus sed. Vivamus in magna pretium, vulputate massa at, rhoncus nulla. Nam ut viverra enim, vitae tempor mauris. Phasellus ullamcorper sem sed justo fringilla, ut vulputate ipsum viverra. Nunc pharetra congue ipsum ac auctor. Fusce suscipit lectus eu tincidunt mollis. Aliquam eget arcu mauris. Interdum et malesuada fames ac ante ipsum primis in faucibus.
       <% } %>
-      <% if (profile.user_id === user.id) { %>
+      <% if (profile.user_id.toString() === user.id.toString()) { %>
       <div class="d-grid gap-2 d-md-flex justify-content-center justify-content-md-start mt-4">
         <button type="button" class="btn btn-12 btn-ds-primary" data-bs-toggle="modal"
           data-bs-target="#updateProfileModal">
@@ -40,9 +40,10 @@
   <!-- Projects -->
   <hr class="mt-4" />
   <h4 class="mb-4">Projects</h4>
-  <% if (true) { %>
+  <% if (projects) { %>
   <div class="row gy-4">
     <!-- Loop through projects -->
+    <% projects.forEach(function(project) { %>
     <div class="col-md-6 col-xl-4">
       <div class="card h-100 shadow-sm">
         <div class="card-header">
@@ -57,34 +58,34 @@
         </div>
         <div class="card-body">
           <h5 class="card-title">
-            <a href="#">[Project Title]</a>
+            <a href="#"><%= project.title %></a>
           </h5>
           <h* class="card-subtitle">
-            [Subtitle]
+            <%= project.subtitle %>
           <p class="card-text mt-2">
-            <strong>Last modified</strong>: 2024-04-05
+            <strong>Last modified</strong>: <%= project.dateModified %>
           </p>
         </div>
         <div class="card-footer border-top-0 mb-2 bg-white">
-          <a class="btn btn-ds-primary" data-bs-toggle="modal"
-            data-bs-target="#" role="button" href="#">View Project</a>
+          <a class="btn btn-ds-primary" href="/project/profile._id">View Project</a>
         </div>
       </div>
     </div>
     <!-- End loop -->
+    <% }); %>
   </div>
   <%  } else { %>
-  <% if (true) { %>
+  <% if (profile.user_id.toString() === user.id.toString()) { %>
   <p>
     <em>You haven't published any projects yet.</em>
   </p>
   <div class="d-grid gap-2 d-md-flex justify-content-center justify-content-lg-start">
-    <a class="btn btn-ds-primary btn-12" role="button" href="#">
+    <a class="btn btn-ds-primary btn-12" role="button" href="/project/create">
       Create a Project
     </a>
   </div>
   <% } else { %>
-  <p><em>[FirstName] hasn't published any projects yet.</em></p>
+  <p><em>profile.first_name hasn't published any projects yet.</em></p>
   <% } %>
   <% } %>
 
