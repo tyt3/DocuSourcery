@@ -100,7 +100,11 @@ router.post('/signup', middleware.ensureNotAuth, async (req, res) => {
 router.get('/login', middleware.ensureNotAuth, async (req, res) => {
   try {
     const useEmail = req.query.email === 'true';
-    res.render('user/login.ejs', { useEmail: useEmail });
+    const data = {
+      useEmail: useEmail, 
+      messages: req.flash('error')
+    }
+    res.render('user/login.ejs', { data });
   } catch (err) {
     throw err;
   }
