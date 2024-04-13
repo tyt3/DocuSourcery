@@ -6,27 +6,27 @@
   <!-- Contact Information -->
   <div class="card shadow-sm">
     <div class="card-body">
-      <h2>Taylor Klein</h2>
-      <% if (false) { %>
-      <img style="margin: 10px 0 10px 0; max-width: 25%;" src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png">
+      <h2><%= profile.first_name %> <%= profile.last_name %></h2>
+      <% if (profile.profile_photo_url) { %>
+      <img style="margin: 10px 0 10px 0; max-width: 25%;" src="<%= profile.profile_photo_url %>">
       <% } else { %>
       <img style="margin: 10px 0 10px 0; max-width: 10em;"
         src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png">
       <% } %>
       <br />
-      <p class="contact"><strong>Pronouns:</strong> they/them</p>
-      <p class="contact"><strong>Title:</strong> Software Developer</p>
+      <p class="contact"><strong>Pronouns:</strong> <%= profile.pronouns %></p>
+      <p class="contact"><strong>Title:</strong> <%= profile.title %></p>
       <p class="contact"><strong>Email:</strong> <a href="#">taylor.klein@domain.com</a></p>
-      <% if (true) { %>
+      <% if (profile.website) { %>
       <p class="contact"><strong>Website:</strong> 
-        <a href="#" target="_blank">taylorklein.com</a>
+        <a href="<%= user.website %>" target="_blank"><%= profile.website %></a>
       </p>
       <% } %>
-      <% if (true) { %>
+      <% if (profile.contact) { %>
       <p class="contact"><strong>Bio:</strong> 
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer id semper lorem. Morbi pretium velit non ex laoreet fringilla. Morbi finibus pharetra nisi in volutpat. Praesent cursus consectetur turpis, sit amet dapibus felis finibus sed. Vivamus in magna pretium, vulputate massa at, rhoncus nulla. Nam ut viverra enim, vitae tempor mauris. Phasellus ullamcorper sem sed justo fringilla, ut vulputate ipsum viverra. Nunc pharetra congue ipsum ac auctor. Fusce suscipit lectus eu tincidunt mollis. Aliquam eget arcu mauris. Interdum et malesuada fames ac ante ipsum primis in faucibus.
       <% } %>
-      <% if (true) { %>
+      <% if (profile.user_id === user.id) { %>
       <div class="d-grid gap-2 d-md-flex justify-content-center justify-content-md-start mt-4">
         <button type="button" class="btn btn-12 btn-ds-primary" data-bs-toggle="modal"
           data-bs-target="#updateProfileModal">
@@ -103,8 +103,8 @@
             <form method="POST" target="_self">
               <%- include('../snippets/profile-form.ejs') -%>
               <div class="col-md-12 text-center">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                 <button type="submit" class="btn btn-ds-primary">Update</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
               </div>
             </form>
           </div>
