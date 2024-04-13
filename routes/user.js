@@ -202,7 +202,7 @@ router.post('/profile', ensureAuth, async (req, res) => {
 // View Dashbard
 router.get('/dashboard', ensureAuth, async (req, res) => {
   try {
-    res.render('user/dashboard.ejs', { user: req.user });
+    res.render('user/dashboard.ejs', { user: req.user, projects: [] });
   } catch (err) {
     throw err;
   }
