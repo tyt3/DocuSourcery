@@ -49,7 +49,6 @@ const checkUsernameAndEmail = async (req, res, next) => {
   }
 };
 
-const User = require('../models/user');
 
 const checkAuthUsernameAndEmail = async (req, res, next) => {
   try {
