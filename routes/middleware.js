@@ -27,7 +27,6 @@ function ensureNotAuth(req, res, next) {
 };
 
 // Ensure that given username and email are unique
-// Ensure that given username and email are unique
 const checkUsernameAndEmail = async (req, res, next) => {
   try {
     const { username, email } = req.body;
@@ -49,6 +48,37 @@ const checkUsernameAndEmail = async (req, res, next) => {
     return res.status(400).json({ error: err.message });
   }
 };
+
+const User = require('../models/user');
+
+const checkAuthUsernameAndEmail = async (req, res, next) => {
+  try {
+    const { username, email } = req.body;
+    const userId = req.user._id;
+    
+    // Check if any other user has the same username
+    const duplicateUsername = await User.findOne({ username: username, _id: { $ne: userId } });
+    if (duplicateUsername) {
+      req.flash('error', 'Username is already in use by another user.');
+      return res.redirect('back'); // Redirect back to the form page
+    }
+
+    // Check if any other user has the same email
+    const duplicateEmail = await User.findOne({ email: email, _id: { $ne: userId } });
+    if (duplicateEmail) {
+      req.flash('error', 'Email is already in use by another user.');
+      return res.redirect('back'); // Redirect back to the form page
+    }
+
+    next(); // Move to the next middleware or route handler
+  } catch (err) {
+    console.error(err);
+    req.flash('error', 'An error occurred. Please try again.');
+    return res.redirect('back'); // Redirect back to the form page
+  }
+};
+
+module.exports = checkUniqueUsernameAndEmail;
 
 
 // Validate Password
@@ -116,5 +146,6 @@ module.exports = {
   ensureNotAuth: ensureNotAuth,
   validatePassword: validatePassword,
   checkUsernameAndEmail: checkUsernameAndEmail,
+  checkauthUsernameAndEmail: checkAuthUsernameAndEmail,
   populateCurrentUser: populateCurrentUser
 };
