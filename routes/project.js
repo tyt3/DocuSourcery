@@ -48,8 +48,8 @@ router.post('/project/create', ensureAuth, async (req, res) => {
 });
 
 // Edit Project View
-router.get('/project/edit/:id', ensureAuth, async (req, res) => {
-  const projectId = req.params.id;
+router.get('/project/edit/:slug', ensureAuth, async (req, res) => {
+  const projectSlug = req.params.slug;
   try {
     // TODO: Get project object and send to frontend
     res.render('project/projectEdit.ejs', { 
@@ -93,10 +93,13 @@ router.put('/project/restore/:id', ensureAuth, async (req, res) => {
 });
 
 // View Project
-router.get('/project/:id', ensureAuth, async (req, res) => {
-  const projectId = req.params.id;
+router.get('/project/:slug', ensureAuth, async (req, res) => {
+  const projectSlug = req.params.slug;
   try {
-    res.render('project/projectEdit.ejs', { user: req.user });
+    res.render('project/projectEdit.ejs', { 
+      user: req.user,
+      project: null 
+    });
   } catch (err) {
     throw err;
   }
@@ -105,7 +108,10 @@ router.get('/project/:id', ensureAuth, async (req, res) => {
 // View Published Projects
 router.get('/projects', ensureAuth, async (req, res) => {
   try {
-    res.render('project/projects.ejs', { user: req.user });
+    res.render('project/projects.ejs', { 
+      user: req.user,
+      project: null 
+    });
   } catch (err) {
     throw err;
   }
@@ -117,15 +123,17 @@ router.get('/projects', ensureAuth, async (req, res) => {
 // Create Document View
 router.get('/document/create', ensureAuth, async (req, res) => {
   try {
-    res.render('project/documentEdit.ejs', { user: req.user });
+    res.render('project/documentEdit.ejs', { 
+      user: req.user,
+      project: null 
+    });
   } catch (err) {
     throw err;
   }
 });
 
 // Create Document
-router.post('/document/create/:id', ensureAuth, async (req, res) => {
-  const projectId = req.params.id;
+router.post('/document/create', ensureAuth, async (req, res) => {
   const { title } = req.body; // TODO: Add remaining fields
 
   // Validate form fields
@@ -145,11 +153,15 @@ router.post('/document/create/:id', ensureAuth, async (req, res) => {
 });
 
 // Edit Document View
-router.get('/document/edit/:id', ensureAuth, async (req, res) => {
-  const documentId = req.params.id;
+router.get('/document/edit/:slug', ensureAuth, async (req, res) => {
+  const documentSlug = req.params.slug;
   try {
-    // TODO: Get document object and send to frontend
-    res.render('project/documentEdit.ejs', { user: req.user });
+    // TODO: Get project and document objects and send to frontend
+    res.render('project/documentEdit.ejs', { 
+      user: req.user,
+      project: null,
+      document: null
+    });
   } catch (err) {
     throw err;
   }
@@ -186,10 +198,15 @@ router.put('/document/restore/:id', ensureAuth, async (req, res) => {
 });
 
 // View Document
-router.get('/document/:id', ensureAuth, async (req, res) => {
-  const documentId = req.params.id;
+router.get('/document/:slug', ensureAuth, async (req, res) => {
+  const documentSlug = req.params.slug;
   try {
-    res.render('project/documentEdit.ejs', { user: req.user });
+    // TODO: Get project and document objects and send to frontend
+    res.render('project/documentEdit.ejs', { 
+      user: req.user,
+      project: null,
+      document: document
+    });
   } catch (err) {
     throw err;
   }
@@ -200,15 +217,19 @@ router.get('/document/:id', ensureAuth, async (req, res) => {
 // Create Page View
 router.get('/page/create', ensureAuth, async (req, res) => {
   try {
-    res.render('project/pageEdit.ejs', { user: req.user });
+    res.render('project/pageEdit.ejs', { 
+      user: req.user,
+      project: null,
+      document: null,
+      page: null
+    });
   } catch (err) {
     throw err;
   }
 });
 
 // Create Page
-router.post('/page/create/:id', ensureAuth, async (req, res) => {
-  const documentId = req.params.id;
+router.post('/page/create', ensureAuth, async (req, res) => {
   const { title } = req.body; // TODO: Add remaining fields
 
   // Validate form fields
@@ -228,11 +249,16 @@ router.post('/page/create/:id', ensureAuth, async (req, res) => {
 });
 
 // Edit Page View
-router.get('/page/edit/:id', ensureAuth, async (req, res) => {
-  const pageId = req.params.id;
+router.get('/page/edit/:slug', ensureAuth, async (req, res) => {
+  const pageSlug = req.params.slug;
   try {
-    // TODO: Get page object and send to frontend
-    res.render('project/pageEdit.ejs', { user: req.user });
+    // TODO: Get project, document, and page objects and send to frontend
+    res.render('project/pageEdit.ejs', { 
+      user: req.user,
+      project: null,
+      document: null, 
+      page: null
+    });
   } catch (err) {
     throw err;
   }
@@ -269,10 +295,16 @@ router.put('/page/restore/:id', ensureAuth, async (req, res) => {
 });
 
 // View Page
-router.get('/page/:id', ensureAuth, async (req, res) => {
-  const pageId = req.params.id;
+router.get('/page/:slug', ensureAuth, async (req, res) => {
+  const pageSlug = req.params.slug;
   try {
-    res.render('project/page.ejs', { user: req.user });
+    // TODO: Get project, document, and page objects and send to frontend
+    res.render('project/page.ejs', { 
+      user: req.user,
+      project: null,
+      document: null,
+      page: null
+    });
   } catch (err) {
     throw err;
   }
@@ -284,7 +316,11 @@ router.get('/page/:id', ensureAuth, async (req, res) => {
 // View User Trash
 router.get('/trash', ensureAuth, async (req, res) => {
   try {
-    res.render('project/trash.ejs', { user: req.user });
+    // TODO: Get user projects where role=3 and deleted=true
+    res.render('project/trash.ejs', { 
+      user: req.user,
+      projects: [] 
+    });
   } catch (err) {
     throw err;
   }
