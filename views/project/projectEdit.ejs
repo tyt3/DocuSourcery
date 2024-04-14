@@ -120,6 +120,15 @@
                 aria-labelledby="users-pane">
                 <table class="table">
                   <thead>
+                    <tr>
+                      <th>Username</th>
+                      <th>Display Name</th>
+                      <th>Email</th>
+                      <th>Role</th>
+                      <th>Remove</th>
+                    </tr>
+                  </thead>
+                  <tbody>
                     <% if (users && users.length > 0) { %>
                     <% users.forEach(function(usr) { %>
                       <tr>
