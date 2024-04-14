@@ -1,6 +1,10 @@
 <%- include('../baseHeader') -%>
 <h1>
+  <% if (project) { %> 
+  Manage Project
+  <% } else { %>
   Create Project
+  <% } %>
 </h1>
 <div class="container mt-5">
   <div class="card shadow-sm">
@@ -165,6 +169,10 @@
                   <button type="button" class="btn btn-block btn-outline-secondary">View Project</button>
                   <% } %>
                 </div>
+                <div class="form-check form-switch mt-2">
+                  <input class="form-check-input" type="checkbox" role="switch" id="public">
+                  <label class="form-check-label bold" for="public">Make project public</label>
+                </div>
               </div>
             </div>
           </div>
@@ -173,4 +181,5 @@
     </div>
   </div>
 </div>
+<%- include('../snippets/unsaved-changes-modal.ejs') -%>
 <%- include('../baseFooter') -%>

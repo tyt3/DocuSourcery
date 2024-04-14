@@ -1,6 +1,10 @@
 <%- include('../baseHeader') -%>
   <h1>
+    <% if (project) { %> 
+    Edit Page
+    <% } else { %>
     Create Page
+    <% } %>
   </h1>
   <div class="container mt-5">
     <div class="card shadow-sm">
@@ -21,12 +25,6 @@
                   <input type="text" class="form-control" id="slug" placeholder="Enter slug">
                 </div>
               </div>
-              <div class="form-group row">
-                <label class="col-sm-2 col-form-label bold">Tags</label>
-                <div class="col-sm-10">
-                  <input type="text" class="form-control" placeholder="Enter tags">
-                </div>
-              </div>
               <hr class="my-4">
               <h2>Content</h2>
               <div class="form-group row mt-4">
@@ -40,8 +38,14 @@
                 <div class="card-body">
                   <div class="d-grid gap-2 col-12 mx-auto">
                     <button type="submit" class="btn btn-block btn-outline-success">Save Page</button>
+                    <% if (project) { %>
                     <button type="button" class="btn btn-block btn-outline-danger">Delete Page</button>
                     <button type="button" class="btn btn-block btn-outline-secondary">View Page</button>
+                    <% } %>
+                  </div>
+                  <div class="form-check form-switch mt-2">
+                    <input class="form-check-input" type="checkbox" role="switch" id="public">
+                    <label class="form-check-label bold" for="public">Make page public</label>
                   </div>
                 </div>
               </div>
