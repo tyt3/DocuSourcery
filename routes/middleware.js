@@ -77,8 +77,6 @@ const checkAuthUsernameAndEmail = async (req, res, next) => {
   }
 };
 
-module.exports = checkUniqueUsernameAndEmail;
-
 
 // Validate Password
 function validatePassword(req, res, next) {
