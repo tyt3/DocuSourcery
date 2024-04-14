@@ -298,8 +298,3 @@ img.item-thumbnail {
 .relative {
   position: relative;
 }
-
-.sticky {
-  position: sticky;
-  top: 0;
-}
