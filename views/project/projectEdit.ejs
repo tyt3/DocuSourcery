@@ -25,7 +25,7 @@
           <button class="nav-link tab-link" id="content-tab" data-bs-toggle="tab" 
             data-bs-target="#content-pane" type="button" role="tab"  
             role="tab" aria-controls="styline-tab" aria-selected="true">
-            Content
+            Styling
           </button>
         </li>
         <li class="nav-item" role="presentation">
@@ -118,11 +118,58 @@
             <div class="tab-content mt-3" id="tabContent">
               <div class="tab-pane fade" id="users-pane" role="tabpanel" 
                 aria-labelledby="users-pane">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Username</th>
+                      <th>Display Name</th>
+                      <th>Email</th>
+                      <th>Role</th>
+                      <th>Remove</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><%= user.username %></td>
+                      <td><%= user.first_name %> <%= user.last_name %></td>
+                      <td><%= user.email %></td>
+                      <td>
+                        <select name="role" id="role">
+                          <option value="0">Viewer</option>
+                          <option value="1">>Editor</option>
+                          <option value="2">Admin</option>
+                          <option value="3" selected>Owner</option>
+                        </select>
+                      </td>
+                      <td>
+                        <input type="checkbox" name="remove" id="remove">
+                      </td>
+                    </tr>
+                    <% users.forEach(function(usr) { %>
+                      <tr>
+                        <td><%= usr.username %></td>
+                        <td><%= usr.first_name %> <%= usr.last_name %></td>
+                        <td><%= usr.email %></td>
+                        <td>
+                          <select name="role" id="role">
+                            <option value="0" <%= usr.role === 0 ? 'selected' : '' %>>Viewer</option>
+                            <option value="1" <%= usr.role === 1 ? 'selected' : '' %>>Editor</option>
+                            <option value="2" <%= usr.role === 2 ? 'selected' : '' %>>Admin</option>
+                            <option value="3" <%= usr.role === 3 ? 'selected' : '' %>>Owner</option>
+                          </select>
+                        </td>
+                        <td>
+                          <input type="checkbox" name="remove" id="remove">
+                        </td>
+                      </tr>
+                    <% }); %>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
           <div class="col-12 col-md-4 mt-3 col-xxl-3 relative">
-            <div class="card sticky">
+            <div class="card">
               <div class="card-body">
                 <div class="d-grid gap-2 col-12 mx-auto">
                   <button type="submit" class="btn btn-block btn-outline-success">Save Project</button>

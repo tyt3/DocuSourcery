@@ -30,7 +30,7 @@ router.get('/project/create', middleware.ensureAuth, async (req, res) => {
     const data = {
       mode: 'create',
     }
-    res.render('project/projectEdit.ejs', { user: req.user });
+    res.render('project/projectEdit.ejs', { user: req.user, users: [] });
   } catch (err) {
     throw err;
   }
@@ -65,7 +65,7 @@ router.get('/project/edit/:id', middleware.ensureAuth, async (req, res) => {
     const data = {
       mode: 'edit',
     }
-    res.render('project/projectEdit.ejs', { user: req.user });
+    res.render('project/projectEdit.ejs', { user: req.user, users: [] });
   } catch (err) {
     throw err;
   }
