@@ -3,6 +3,7 @@
 // Import data models
 const User = require('../models/user');
 
+
 // Check if the user is authenticated
 function ensureAuth(req, res, next) {
   if (req.isAuthenticated()) {
@@ -143,6 +144,6 @@ module.exports = {
   ensureNotAuth: ensureNotAuth,
   validatePassword: validatePassword,
   checkUsernameAndEmail: checkUsernameAndEmail,
-  checkauthUsernameAndEmail: checkAuthUsernameAndEmail,
+  checkAuthUsernameAndEmail: checkAuthUsernameAndEmail,
   populateCurrentUser: populateCurrentUser
 };
