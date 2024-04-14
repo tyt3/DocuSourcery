@@ -27,26 +27,26 @@ function ensureNotAuth(req, res, next) {
 };
 
 // Ensure that given username and email are unique
+// Ensure that given username and email are unique
 const checkUsernameAndEmail = async (req, res, next) => {
   try {
-    const { username, password } = req.body;
-    const userId = req.user._id;
+    const { username, email } = req.body;
 
     // Check if any other user has the same username
-    const duplicateUsername = await User.findOne({ $and: [{ _id: { $ne: userId } }, { username }] });
+    const duplicateUsername = await User.findOne({ username: username });
     if (duplicateUsername) {
       return res.status(400).json({ error: 'Username is already in use by another user.' });
     }
 
-    // Check if any other user has the same password
-    const duplicateEmail = await User.findOne({ $and: [{ _id: { $ne: userId } }, { password }] });
+    // Check if any other user has the same email
+    const duplicateEmail = await User.findOne({ email: email });
     if (duplicateEmail) {
       return res.status(400).json({ error: 'Email is already in use by another user.' });
     }
 
     next(); // Move to the next middleware or route handler
   } catch (err) {
-    return res.status(500).json({ error: 'Internal server error' });
+    return res.status(400).json({ error: err.message });
   }
 };
 
