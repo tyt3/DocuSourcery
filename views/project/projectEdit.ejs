@@ -145,6 +145,7 @@
                         <input type="checkbox" name="remove" id="remove">
                       </td>
                     </tr>
+                    <% if (users && users.length > 0) { %>
                     <% users.forEach(function(usr) { %>
                       <tr>
                         <td><%= usr.username %></td>
@@ -163,6 +164,7 @@
                         </td>
                       </tr>
                     <% }); %>
+                    <% } %>
                   </tbody>
                 </table>
               </div>
