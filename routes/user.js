@@ -4,7 +4,7 @@ const router = express.Router();
 const passport = require('./passportConfig');
 
 // Import middleware
-const { ensureNotAuth, validatePassword, ensureAuth } = require('./middleware');
+const { ensureAuth, ensureNotAuth, validatePassword  } = require('./middleware');
 const bcrypt = require('bcrypt');
 
 // Import data model
