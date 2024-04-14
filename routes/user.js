@@ -4,7 +4,7 @@ const router = express.Router();
 const passport = require('./passportConfig');
 
 // Import middleware
-const { ensureAuth, ensureNotAuth, validatePassword  } = require('./middleware');
+const { ensureAuth, ensureNotAuth, checkUsernameAndEmail, validatePassword  } = require('./middleware');
 const bcrypt = require('bcrypt');
 
 // Import data model
@@ -43,7 +43,7 @@ router.get('/signup', ensureNotAuth, async (req, res) => {
   }
 });
 
-router.post('/signup', ensureNotAuth, validatePassword, async (req, res) => {
+router.post('/signup', ensureNotAuth, checkUsernameAndEmail, validatePassword, async (req, res) => {
   const { first_name, last_name, email, password, username } = req.body;
 
   try {
@@ -147,7 +147,7 @@ router.get('/account', ensureAuth, async (req, res) => {
 });
 
 // Edit Account
-router.put('/account', ensureAuth, validatePassword, async (req, res) => {
+router.put('/account', ensureAuth, checkUsernameAndEmail, validatePassword, async (req, res) => {
   // TODO: Get form data
   try {
     // TODO: Implement

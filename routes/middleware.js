@@ -1,5 +1,8 @@
 // middleware.js
 
+// Import data models
+const User = require('../models/user');
+
 // Check if the user is authenticated
 function ensureAuth(req, res, next) {
   if (req.isAuthenticated()) {
@@ -10,6 +13,7 @@ function ensureAuth(req, res, next) {
     res.redirect('/login');
   }
 };
+
 
 // Check if the user is already authenticated
 function ensureNotAuth(req, res, next) {
@@ -22,22 +26,30 @@ function ensureNotAuth(req, res, next) {
   }
 };
 
-// Populate fields with authenticated user ID
-function populateCurrentUser(req, res, next) {
-  if (req.isAuthenticated()) {
+// Ensure that given username and email are unique
+const checkUsernameAndEmail = async (req, res, next) => {
+  try {
+    const { username, password } = req.body;
     const userId = req.user._id;
-    if (!this.createdBy) {
-      this.createdBy = userId;
+
+    // Check if any other user has the same username
+    const duplicateUsername = await User.findOne({ $and: [{ _id: { $ne: userId } }, { username }] });
+    if (duplicateUsername) {
+      return res.status(400).json({ error: 'Username is already in use by another user.' });
     }
-    if (!this.updatedBy) {
-      this.updatedBy = userId;
+
+    // Check if any other user has the same password
+    const duplicateEmail = await User.findOne({ $and: [{ _id: { $ne: userId } }, { password }] });
+    if (duplicateEmail) {
+      return res.status(400).json({ error: 'Email is already in use by another user.' });
     }
-    if (!this.deletedBy && this.deleted) {
-      this.deletedBy = userId;
-    }
+
+    next(); // Move to the next middleware or route handler
+  } catch (err) {
+    return res.status(500).json({ error: 'Internal server error' });
   }
-  next();
 };
+
 
 // Validate Password
 function validatePassword(req, res, next) {
@@ -80,10 +92,29 @@ function validatePassword(req, res, next) {
 }
 
 
+// Populate fields with authenticated user ID
+function populateCurrentUser(req, res, next) {
+  if (req.isAuthenticated()) {
+    const userId = req.user._id;
+    if (!this.createdBy) {
+      this.createdBy = userId;
+    }
+    if (!this.updatedBy) {
+      this.updatedBy = userId;
+    }
+    if (!this.deletedBy && this.deleted) {
+      this.deletedBy = userId;
+    }
+  }
+  next();
+};
+
+
 // Export the middleware functions
 module.exports = {
   ensureAuth: ensureAuth,
   ensureNotAuth: ensureNotAuth,
   validatePassword: validatePassword,
+  checkUsernameAndEmail: checkUsernameAndEmail,
   populateCurrentUser: populateCurrentUser
 };
