@@ -1,93 +1,169 @@
 <%- include('../baseHeader') -%>
-  <h1>
-    Create Project
-  </h1>
-  <div class="container mt-5">
-    <div class="card shadow-sm">
-      <!-- <div class="card-header">
-          <h3 class="text-center">Project Metadata</h2>
-        </div> -->
-      <div class="card-body">
-        <!-- <h2>Project Metadata</h2> -->
-        <form>
-          <div class="row gy-4">
-            <div class="col-12 col-md-8 col-xxl-9">
-              <div class="form-group row">
-                <label for="title" class="col-sm-2 col-form-label bold">Title</label>
-                <div class="col-sm-10">
-                  <input type="text" class="form-control" id="title" placeholder="Enter title">
-                </div>
-              </div>
-              <div class="form-group row">
-                <label for="subtitle" class="col-sm-2 col-form-label bold">Subtitle</label>
-                <div class="col-sm-10">
-                  <input type="text" class="form-control" id="subtitle" placeholder="Enter subtitle">
-                </div>
-              </div>
-              <div class="form-group row">
-                <label for="slug" class="col-sm-2 col-form-label bold">Slug</label>
-                <div class="col-sm-10">
-                  <input type="text" class="form-control" id="slug" placeholder="Enter slug">
-                </div>
-              </div>
-              <div class="form-group row">
-                <label for="description" class="col-sm-2 col-form-label bold">Description</label>
-                <div class="col-sm-10">
-                  <textarea class="form-control" id="description" rows="3" placeholder="Enter description"></textarea>
-                </div>
-              </div>
-              <div class="form-group row">
-                <label class="col-sm-2 col-form-label bold">Tags</label>
-                <div class="col-sm-10">
-                  <input type="text" class="form-control" placeholder="Enter tags">
-                </div>
-              </div>
-              <div class="form-group row">
-                <label class="col-sm-2 col-form-label bold">Permissions</label>
-                <div class="col-sm-10">
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="noLogin" value="noLogin">
-                    <label class="form-check-label" for="noLogin">No login required</label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="canDuplicate" value="canDuplicate">
-                    <label class="form-check-label" for="canDuplicate">Can be duplicated by you and others</label>
+<h1>
+  Create Project
+</h1>
+<div class="container mt-5">
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <!-- Tabs -->
+      <ul class="nav nav-tabs" id="assetsTablist" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link tab-link active" id="properties-tab" 
+            data-bs-toggle="tab" data-bs-target="#properties-pane" type="button" 
+            role="tab" aria-controls="properties-tab" aria-selected="true">
+            Properties
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link tab-link" id="content-tab" data-bs-toggle="tab" 
+            data-bs-target="#content-pane" type="button" role="tab" 
+            aria-controls="content-tab" aria-selected="false">
+            Content
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link tab-link" id="content-tab" data-bs-toggle="tab" 
+            data-bs-target="#content-pane" type="button" role="tab"  
+            role="tab" aria-controls="styline-tab" aria-selected="true">
+            Styling
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link tab-link" id="users-tab" 
+            data-bs-toggle="tab" data-bs-target="#users-pane" type="button" 
+            role="tab" aria-controls="users-tab" aria-selected="true">
+            Users
+          </button>
+        </li>
+      </ul>
+      <form>
+        <div class="row gy-4">
+          <!-- Tab Panels -->
+          <div class="col-12 col-md-8 col-xxl-9">
+            <!-- Properties -->
+            <div class="tab-content mt-3" id="tabContent">
+              <div class="tab-pane fade show active" id="properties-pane" 
+                role="tabpanel" aria-labelledby="properties-pane">
+                <div class="form-group row">
+                  <label for="title" class="col-sm-2 col-form-label bold">Title</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="title" placeholder="Enter title">
                   </div>
                 </div>
-              </div>
-              <div class="form-group row">
-                <label for="landingPage" class="col-sm-2 col-form-label bold">Landing Page</label>
-                <div class="col-sm-10">
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="summaryPage" value="summaryPage">
-                    <label class="form-check-label" for="summaryPage">
-                      Start the project on a summary page. If unchecked, the 
-                      project's landing page will contain a table of contents.
-                    </label>
+                <div class="form-group row">
+                  <label for="subtitle" class="col-sm-2 col-form-label bold">Subtitle</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="subtitle" placeholder="Enter subtitle">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="slug" class="col-sm-2 col-form-label bold">Slug</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="slug" placeholder="Enter slug">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="description" class="col-sm-2 col-form-label bold">Description</label>
+                  <div class="col-sm-10">
+                    <textarea class="form-control" id="description" rows="3"
+                      placeholder="Enter description"></textarea>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-2 col-form-label bold">Tags</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" placeholder="Enter tags">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-2 col-form-label bold">Permissions</label>
+                  <div class="col-sm-10">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="noLogin" value="noLogin">
+                      <label class="form-check-label" for="noLogin">No login required</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="canDuplicate" value="canDuplicate">
+                      <label class="form-check-label" for="canDuplicate">Can be duplicated by you and others</label>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="landingPage" class="col-sm-2 col-form-label bold">Landing Page</label>
+                  <div class="col-sm-10">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="summaryPage" value="summaryPage">
+                      <label class="form-check-label" for="summaryPage">
+                        Start the project on a summary page. If unchecked, the
+                        project's landing page will contain a table of contents.
+                      </label>
+                    </div>
                   </div>
                 </div>
               </div>
-              <hr class="my-4">
-              <h2>Documents</h2>
-              <p>There are no documents.</p>
-              <button type="button" class="btn btn-ds-primary">
-                Add Document
-              </button>
             </div>
-            <div class="col-12 col-md-4 col-xxl-3 relative">
-              <div class="card sticky">
-                <div class="card-body">
-                  <div class="d-grid gap-2 col-12 mx-auto">
-                    <button type="submit" class="btn btn-block btn-outline-success">Save Project</button>
-                    <button type="button" class="btn btn-block btn-outline-danger">Delete Project</button>
-                    <button type="button" class="btn btn-block btn-outline-secondary">View Project</button>
-                  </div>
+            <!-- Content -->
+            <div class="tab-content mt-3" id="tabContent">
+              <div class="tab-pane fade" id="content-pane" role="tabpanel" 
+                aria-labelledby="content-pane">
+              </div>
+            </div>
+            <!-- Styling -->
+            <div class="tab-content mt-3" id="tabContent">
+              <div class="tab-pane fade" id="styling-pane" role="tabpanel" 
+                aria-labelledby="styling-pane">
+              </div>
+            </div>
+            <!-- Users -->
+            <div class="tab-content mt-3" id="tabContent">
+              <div class="tab-pane fade" id="users-pane" role="tabpanel" 
+                aria-labelledby="users-pane">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Username</th>
+                      <th>Display Name</th>
+                      <th>Email</th>
+                      <th>Role</th>
+                      <th>Remove</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><%= user.username %></td>
+                      <td><%= user.first_name %> <%= user.last_name %></td>
+                      <td><%= user.email %></td>
+                      <td>
+                        <select name="role" id="role">
+                          <option value="0">Viewer</option>
+                          <option value="1">Editor</option>
+                          <option value="2">Admin</option>
+                          <option value="3" selected>Owner</option>
+                        </select>
+                      </td>
+                      <td>
+                        <input type="checkbox" name="remove" id="remove">
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-md-4 mt-3 col-xxl-3" id="action-panel">
+            <div class="card" id="action-buttons">
+              <div class="card-body">
+                <div class="d-grid gap-2 col-12 mx-auto">
+                  <button type="submit" class="btn btn-block btn-outline-success">Save Project</button>
+                  <button type="button" class="btn btn-block btn-outline-danger">Delete Project</button>
+                  <button type="button" class="btn btn-block btn-outline-secondary">View Project</button>
                 </div>
               </div>
             </div>
           </div>
-        </form>
-      </div>
+        </div>
+      </form>
     </div>
   </div>
-  <%- include('../baseFooter') -%>
+</div>
+<%- include('../baseFooter') -%>

@@ -35,7 +35,7 @@
           <div class="tab-content mt-3" id="tabContent">
             <div class="tab-pane fade show active" id="my-projects-pane" role="tabpanel"
               aria-labelledby="my-projects-pane">
-              <% if (false) { %>
+              <% if (projects && projects.length > 0) { %>
                 <ul class="list-group">
                   <!-- Loop through projects -->
                   <li class="list-group-item">
@@ -58,13 +58,14 @@
                   <em>You don't have any projects yet.</em>
                 </p>
                 <div class="d-grid gap-2 d-md-flex justify-content-center">
-                  <a class="btn btn-12 btn-ds-primary" role="button" href="#">Create
+                  <a class="btn btn-12 btn-ds-primary" role="button" href="/project/create">Create
                     a Project</a>
                 </div>
                 <% } %>
             </div>
             <!-- Pinned Projects Pane -->
-            <div class="tab-pane fade" id="pinned-projects-pane" role="tabpanel" aria-labelledby="pinned-projects-pane">
+            <div class="tab-pane fade" id="pinned-projects-pane" role="tabpanel" 
+              aria-labelledby="pinned-projects-pane">
               <% if (true) { %>
                 <ul class="list-group">
                   <!-- Loop through pinned projects -->

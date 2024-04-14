@@ -4,7 +4,7 @@ const router = express.Router();
 const passport = require('./passportConfig');
 
 // Import middleware
-const { ensureNotAuth, validatePassword, ensureAuth } = require('./middleware');
+const { ensureAuth, ensureNotAuth, validatePassword  } = require('./middleware');
 const bcrypt = require('bcrypt');
 
 // Import data model
@@ -202,11 +202,12 @@ router.post('/profile', ensureAuth, async (req, res) => {
 // View Dashbard
 router.get('/dashboard', ensureAuth, async (req, res) => {
   try {
-    res.render('user/dashboard.ejs', { user: req.user });
+    res.render('user/dashboard.ejs', { user: req.user, projects: [] });
   } catch (err) {
     throw err;
   }
 });
+
 
 // Export router
 module.exports = router;
