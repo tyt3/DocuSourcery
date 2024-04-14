@@ -26,6 +26,7 @@ router.get('/project/:id', middleware.ensureAuth, async (req, res) => {
 // Create Project View
 router.get('/project/create', middleware.ensureAuth, async (req, res) => {
   try {
+    console.log("TEST: Rendering projectEdit.ejs");
     res.render('project/projectEdit.ejs', { user: req.user, users: [req.user] });
   } catch (err) {
     throw err;
