@@ -26,12 +26,16 @@ h1 {
 }
 
 h2 {
-  font-size: 1.75;
+  font-size: 1.75em;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+button.nav-link.tab-link {
+  font-size: 1.1em;
 }
 
 .bold {
