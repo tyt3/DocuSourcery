@@ -1,37 +1,42 @@
-<div class="card">
-  <div class="card-body">
-    <div>
-      <div class="col-1">
-        <span class="material-symbols-outlined">
-          drag_handle
-        </span>
-      </div>
-      <!-- Document Title -->
-      <div class="col-8">
-        <%= document.title %>
-      </div>
-      <!-- View and Edit Icons -->
-      <div class="col-3">
-        <a href="/page/<%= page.slug %>">
+<li class="card-list mb-3">
+  <div class="card">
+    <div class="card-body py-1">
+      <div class="row gy-2 d-flex align-items-center">
+        <div class="col-1">
           <span class="material-symbols-outlined">
-            visibility
+            drag_handle
           </span>
-        </a>
-        <a href="/page/edit/<%= page.slug %>">
-          <span class="material-symbols-outlined">
-            edit
+        </div>
+        <!-- Document Title -->
+        <div class="col-11 d-flex align-items-center">
+          <span class="material-symbols-outlined me-2">
+            folder_open
           </span>
-        </a>
+          <a href="#">Data Extraction and Transformation Workflow</a>
+        </div>
+        <!-- View and Edit Icons -->
+        <!-- <div class="col-3">
+          <a href="/document/<%= document.slug %>">
+            <span class="material-symbols-outlined">
+              visibility
+            </span>
+          </a>
+          <a href="/document/edit/<%= document.slug %>">
+            <span class="material-symbols-outlined">
+              edit
+            </span>
+          </a>
+        </div> -->
       </div>
+      <!-- Pages List -->
+      <ul class="card-list mt-2">
+        <!-- Page Cards -->
+        <% if (project.documents && project.documents.length > 0) { %>
+          <% document.pages.forEach(function(page) { %>
+            <% include './page-list-item.ejs' %>
+          <% }); %>
+        <% }
+      </ul>
     </div>
-    <!-- Pages List -->
-    <ul class="list-group">
-      <!-- Page Cards -->
-      <% if (project.documents && project.documents.length > 0) { %>
-        <% document.pages.forEach(function(page) { %>
-          <% include './page-list-item.ejs' %>
-        <% }); %>
-      <% }
-    </ul>
   </div>
-</div>
+</li>

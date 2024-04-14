@@ -1,25 +1,34 @@
-<li class="list-group-item">
-  <!-- Drag Icon -->
-  <div class="col-1">
-    <span class="material-symbols-outlined">
-      drag_handle
-    </span>
-  </div>
-  <!-- Page Title -->
-  <div class="col-8">
-    <a href="/page/<%= page.slug %>"><%= page.title %></a>
-  </div>
-  <!-- View and Edit Icons -->
-  <div class="col-3">
-    <a href="/page/<%= page.slug %>">
-      <span class="material-symbols-outlined">
-        visibility
-      </span>
-    </a>
-    <a href="/page/edit/<%= page.slug %>">
-      <span class="material-symbols-outlined">
-        edit
-      </span>
-    </a>
+<li class="mb-2">
+  <div class="card">
+    <div class="card-body py-1">
+      <!-- Drag Icon -->
+      <div class="row gy-2">
+        <div class="col-1">
+          <span class="material-symbols-outlined">
+            drag_handle
+          </span>
+        </div>
+        <!-- Page Title -->
+        <div class="col-11 d-flex align-items-center">
+          <span class="material-symbols-outlined me-2">
+            description
+          </span>
+          <a href="/page/edit/<%= page.slug %>"><%= page.title %></a>
+        </div>
+        <!-- View and Edit Icons -->
+        <!-- <div class="col-3">
+          <a href="/page/<%= page.slug %>">
+            <span class="material-symbols-outlined">
+              visibility
+            </span>
+          </a>
+          <a href="/page/edit/<%= page.slug %>">
+            <span class="material-symbols-outlined">
+              edit
+            </span>
+          </a>
+        </div> -->
+      </div>
+    </div>
   </div>
 </li>
