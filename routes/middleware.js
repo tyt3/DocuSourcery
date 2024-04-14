@@ -79,13 +79,11 @@ function validatePassword(req, res, next) {
   next(); // Move to the next middleware
 }
 
-module.exports = validatePassword;
-
 
 // Export the middleware functions
 module.exports = {
   ensureAuth: ensureAuth,
   ensureNotAuth: ensureNotAuth,
-  populateCurrentUser: populateCurrentUser,
-  validatePassword: validatePassword
+  validatePassword: validatePassword,
+  populateCurrentUser: populateCurrentUser
 };
