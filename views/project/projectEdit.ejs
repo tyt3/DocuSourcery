@@ -129,7 +129,23 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <% if (users && users.length > 0) { %>
+                    <tr>
+                      <td><%= user.username %></td>
+                      <td><%= user.first_name %> <%= user.last_name %></td>
+                      <td><%= user.email %></td>
+                      <td>
+                        <select name="role" id="role">
+                          <option value="0">Viewer</option>
+                          <option value="1">Editor</option>
+                          <option value="2">Admin</option>
+                          <option value="3" selected>Owner</option>
+                        </select>
+                      </td>
+                      <td>
+                        <input type="checkbox" name="remove" id="remove">
+                      </td>
+                    </tr>
+                    <!-- <% if (users && users.length > 0) { %>
                     <% users.forEach(function(usr) { %>
                       <tr>
                         <td><%= usr.username %></td>
@@ -148,14 +164,14 @@
                         </td>
                       </tr>
                     <% }); %>
-                    <% } %>
+                    <% } %> -->
                   </tbody>
                 </table>
               </div>
             </div>
           </div>
-          <div class="col-12 col-md-4 mt-3 col-xxl-3 relative">
-            <div class="card">
+          <div class="col-12 col-md-4 mt-3 col-xxl-3" id="action-panel">
+            <div class="card" id="action-buttons">
               <div class="card-body">
                 <div class="d-grid gap-2 col-12 mx-auto">
                   <button type="submit" class="btn btn-block btn-outline-success">Save Project</button>
