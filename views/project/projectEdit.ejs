@@ -120,31 +120,6 @@
                 aria-labelledby="users-pane">
                 <table class="table">
                   <thead>
-                    <tr>
-                      <th>Username</th>
-                      <th>Display Name</th>
-                      <th>Email</th>
-                      <th>Role</th>
-                      <th>Remove</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td><%= user.username %></td>
-                      <td><%= user.first_name %> <%= user.last_name %></td>
-                      <td><%= user.email %></td>
-                      <td>
-                        <select name="role" id="role">
-                          <option value="0">Viewer</option>
-                          <option value="1">>Editor</option>
-                          <option value="2">Admin</option>
-                          <option value="3" selected>Owner</option>
-                        </select>
-                      </td>
-                      <td>
-                        <input type="checkbox" name="remove" id="remove">
-                      </td>
-                    </tr>
                     <% if (users && users.length > 0) { %>
                     <% users.forEach(function(usr) { %>
                       <tr>
