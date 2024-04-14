@@ -26,10 +26,6 @@ router.get('/project/:id', middleware.ensureAuth, async (req, res) => {
 // Create Project View
 router.get('/project/create', middleware.ensureAuth, async (req, res) => {
   try {
-    // Add data to send to frontend
-    const data = {
-      mode: 'create',
-    }
     res.render('project/projectEdit.ejs', { user: req.user, users: [] });
   } catch (err) {
     throw err;
