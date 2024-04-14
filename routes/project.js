@@ -17,7 +17,11 @@ const Page = require('../models/page');
 // Create Project View
 router.get('/project/create', ensureAuth, async (req, res) => {
   try {
-    res.render('project/projectEdit.ejs', { user: req.user, users: [req.user] });
+    res.render('project/projectEdit.ejs', { 
+      user: req.user, 
+      users: [req.user],
+      project: null 
+    });
   } catch (err) {
     throw err;
   }
@@ -48,7 +52,11 @@ router.get('/project/edit/:id', ensureAuth, async (req, res) => {
   const projectId = req.params.id;
   try {
     // TODO: Get project object and send to frontend
-    res.render('project/projectEdit.ejs', { user: req.user, users: [] });
+    res.render('project/projectEdit.ejs', { 
+      user: req.user, 
+      users: [],
+      project: null 
+    });
   } catch (err) {
     throw err;
   }
