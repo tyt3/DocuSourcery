@@ -110,6 +110,20 @@
             <div class="tab-content mt-3" id="tabContent">
               <div class="tab-pane fade" id="content-pane" role="tabpanel" 
                 aria-labelledby="content-pane">
+                <% if (project.documents && project.documents.length > 0) { %>
+                  <!-- Documents List -->
+                  <ul class="list-group">
+                    <% project.documents.forEach(function(document) { %>
+                      <!-- Document Cards -->
+                    <% }); %>  
+                  </ul> 
+                <% } else { %>
+                <p>There are no documents.</p>
+                <a href="/page/create/<%= document._id %>" 
+                  role="button" class="btn btn-ds-primary">
+                  Add Document
+                </a>
+                <% } %>             
               </div>
             </div>
             <!-- Styling -->
