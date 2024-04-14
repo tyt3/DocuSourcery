@@ -58,10 +58,6 @@ router.get('/project/edit/:id', middleware.ensureAuth, async (req, res) => {
   const projectId = req.params.id;
   try {
     // TODO: Get project object and send to frontend
-    // Add data to send to frontend
-    const data = {
-      mode: 'edit',
-    }
     res.render('project/projectEdit.ejs', { user: req.user, users: [] });
   } catch (err) {
     throw err;
@@ -123,10 +119,6 @@ router.get('/document/:id', middleware.ensureAuth, async (req, res) => {
 // Create Document View
 router.get('/document/create', middleware.ensureAuth, async (req, res) => {
   try {
-    // Add data to send to frontend
-    const data = {
-      mode: 'create',
-    }
     res.render('project/documentEdit.ejs', { user: req.user });
   } catch (err) {
     throw err;
@@ -159,10 +151,6 @@ router.get('/document/edit/:id', middleware.ensureAuth, async (req, res) => {
   const documentId = req.params.id;
   try {
     // TODO: Get document object and send to frontend
-    // Add data to send to frontend
-    const data = {
-      mode: 'edit',
-    }
     res.render('project/documentEdit.ejs', { user: req.user });
   } catch (err) {
     throw err;
@@ -215,10 +203,6 @@ router.get('/page/:id', middleware.ensureAuth, async (req, res) => {
 // Create Page View
 router.get('/page/create', middleware.ensureAuth, async (req, res) => {
   try {
-    // Add data to send to frontend
-    const data = {
-      mode: 'create',
-    }
     res.render('project/pageEdit.ejs', { user: req.user });
   } catch (err) {
     throw err;
@@ -251,10 +235,6 @@ router.get('/page/edit/:id', middleware.ensureAuth, async (req, res) => {
   const pageId = req.params.id;
   try {
     // TODO: Get page object and send to frontend
-    // Add data to send to frontend
-    const data = {
-      mode: 'edit',
-    }
     res.render('project/pageEdit.ejs', { user: req.user });
   } catch (err) {
     throw err;
