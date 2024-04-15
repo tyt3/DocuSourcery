@@ -22,8 +22,8 @@ body {
 }
 
 .jumbotron {
-  background-color: var(--primary-color); /* For browsers that do not support gradients */
-  background-image: linear-gradient(to bottom right, var(--secondary-color), var(--tertiary-color));
+  background-color: var(--secondary-color); /* For browsers that do not support gradients */
+  /* background-image: linear-gradient(to bottom right, var(--secondary-color), var(--tertiary-color)); */
 }
 
 /* Text */
