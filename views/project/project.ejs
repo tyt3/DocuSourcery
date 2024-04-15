@@ -1,25 +1,31 @@
 <%- include('../baseHeader') -%>
 <nav class="navbar d-xl-none bg-ds-secondary" data-bs-theme="dark">
   <div class="container">
-    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu"
-      aria-controls="offcanvasMenu" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <form method="POST" class="d-flex" role="search" action="/project/search">
-      <input
-        class="form-control me-2 bg-white"
-        type="keywords"
-        name="keywords"
-        placeholder="Search the documentation"
-        aria-label="Search">
-      <button class="btn btn-ds-outline-primary border-ds-primary"
-        data-bs-toggle="tooltip" data-bs-placement="bottom" 
-        data-bs-title='Search' type="submit">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-          <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-        </svg>
-      </button>
-    </form>
+    <div class="row">
+      <div class="col-auto" id="navbar-toggler">
+        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu"
+          aria-controls="offcanvasMenu" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      </div>
+      <div class="col d-flex justify-content-end" id="search">
+        <form method="POST" class="d-flex" role="search" action="/project/search">
+          <input
+            class="form-control me-2 bg-white"
+            type="keywords"
+            name="keywords"
+            placeholder="Search the documentation"
+            aria-label="Search">
+          <button class="btn btn-ds-outline-primary border-ds-primary"
+            data-bs-toggle="tooltip" data-bs-placement="bottom" 
+            data-bs-title='Search' type="submit">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+              <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+            </svg>
+          </button>
+        </form>
+      </div>
+    </div>
     <div class="collapse navbar-collapse" id="sideNav">
       <!-- Your navbar content here -->
     </div>
@@ -32,7 +38,7 @@
   </div>
   <div class="offcanvas-body">
     <div style="max-width: 100%;">
-        <div id="logo" class="d-flex justify-content-center py-5">
+        <div id="logo" class="d-flex justify-content-center py-2">
           <img style="max-width: 50%; height: auto;"
                src="https://cdn.glitch.global/c07903c4-5c80-4ac5-ad40-9074f49c6d16/Logo-temp.png?v=1713196545122">
         </div>
