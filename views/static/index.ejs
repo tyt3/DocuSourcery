@@ -1,5 +1,34 @@
 <%- include('../baseHeader') -%>
-    <h1>
-      DocuSourcery
-    </h1>
+<!-- Main Content -->
+<div class="container main-content my-5">
+  <!-- Landing Area -->
+  <div class="jumbotron vh-100">
+    <div class="container">
+      <!-- Welcome Text -->
+      <h1>DocuSourcery</h1>
+      <br/>
+      <h4>Explore library and archives metadata, create your own datasets from
+        your searches, and share them with our community of researchers!
+      </h4>
+      <br/>
+      <h4>Sign up to begin creating your datasets or browse published datasets!</h4>
+
+      <!--Action Buttons -->
+      <div class="row gy-4 mt-5">
+        <div class="col-lg d-grid gap-2 d-lg-flex justify-content-center justify-content-lg-end">
+          <a class="btn btn-primary btn-12 btn-lg bg-ds-primary border-ds-primary"
+            href="/signup" role="button">Get Started</a>
+        </div>
+        <div class="col-lg d-grid gap-2 d-lg-flex justify-content-center">
+          <a class="btn btn-primary btn-12 btn-lg bg-ds-primary border-ds-primary"
+            href="/projects" role="button">Browse Projects</a>
+        </div>
+        <div class="col-lg d-grid gap-2 d-lg-flex justify-content-center justify-content-lg-start">
+          <a class="btn btn-primary btn-12 btn-lg bg-ds-primary border-ds-primary"
+            href="/about" role="button">Learn More</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 <%- include('../baseFooter') -%>
