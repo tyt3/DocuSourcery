@@ -3,24 +3,20 @@ const Schema = mongoose.Schema;
 
 // Define User model
 const DocumentSchema = new Schema({
-  name: { type: String, required: true },
-  content: { type: String, required: true },
-  created_date: { type: Date },
-  modified_date: { type: Date },
-  is_public: { type: Boolean, default: false },
-  project_id: { type: Schema.Types.ObjectId, ref: "project", required: true },
-  admins: [
-    { type: Schema.Types.ObjectId, ref: "user", required: true }
+  slug: { type: String, required: true, maxLength: 50 },
+  title: { type: String, required: true, maxLength: 255 },
+  description: { type: String },
+  createdDate: { type: Date, default: Date.now },
+  createdBy: { type: Schema.Types.ObjectId, ref: "user", required: true },
+  modifiedDate: { type: Date, default: Date.now },
+  deleted: { type: Boolean, default: false },
+  deletedDate: { type: Date, default: null },
+  deletedBy: { type: Schema.Types.ObjectId, ref: "user", default: null },
+  tags: [
+    { type: Schema.Types.ObjectId, ref: "tag" }
   ],
-  editors: [
-    { type: Schema.Types.ObjectId, ref: "user" }
-  ],
-  viewers: [
-    { type: Schema.Types.ObjectId, ref: "user" }
-  ],
-  invitees: [
-    { type: Schema.Types.ObjectId, ref: "user" }
-  ],
+  landingPage: { type: Boolean, default: false },
+  projectId: { type: Schema.Types.ObjectId, ref: "project", required: true },
   pages: [
     { type: Schema.Types.ObjectId, ref: "page", required: true }
   ]

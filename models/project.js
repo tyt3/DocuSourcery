@@ -1,24 +1,23 @@
-// Imports
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 // Define Project model
 const ProjectSchema = new Schema({
-  slug: { type: String, required: true, unique: true },
-  title: { type: String, required: true },
+  slug: { type: String, required: true, maxLength: 50 , unique: true },
+  title: { type: String, maxLength: 255, required: true },
   subtitle: { type: String },
   description: { type: String },
-  created_date: { type: Date, default: Date.now },
-  created_by: { type: Schema.Types.ObjectId, ref: "user" },
-  modified_date: { type: Date, default: Date.now },
+  createdDate: { type: Date, default: Date.now },
+  createdBy: { type: Schema.Types.ObjectId, ref: "user", required: true },
+  modifiedDate: { type: Date, default: Date.now },
   deleted: { type: Boolean, default: false },
-  deleted_date: { type: Date },
-  deleted_by: { type: Schema.Types.ObjectId, ref: "user" },
+  deletedDate: { type: Date, default: null },
+  deletedBy: { type: Schema.Types.ObjectId, ref: "user", default: null },
   tags: [
     { type: Schema.Types.ObjectId, ref: "tag" }
   ],
   permissions: { type: Map },
-  landing_page: { type: Boolean, default: false },
+  landingPage: { type: Boolean, default: false },
   views: { type: Number, default: 0 },
   documents: [
     { type: Schema.Types.ObjectId, ref: "document", required: true }
