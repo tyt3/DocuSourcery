@@ -51,11 +51,11 @@ router.post('/project/create', ensureAuth, async (req, res) => {
 router.get('/project/edit/:slug', ensureAuth, async (req, res) => {
   const projectSlug = req.params.slug;
   try {
-    // TODO: Get project object and send to frontend
+    const project = await Project.findOne({ slug: projectSlug });
     res.render('project/projectEdit.ejs', { 
       user: req.user, 
       users: [],
-      project: null 
+      project: project
     });
   } catch (err) {
     throw err;
@@ -96,9 +96,10 @@ router.put('/project/restore/:id', ensureAuth, async (req, res) => {
 router.get('/project/:slug', async (req, res) => {
   const projectSlug = req.params.slug;
   try {
+    const project = await Project.findOne({ slug: projectSlug });
     res.render('project/project.ejs', { 
       user: req.user,
-      project: null 
+      project: project
     });
   } catch (err) {
     throw err;
