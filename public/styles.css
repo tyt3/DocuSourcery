@@ -23,10 +23,11 @@ body {
 }
 
 .jumbotron {
-  height: calc(100vh - 4em);
+  height: calc(100vh - 60px);
   background-color: var(--secondary-color); /* For browsers that do not support gradients */
   background-image: linear-gradient(to bottom, var(--secondary-color), var(--secondary-color), var(--primary-color));
 }
+
 
 /* Text */
 
@@ -67,7 +68,7 @@ button.nav-link.tab-link {
 }
 
 
-/* Navigation Bar */
+/* Navigation Bars */
 
 .navbar-brand:hover {
   color: var(--secondary-color);
@@ -81,6 +82,23 @@ button.nav-link.tab-link {
   background-color: var(--secondary-color);
   color: var(--primary-color);
 }
+
+.side-nav {
+/*   min-height: 100vh; */
+}
+
+@media (min-width: 1200px) {
+  .side-nav {
+    height: 100vh; /* Set height to 100% of viewport height */
+  }
+}
+
+@media (min-width: 1200px) {
+  .side-navbar {
+    display: none !important;
+  }
+}
+
 
 
 /* Cards */

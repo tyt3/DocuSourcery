@@ -1,8 +1,64 @@
 <%- include('../baseHeader') -%>
-<!-- Main Content -->
-<div class="container main-content my-5">
-  <h1>
-    Project
-  </h1>
+<nav class="navbar d-xl-none bg-ds-secondary" data-bs-theme="dark">
+  <div class="container">
+    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample"
+      aria-controls="offcanvasExample" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <form method="POST" class="d-flex" role="search" action="/project/search">
+      <input
+        class="form-control me-2 bg-white"
+        type="keywords"
+        name="keywords"
+        placeholder="Search the documentation"
+        aria-label="Search">
+      <button class="btn btn-ds-outline-primary border-ds-primary"
+        data-bs-toggle="tooltip" data-bs-placement="bottom" 
+        data-bs-title='Search' type="submit">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+          <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+        </svg>
+      </button>
+    </form>
+    <div class="collapse navbar-collapse" id="sideNav">
+      <!-- Your navbar content here -->
+    </div>
+  </div>
+</nav>
+<div class="offcanvas offcanvas-start bg-ds-secondary" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Offcanvas</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <div>
+      Some text as placeholder. In real life you can have the elements you have chosen. Like, text, images, lists, etc.
+    </div>
+    <div class="dropdown mt-3">
+      <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+        Dropdown button
+      </button>
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="#">Action</a></li>
+        <li><a class="dropdown-item" href="#">Another action</a></li>
+        <li><a class="dropdown-item" href="#">Something else here</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xl-3 side-nav .d-none .d-xl-block bg-ds-secondary">
+
+    </div>  
+    <div class="col-12 col-xl-9">
+      <!-- Main Content -->
+      <div class="container my-5">
+        <h1>
+          Project
+        </h1>
+      </div>  
+    </div>
+  </div>
 </div>
 <%- include('../baseFooter') -%>
