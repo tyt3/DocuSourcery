@@ -26,16 +26,16 @@
           </button>
         </li>
         <li class="nav-item" role="presentation">
-          <button class="nav-link tab-link" id="content-tab" data-bs-toggle="tab" 
-            data-bs-target="#content-pane" type="button" role="tab" 
-            aria-controls="content-tab" aria-selected="false">
+          <button class="nav-link tab-link" id="content-tab" 
+            data-bs-toggle="tab" data-bs-target="#content-pane" type="button" 
+            role="tab" aria-controls="content-tab" aria-selected="false">
             Content
           </button>
         </li>
         <li class="nav-item" role="presentation">
-          <button class="nav-link tab-link" id="styling-tab" data-bs-toggle="tab" 
-            data-bs-target="#styling-pane" type="button" role="tab"  
-            aria-controls="styling-tab" aria-selected="true">
+          <button class="nav-link tab-link" id="trash-tab" 
+            data-bs-toggle="tab" data-bs-target="#trash-pane" type="button" 
+            role="tab" aria-controls="trash-tab" aria-selected="false">
             Trash
           </button>
         </li>
@@ -51,8 +51,8 @@
         <div class="row gy-4">
           <!-- Tab Panels -->
           <div class="col-12 col-md-8 col-xxl-9">
-            <!-- Properties -->
             <div class="tab-content mt-3" id="tabContent">
+              <!-- Properties -->
               <div class="tab-pane fade show active" id="properties-pane" 
                 role="tabpanel" aria-labelledby="properties-pane">
                 <div class="form-group row">
@@ -112,9 +112,7 @@
                   </div>
                 </div>
               </div>
-            </div>
-            <!-- Content -->
-            <div class="tab-content mt-3" id="tabContent">
+              <!-- Content -->
               <div class="tab-pane fade" id="content-pane" role="tabpanel" 
                 aria-labelledby="content-pane">
                 <% if (project && project.documents && project.documents.length > 0) { %>
@@ -122,7 +120,7 @@
                   <ul class="list-group">
                     <% project.documents.forEach(function(document) { %>
                       <!-- Document Cards -->
-                      <% include '../snippets/document-list-item.ejs' %>
+                      <%- include('../snippets/document-list-item.ejs') -%>
                     <% }); %>  
                   </ul> 
                 <% } else { %>
@@ -133,9 +131,7 @@
                 </a>
                 <% } %>             
               </div>
-            </div>
-            <!-- Trash -->
-            <div class="tab-content mt-3" id="tabContent">
+              <!-- Trash -->
               <div class="tab-pane fade" id="styling-pane" role="tabpanel" 
                 aria-labelledby="styling-pane">
                 <div class="table-responsive"> 
@@ -167,9 +163,7 @@
                   </table>
                 </div>
               </div>
-            </div>
-            <!-- Users -->
-            <div class="tab-content mt-3" id="tabContent">
+              <!-- Users -->
               <div class="tab-pane fade" id="users-pane" role="tabpanel" aria-labelledby="users-pane">
                 <div class="table-responsive"> 
                   <table class="table">
