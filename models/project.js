@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 // Define Project model
 const ProjectSchema = new Schema({
-  slug: { type: String, required: true, maxLength: 50 , unique: true },
+  slug: { type: String, required: true, maxLength: 50, unique: true },
   title: { type: String, maxLength: 255, required: true },
   subtitle: { type: String },
   description: { type: String },
