@@ -8,23 +8,24 @@ const ProjectSchema = new Schema({
   title: { type: String, required: true },
   subtitle: { type: String },
   description: { type: String },
-  created_date: { type: Date },
-  modified_date: { type: Date },
-  admins: [
-    { type: Schema.Types.ObjectId, ref: "user", required: true }
+  created_date: { type: Date, default: Date.now },
+  created_by: { type: Schema.Types.ObjectId, ref: "user" },
+  modified_date: { type: Date, default: Date.now },
+  deleted: { type: Boolean, default: false },
+  deleted_date: { type: Date },
+  deleted_by: { type: Schema.Types.ObjectId, ref: "user" },
+  tags: [
+    { type: Schema.Types.ObjectId, ref: "tag" }
   ],
-  editors: [
-    { type: Schema.Types.ObjectId, ref: "user" }
-  ],
-  viewers: [
-    { type: Schema.Types.ObjectId, ref: "user" }
-  ],
-  invitees: [
-    { type: Schema.Types.ObjectId, ref: "user" }
-  ],
+  permissions: { type: Map },
+  landing_page: { type: Boolean, default: false },
+  views: { type: Number, default: 0 },
   documents: [
     { type: Schema.Types.ObjectId, ref: "document", required: true }
-  ]
+  ],
+  users: [
+    { type: Map }
+  ],
 });
 
 // Export model
