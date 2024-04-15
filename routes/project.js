@@ -93,7 +93,7 @@ router.put('/project/restore/:id', ensureAuth, async (req, res) => {
 });
 
 // View Project
-router.get('/project/:slug', ensureAuth, async (req, res) => {
+router.get('/project/:slug', async (req, res) => {
   const projectSlug = req.params.slug;
   try {
     res.render('project/project.ejs', { 
@@ -198,7 +198,7 @@ router.put('/document/restore/:id', ensureAuth, async (req, res) => {
 });
 
 // View Document
-router.get('/document/:slug', ensureAuth, async (req, res) => {
+router.get('/document/:slug', async (req, res) => {
   const documentSlug = req.params.slug;
   try {
     // TODO: Get project and document objects and send to frontend
@@ -295,7 +295,7 @@ router.put('/page/restore/:id', ensureAuth, async (req, res) => {
 });
 
 // View Page
-router.get('/page/:slug', ensureAuth, async (req, res) => {
+router.get('/page/:slug', async (req, res) => {
   const pageSlug = req.params.slug;
   try {
     // TODO: Get project, document, and page objects and send to frontend
