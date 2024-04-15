@@ -2,9 +2,13 @@
 :root {
   --primary-color: #4d0d89;
   --primary-color-dark: #3b056e;
-  --secondary-color: #F7B1C0;
+  /* --secondary-color: #F7B1C0;
   --secondary-color-dark: #e494a6;
-  --tertiary-color: #6c757d;
+  --tertiary-color: #6c757d; */
+  --secondary-color: rgb(47,182,170);
+  --secondary-color-dark: rgb(32,152,138);
+  --tertiary-color: rgb(208,58,112);
+  --off-black-color: rgb(1,21,28);
 }
 
 body {
@@ -19,7 +23,7 @@ body {
 
 .jumbotron {
   background-color: var(--primary-color); /* For browsers that do not support gradients */
-  background-image: linear-gradient(to bottom right, var(--secondary-color), var(--primary-color), var(--tertiary-color));
+  background-image: linear-gradient(to bottom right, var(--secondary-color), var(--tertiary-color), var(--primary-color));
 }
 
 /* Text */
