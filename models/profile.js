@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-// Define User model
+// Define Profile model
 const ProfileSchema = new Schema({
   first_name: { type: String, required: true },
   last_name: { type: String, required: true },
