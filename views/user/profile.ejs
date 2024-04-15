@@ -9,15 +9,19 @@
   <div class="card shadow-sm">
     <div class="card-body">
       <h2><%= profile.firstName %> <%= profile.lastName %></h2>
-      <% if (profile.profile_photo_url) { %>
-      <img style="margin: 10px 0 10px 0; max-width: 25%;" src="<%= profile.profile_photo_url %>">
+      <% if (profile.profilePhotoUrl) { %>
+      <img style="margin: 10px 0 10px 0; max-width: 10em;" src="<%= profile.profilePhotoUrl %>">
       <% } else { %>
       <img style="margin: 10px 0 10px 0; max-width: 10em;"
         src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png">
       <% } %>
       <br />
+      <% if (profile.pronouns) { %>
       <p class="contact"><strong>Pronouns:</strong> <%= profile.pronouns %></p>
+      <% } %>
+      <% if (profile.title) { %>
       <p class="contact"><strong>Title:</strong> <%= profile.title %></p>
+       <% } %>
       <p class="contact"><strong>Email:</strong> <a href="#"><%= profile.email %></a></p>
       <% if (profile.website) { %>
       <p class="contact"><strong>Website:</strong> 
