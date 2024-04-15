@@ -8,6 +8,7 @@
   --secondary-color: rgb(47,182,170);
   --secondary-color-dark: rgb(32,152,138);
   --tertiary-color: rgb(208,58,112);
+  --tertiary-color-dark: rgb(192, 37, 94);
   --off-black-color: rgb(1,21,28);
 }
 
@@ -212,8 +213,8 @@ button.nav-link.tab-link {
 }
 
 .btn-ds-tertiary:hover {
-  background-color:var(--secondary-color-dark);
-  border-color: var(--secondary-color);
+  background-color: var(--tertiary-color-dark);
+  border-color: var(--tertiary-color-dark);
 }
 
 .btn-ds-outline-tertiary {
