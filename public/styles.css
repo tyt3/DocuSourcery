@@ -17,6 +17,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.jumbotron {
+  background-color: var(--primary-color); /* For browsers that do not support gradients */
+  background-image: linear-gradient(to bottom right, var(--secondary-color), var(--tertiary-color), var(--primary-color));
+}
 
 /* Text */
 
