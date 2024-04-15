@@ -36,7 +36,7 @@
           <button class="nav-link tab-link" id="styling-tab" data-bs-toggle="tab" 
             data-bs-target="#styling-pane" type="button" role="tab"  
             aria-controls="styling-tab" aria-selected="true">
-            Styling
+            Trash
           </button>
         </li>
         <li class="nav-item" role="presentation">
@@ -122,6 +122,7 @@
                   <ul class="list-group">
                     <% project.documents.forEach(function(document) { %>
                       <!-- Document Cards -->
+                      <% include '../snippets/document-list-item.ejs' %>
                     <% }); %>  
                   </ul> 
                 <% } else { %>
@@ -133,16 +134,44 @@
                 <% } %>             
               </div>
             </div>
-            <!-- Styling -->
+            <!-- Trash -->
             <div class="tab-content mt-3" id="tabContent">
               <div class="tab-pane fade" id="styling-pane" role="tabpanel" 
                 aria-labelledby="styling-pane">
+                <div class="table-responsive"> 
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th class="bold">Title</th>
+                        <th class="bold">Date Deleted</th>
+                        <th class="bold">Deleted by</th>
+                        <th class="bold">Date Created</th>
+                        <th class="bold">Created by</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% if (project && project.documents && project.documents.length > 0) { %>
+                        <% project.documents.forEach(function(document) { %>
+                          <% if (document.deleted) { %>
+                            <tr>
+                              <td><%= document.title %></td>
+                              <td><%= document.deleted_at %></td>
+                              <td><%= document.deleted_by %></td>
+                              <td><%= document.created_at %></td>
+                              <td><%= document.created_by %></td>
+                            </tr>
+                          <% } %>
+                        <% }); %>
+                      <% } %>
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
             <!-- Users -->
             <div class="tab-content mt-3" id="tabContent">
               <div class="tab-pane fade" id="users-pane" role="tabpanel" aria-labelledby="users-pane">
-                <div class="table-responsive"> <!-- Add this wrapper for responsive tables -->
+                <div class="table-responsive"> 
                   <table class="table">
                     <thead>
                       <tr>

@@ -13,7 +13,7 @@
           <h3 class="text-center">Projects</h3>
         </div>
         <div class="card-body">
-          <!-- Tabs: My Projects, Pinned Projects -->
+          <!-- Tabs: My Projects, Pinned Projects, Archived Projects -->
           <ul class="nav nav-tabs" id="assetsTablist" role="tablist">
             <li class="nav-item" role="presentation">
               <button class="nav-link tab-link active" id="my-projects-tab" data-bs-toggle="tab"
@@ -27,6 +27,13 @@
                 data-bs-target="#pinned-projects-pane" type="button" role="tab" aria-controls="pinned-projects-tab"
                 aria-selected="false">
                 Pinned Projects
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link tab-link" id="archived-projects-tab" data-bs-toggle="tab"
+                data-bs-target="#archived-projects-pane" type="button" role="tab" aria-controls="archived-projects-tab"
+                aria-selected="false">
+                Archived Projects
               </button>
             </li>
           </ul>
@@ -92,6 +99,42 @@
                 </div>
                 <% } %>
             </div>
+          </div>
+          <!-- Archived Projects Pane -->
+          <div class="tab-pane fade" id="archived-projects-pane" role="tabpanel" 
+            aria-labelledby="archived-projects-pane">
+            <% if (trash) { %>
+              <div class="table-responsive"> 
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th class="bold">Title</th>
+                      <th class="bold">Date Archived</th>
+                      <th class="bold">Deleted by</th>
+                      <th class="bold">Date Created</th>
+                      <th class="bold">Created by</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% projects.forEach(function(project) { %>
+                      <% if (project.deleted) { %>
+                        <tr>
+                          <td><%= project.title %></td>
+                          <td><%= project.deleted_at %></td>
+                          <td><%= project.deleted_by %></td>
+                          <td><%= project.created_at %></td>
+                          <td><%= project.created_by %></td>
+                        </tr>
+                      <% } %>
+                    <% }); %>
+                  </tbody>
+                </table>
+              </div>
+              <% } else { %>
+              <p class="text-center">
+                <em>Nothing to see here...</em>
+              </p>
+            <% } %>
           </div>
         </div>
       </div>

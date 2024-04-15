@@ -208,7 +208,11 @@ router.post('/profile', ensureAuth, async (req, res) => {
 // View Dashbard
 router.get('/dashboard', ensureAuth, async (req, res) => {
   try {
-    res.render('user/dashboard.ejs', { user: req.user, projects: [] });
+    res.render('user/dashboard.ejs', { 
+      user: req.user, 
+      projects: [], // TODO: Get list of projects where user role>=1
+      trash: false // TODO: Check if any of these projects have been deleted 
+    });
   } catch (err) {
     throw err;
   }
