@@ -6,10 +6,24 @@ const Schema = mongoose.Schema;
 const UserSchema = new Schema({
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
+  firstName: { type: String, required: true },
+  lastName: { type: String, required: true },
   email: { type: String, required: true, unique: true},
   createdDate: { type: Date, default: Date.now },
   lastLogin: { type: Date, default: Date.now },
-  profileId: { type: Schema.Types.ObjectId, ref: "profile", unique: true }
+  website: { type: String, unique: true },
+  pronouns: { type: String },
+  title: { type: String },
+  bio: { type: String },
+  profilePhotoUrl: { type: String },
+  profilePublic: { type: Boolean, default: false },
+  following: [
+    { type: Schema.Types.ObjectId, ref: "profile" }
+  ],
+  followers: [
+    { type: Schema.Types.ObjectId, ref: "profile" }
+  ]
+  // profileId: { type: Schema.Types.ObjectId, ref: "profile", unique: true }
 });
 
 // Export model
