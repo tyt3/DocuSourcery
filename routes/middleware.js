@@ -4,12 +4,12 @@
 const User = require('../models/user');
 
 
-// Check if the user is authenticated
+// Check if the user is authenticated\
 function ensureAuth(req, res, next) {
   if (req.isAuthenticated()) {
-    return next(); 
+    return next();
   } else {
-    // Store the original URL in the session
+    // Store the original requested URL in the session
     req.session.returnTo = req.originalUrl;
     req.flash('error', 'You must be logged in to access this page.');
     res.redirect('/login');

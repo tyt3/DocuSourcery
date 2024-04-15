@@ -127,10 +127,10 @@ router.post('/login', ensureNotAuth, (req, res, next) => {
         console.error('Login Error: ', err);
         return next(err);
       }
-      // Redirect the user back to the stored URL or dashboard if no stored URL
-      const redirectTo = req.session.returnTo || '/dashboard';
-      delete req.session.returnTo; // Clear the stored URL from session
-      return res.redirect(redirectTo);
+      // Redirect the user back to the original requested URL or /dashboard if no returnTo URL is set
+      const redirectUrl = req.session.returnTo || '/dashboard';
+      delete req.session.returnTo; // Clear the stored returnTo URL
+      return res.redirect(redirectUrl);
     });
   })(req, res, next);
 });
