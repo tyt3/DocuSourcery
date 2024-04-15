@@ -179,12 +179,12 @@ router.put('/account', ensureAuth, checkAuthUsernameAndEmail, validatePassword, 
 // PROFILE
 
 // View Profile
-router.get('/profile/:id', ensureAuth, async (req, res) => {
+router.get('/profile/:username', ensureAuth, async (req, res) => {
   // Get user profile
-  const profileId = req.params.id;
+  const username = req.params.username;
   try {
     // Find user profile based on profileId
-    const userProfile = await Profile.findOne({ _id: profileId });
+    const userProfile = await User.findOne({ username: username });
 
     if (!userProfile) {
       return res.redirect('/');

@@ -8,7 +8,7 @@
   <!-- Contact Information -->
   <div class="card shadow-sm">
     <div class="card-body">
-      <h2><%= profile.first_name %> <%= profile.last_name %></h2>
+      <h2><%= profile.firstName %> <%= profile.lastName %></h2>
       <% if (profile.profile_photo_url) { %>
       <img style="margin: 10px 0 10px 0; max-width: 25%;" src="<%= profile.profile_photo_url %>">
       <% } else { %>
@@ -18,17 +18,17 @@
       <br />
       <p class="contact"><strong>Pronouns:</strong> <%= profile.pronouns %></p>
       <p class="contact"><strong>Title:</strong> <%= profile.title %></p>
-      <p class="contact"><strong>Email:</strong> <a href="#">taylor.klein@domain.com</a></p>
+      <p class="contact"><strong>Email:</strong> <a href="#"><%= profile.email %></a></p>
       <% if (profile.website) { %>
       <p class="contact"><strong>Website:</strong> 
         <a href="<%= user.website %>" target="_blank"><%= profile.website %></a>
       </p>
       <% } %>
-      <% if (profile.contact) { %>
+      <% if (profile.bio) { %>
       <p class="contact"><strong>Bio:</strong> 
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer id semper lorem. Morbi pretium velit non ex laoreet fringilla. Morbi finibus pharetra nisi in volutpat. Praesent cursus consectetur turpis, sit amet dapibus felis finibus sed. Vivamus in magna pretium, vulputate massa at, rhoncus nulla. Nam ut viverra enim, vitae tempor mauris. Phasellus ullamcorper sem sed justo fringilla, ut vulputate ipsum viverra. Nunc pharetra congue ipsum ac auctor. Fusce suscipit lectus eu tincidunt mollis. Aliquam eget arcu mauris. Interdum et malesuada fames ac ante ipsum primis in faucibus.
       <% } %>
-      <% if (profile.user_id.toString() === user.id.toString()) { %>
+      <% if (profile.id.toString() === user.id.toString()) { %>
       <div class="d-grid gap-2 d-md-flex justify-content-center justify-content-md-start mt-4">
         <button type="button" class="btn btn-12 btn-ds-primary" data-bs-toggle="modal"
           data-bs-target="#updateProfileModal">
@@ -90,7 +90,7 @@
           </a>
         </div>
         <% } else { %>
-        <p><em>profile.first_name hasn't published any projects yet.</em></p>
+        <p><em>profile.firstName hasn't published any projects yet.</em></p>
         <% } %>
       </div>
     </div>
