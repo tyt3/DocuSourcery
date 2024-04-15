@@ -139,13 +139,20 @@ router.post('/login', ensureNotAuth, (req, res, next) => {
 // Log Out
 router.get('/logout', ensureAuth, async (req, res) => {
   try {
-    req.logout(); 
-    res.redirect('/');
+    req.logout((err) => { // Provide a callback function
+      if (err) {
+        console.error('Logout Error: ', err);
+        res.redirect('/'); 
+      } else {
+        res.redirect('/'); 
+      }
+    });
   } catch (err) {
     console.error('Logout Error: ', err);
-    res.redirect('/');
+    res.redirect('/'); 
   }
 });
+
 
 
 // ACCOUNT
