@@ -191,6 +191,7 @@ button.nav-link.tab-link {
 
 .btn-ds-secondary:hover {
   background-color:var(--secondary-color-dark);
+  color: white;
   border-color: var(--secondary-color-dark);
 }
 
@@ -201,8 +202,7 @@ button.nav-link.tab-link {
 
 .btn-ds-outline-secondary:hover {
   background-color: var(--secondary-color-dark);
-  /* color: var(--primary-color); */
-  color: white;
+  color: var(--primary-color);
   border-color: var(--secondary-color-dark);
 }
 
