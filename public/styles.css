@@ -23,7 +23,7 @@ body {
 }
 
 .jumbotron {
-  height: calc(100vh - 70px);
+  height: calc(100vh - 4em);
   background-color: var(--secondary-color); /* For browsers that do not support gradients */
   background-image: linear-gradient(to bottom, var(--secondary-color), var(--secondary-color), var(--primary-color));
 }
