@@ -162,9 +162,12 @@ button.nav-link.tab-link {
 }
 
 .btn-ds-primary:hover {
-  background-color:var(--secondary-color);
+  /* background-color:var(--secondary-color);
   color: var(--primary-color-dark);
-  border-color: var(--secondary-color);
+  border-color: var(--secondary-color); */
+  background-color:var(--tertiary-color);
+  color: white;
+  border-color: var(--tertiary-color);
 }
 
 .btn-ds-outline-primary {
