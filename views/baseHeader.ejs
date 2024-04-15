@@ -55,7 +55,7 @@
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
               aria-expanded="false">
-              Hi, <%= user.first_name %> !
+              Hi, <%= user.firstName %> !
               <img <% if (true) { %>
               src="https://upload.wikimedia.org/wikipedia/commons/8/86/Grey_-_Rounded_borded_-_Add_user_%28Deus_WikiProject%29.png"
               <% } else { %>
@@ -67,7 +67,7 @@
             </a>
             <ul class="dropdown-menu bg-ds-primary" data-bs-theme="dark">
               <li><a class="dropdown-item nav-item-ds" href="/dashboard">Dashboard</a></li>
-              <li><a class="dropdown-item nav-item-ds" href="/profile/<%= user.profile_id %>">Profile</a></li>
+              <li><a class="dropdown-item nav-item-ds" href="/profile/<%= user.username %>">Profile</a></li>
               <li><a class="dropdown-item nav-item-ds" href="/logout">Logout</a></li>
             </ul>
           </li>
