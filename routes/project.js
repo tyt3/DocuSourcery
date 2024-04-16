@@ -149,12 +149,14 @@ router.get('/projects', async (req, res) => {
 router.get('/project/:projectSlug/document/create', ensureAuth, async (req, res) => {
   const projectId = req.params.projectSlug;
 
-  // TODO: Get project to send to frontend
+  // TODO: add error handling
+  const project = await Project.findOne({ slug: projectSlug });
 
   try {
     res.render('project/documentEdit.ejs', { 
       user: req.user,
-      project: null 
+      project: project,
+      document: null,
     });
   } catch (err) {
     throw err;
