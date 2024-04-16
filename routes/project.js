@@ -31,8 +31,12 @@ router.get('/project/create', ensureAuth, async (req, res) => {
 router.post('/project/create', ensureAuth, async (req, res) => {
   const { title } = req.body; // TODO: Add remaining fields
 
-  // Validate form fields
-  // Title length is less than or equal to 255
+  // TODO: Write and apply middleware to validate form fields
+    // Title length is less than or equal to 255 characters 
+    // Subtitle length is less than or equal to 255 characters 
+    // Slug is unique
+    // Slug length is less than 25 characters
+    // Slug contains only letters, numbers, and dashes
 
   try {
     const project = new Project({
@@ -50,6 +54,10 @@ router.post('/project/create', ensureAuth, async (req, res) => {
 // Edit Project View
 router.get('/project/:projectSlug/edit/', ensureAuth, async (req, res) => {
   const projectSlug = req.params.projectSlug;
+
+  // TODO: Get project to send to frontend
+  // TODO: Populate all documents and pages in project
+
   try {
     const project = await Project.findOne({ slug: projectSlug });
     res.render('project/projectEdit.ejs', { 
@@ -65,6 +73,9 @@ router.get('/project/:projectSlug/edit/', ensureAuth, async (req, res) => {
 // Edit Project
 router.put('/project/:id', ensureAuth, async (req, res) => {
   const projectId = req.params.id;
+
+  // TODO: Apply same middleware as in project/create to validate form fields
+
   try {
     // TODO: Implement
   } catch (err) {
@@ -95,6 +106,10 @@ router.put('/project/restore/:id', ensureAuth, async (req, res) => {
 // View Project
 router.get('/project/:slug', async (req, res) => {
   const projectSlug = req.params.slug;
+
+  // TODO: Get project to send to frontend
+  // TODO: Populate all documents and pages in project
+
   try {
     const project = await Project.findOne({ slug: projectSlug });
     res.render('project/project.ejs', { 
@@ -111,6 +126,8 @@ router.get('/project/:slug', async (req, res) => {
 
 // View Published Projects
 router.get('/projects', ensureAuth, async (req, res) => {
+  // TODO: Get all projects where public===true
+
   try {
     res.render('project/projects.ejs', { 
       user: req.user,
@@ -127,6 +144,9 @@ router.get('/projects', ensureAuth, async (req, res) => {
 // Create Document View
 router.get('project/:projectSlug/document/create', ensureAuth, async (req, res) => {
   const projectId = req.params.projectSlug;
+
+  // TODO: Get project to send to frontend
+
   try {
     res.render('project/documentEdit.ejs', { 
       user: req.user,
@@ -142,8 +162,7 @@ router.post('/document/create/:projectId', ensureAuth, async (req, res) => {
   const projectId = req.params.projectId;
   const { title } = req.body; // TODO: Add remaining fields
 
-  // Validate form fields
-  // Title length is less than or equal to 255
+  // TODO: Apply middleware to validate form fields
 
   try {
     const document = new Document({
@@ -163,6 +182,8 @@ router.get('project/:projectSlug/:documentSlug/edit', ensureAuth, async (req, re
   const { projectSlug, documentSlug } = req.params;
   try {
     // TODO: Get project and document objects and send to frontend
+    // TODO: Populate all pages in document
+
     res.render('project/documentEdit.ejs', { 
       user: req.user,
       project: null,
@@ -208,21 +229,25 @@ router.get('/project/:projectSlug/:documentSlug/', async (req, res) => {
   const { projectSlug, documentSlug } = req.params;
   try {
     // TODO: Get project and document objects and send to frontend
+    // TODO: Populate all pages in document
+    
+    var viewType;
+    var page = null;
 
-var viewType;
-
-if (document.landingPage || document.pages.length === 0) {
-    viewType = "document";
-} else {
-    viewType = "page";
-}
+    // Determine if the document or its first page should be rendered
+    if (document.landingPage || document.pages.length === 0) {
+        viewType = "document";
+    } else {
+        viewType = "page";
+        page = document.pages.find(page => page.order === 0);
+    }
 
     res.render('project/project.ejs', { 
       user: req.user,
-      project: project,
-      document: document,
-      page: null,
-      type: type
+      project: null, // TODO: Replace with project
+      document: null, // TODO: Replace with document
+      page: page,
+      viewType: viewType
     });
   } catch (err) {
     throw err;
@@ -234,6 +259,9 @@ if (document.landingPage || document.pages.length === 0) {
 // Create Page View
 router.get('project/:projectSlug/:documentSlug/page/create', ensureAuth, async (req, res) => {
   const { projectSlug, documentSlug } = req.params;
+  
+  // TODO: Get project and document, error if not found 
+
   try {
     res.render('project/pageEdit.ejs', { 
       user: req.user,
@@ -251,8 +279,8 @@ router.post('/page/create/:projectId/:docId', ensureAuth, async (req, res) => {
   const { projectId, docId } = req.params;
   const { title } = req.body;
 
-  // Validate form fields
-  // Title length is less than or equal to 255
+  // TODO: Get project and document, error if not found
+  // TODO: Validate form fields
 
   try {
     // Assuming you have a Page schema with projectId and docId as references
@@ -278,11 +306,12 @@ router.get('project/:projectSlug/:documentSlug/:pageSlug/edit', ensureAuth, asyn
   const { projectSlug, documentSlug, pageSlug } = req.params;
   try {
     // TODO: Get project, document, and page objects and send to frontend
+
     res.render('project/pageEdit.ejs', { 
       user: req.user,
-      project: null,
-      document: null, 
-      page: null
+      project: null, // TODO: Replace with project
+      document: null, // TODO: Replace with document
+      page: null, // TODO: Replace with page
     });
   } catch (err) {
     throw err;
@@ -325,11 +354,12 @@ router.get('project/:projectSlug/:documentSlug/:pageSlug', async (req, res) => {
   const { projectSlug, documentSlug, pageSlug } = req.params;
   try {
     // TODO: Get project, document, and page objects and send to frontend
+
     res.render('project/project.ejs', { 
       user: req.user,
-      project: project,
-      document: document,
-      page: page,
+      project: null, // TODO: Replace with project
+      document: null, // TODO: Replace with document
+      page: null, // TODO: Replace with page
       viewType: "page"
     });
   } catch (err) {
@@ -343,7 +373,7 @@ router.get('project/:projectSlug/:documentSlug/:pageSlug', async (req, res) => {
 // View User Trash
 router.get('/trash', ensureAuth, async (req, res) => {
   try {
-    // TODO: Get user projects where role=3 and deleted=true
+    // TODO: Get all user projects where role=3 and deleted=true
     res.render('project/trash.ejs', { 
       user: req.user,
       projects: [] 
@@ -357,6 +387,7 @@ router.get('/trash', ensureAuth, async (req, res) => {
 router.delete('/trash', ensureAuth, async (req, res) => {
   try {
     // TODO: Delete all of user's projects where role=3 and deleted=true
+
   } catch (err) {
     throw err;
   }
@@ -366,6 +397,7 @@ router.delete('/trash', ensureAuth, async (req, res) => {
 router.delete('/project/trash/:id', ensureAuth, async (req, res) => {
   const projectId = req.params.id;
   try {
+    // TODO: Get and populate project
     // TODO: Delete all project documents and pages where role=3 and deleted=true
   } catch (err) {
     throw err;
