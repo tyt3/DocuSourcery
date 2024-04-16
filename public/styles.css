@@ -23,13 +23,8 @@ body {
 }
 
 .jumbotron {
-/*   height: calc(100vh - 60px); */
   background-color: var(--secondary-color); /* For browsers that do not support gradients */
   background-image: linear-gradient(to bottom, var(--secondary-color), var(--secondary-color), var(--tertiary-color));
-}
-
-.vh-ds-100 {
-  height: 100vh;
 }
 
 
@@ -90,9 +85,7 @@ button.nav-link.tab-link {
 .project-nav {
   overflow: auto;
   position: sticky;
-  top: 60px;
 }
-
 
 @media (max-width: 1200px) {
   .project-nav {

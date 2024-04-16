@@ -8,8 +8,8 @@
           <span class="navbar-toggler-icon"></span>
         </button>
       </div>
-      <div class="col d-flex justify-content-end" id="search">
-        <form method="POST" class="d-flex" role="search" action="/project/search">
+      <div class="col" id="search">
+        <form method="POST" class="d-flex justify-content-end" role="search" action="/project/search">
           <input
             class="form-control me-2 bg-white"
             type="keywords"
@@ -58,20 +58,27 @@
     </div>
   </div>
 </div>
-<div class="container-fluid">
+<div class="container">
   <div class="row">
-    <div class="col-xl-3 side-nav .d-none .d-xl-block bg-ds-secondary">
+    <div class="col-xl-2 project-nav .d-none .d-xl-block border-end">
       <div style="max-width: 100%;">
       </div>
     </div>  
-    <div class="col-12 col-xl-9">
+    <div class="col-12 col-xl-8">
       <!-- Main Content -->
       <div class="container my-5">
         <h1>
           Project
         </h1>
+        <p>
+          
+        </p>
       </div>  
     </div>
+    <div class="col-xl-2 project-nav .d-none .d-xl-block border-start">
+      <div style="max-width: 100%;">
+      </div>
+    </div> 
   </div>
 </div>
 <%- include('../baseFooter') -%>

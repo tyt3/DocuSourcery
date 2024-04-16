@@ -13,50 +13,72 @@ const offset = 15;
 
 // Add a scroll event listener
 window.addEventListener('scroll', () => {
-  const parentRect = actionPanel.getBoundingClientRect();
-  const parentTop = parentRect.top + window.scrollY;
+  // Check if actionPanel and parentRect are not null
+  if (actionPanel && actionButtons) {
+    const parentRect = actionPanel.getBoundingClientRect();
+    const parentTop = parentRect.top + window.scrollY;
 
-  if (window.scrollY >= parentTop + offset) {
-    // Make the action-buttons div sticky
-    actionButtons.style.position = 'sticky';
-    actionButtons.style.top = `${offset}px`;
-  } else {
-    // Remove sticky behavior
-    actionButtons.style.position = 'static';
+    if (window.scrollY >= parentTop + offset) {
+      // Make the action-buttons div sticky
+      actionButtons.style.position = 'sticky';
+      actionButtons.style.top = `${offset}px`;
+    } else {
+      // Remove sticky behavior
+      actionButtons.style.position = 'static';
+    }
   }
 });
+
+
+// VIEWPORT HEIGHT STYLING
 
 // Calculate and set viewport height, minus top navbar
 
-// Get the viewport height
-const viewportHeight = window.innerHeight;
+var topNavbar = document.getElementById('primaryNavbar');
+var viewportHeight = window.innerHeight;
 
-// Get the top position of the div
-const divTop = document.querySelector('.vh-ds-100').getBoundingClientRect().top;
+// Calculate the height of the top navbar
+var topNavbarHeight = topNavbar.offsetHeight;
 
-// Calculate the height of the div
-const divHeight = viewportHeight - divTop;
+// Calculate the height of the target div
+var vh_ds_100 = viewportHeight - topNavbarHeight;
 
-// Set the height of the div
-document.querySelector('.vh-ds-100').style.height = divHeight + 'px';
 
-// Add and Remove height for project navbar, depending on viewport
-window.addEventListener('resize', function() {
+// Jumbotron
+var jumbotron = document.querySelector('.jumbotron');
+if (jumbotron) {
+  jumbotron.style.minHeight = vh_ds_100 + 'px'
+};
+
+// Project Side navbars
+
+// Function to handle the resizing of vh-ds-100 divs
+function handleResize() {
   // Get the viewport width
   const viewportWidth = window.innerWidth;
 
-  // Select the side-nav div
-  const sideNav = document.querySelector('.project-nav');
+  // Select all elements with the vh-ds-100 class
+  const projectNabars = document.querySelectorAll('.project-nav');
 
-  // Check if viewport width is less than 1200px
-  if (viewportWidth < 1200) {
-    // Remove the height property
-    sideNav.style.removeProperty('height');
-  } else {
-    // Add the height property back
-    sideNav.style.height = divHeight;
-  }
-});
+  // Loop through each div
+  projectNabars.forEach(function(div) {
+    // Check if viewport width is less than 1200px
+    if (viewportWidth < 1200) {
+      // Remove the height property
+      div.style.removeProperty('height');
+    } else {
+      // Add the height property back
+      div.style.height = vh_ds_100 + 'px';
+      div.style.top = topNavbarHeight + 'px';
+    }
+  });
+}
 
-// Trigger the resize event on page load to initially set the height
-window.dispatchEvent(new Event('resize'));
+var projectNavbar = document.querySelector('.project-nav');
+if (projectNavbar) {
+  // Execute the function on page load
+  window.addEventListener('load', handleResize);
+
+  // Execute the function on window resize
+  window.addEventListener('resize', handleResize);
+};
