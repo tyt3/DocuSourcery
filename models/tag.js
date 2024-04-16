@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 // Define Tag model
 const TagSchema = new Schema({
   title: { type: String, maxLength: 50, unique: true, required: true },
-  description: { type: String, required: true }
+  description: { type: String }
   projects: [
     { type: Schema.Types.ObjectId, ref: "project" }
   ],
