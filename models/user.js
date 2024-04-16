@@ -11,7 +11,7 @@ const UserSchema = new Schema({
   email: { type: String, required: true, unique: true},
   createdDate: { type: Date, default: Date.now },
   lastLogin: { type: Date, default: Date.now },
-  website: { type: String, unique: true },
+  website: { type: String },
   pronouns: { type: String },
   title: { type: String },
   bio: { type: String },
@@ -22,7 +22,8 @@ const UserSchema = new Schema({
   ],
   followers: [
     { type: Schema.Types.ObjectId, ref: "profile" }
-  ]
+  ],
+  apiKey: { type: String, minLength: 20, maxLength: 128, unique: true }
   // profileId: { type: Schema.Types.ObjectId, ref: "profile", unique: true }
 });
 
