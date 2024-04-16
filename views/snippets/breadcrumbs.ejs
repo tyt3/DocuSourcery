@@ -1,0 +1,31 @@
+<!-- Truncate Function -->
+
+<%= const maxLength = 100; %>
+
+<% function truncate(str, maxLength) {
+  if (str.length > maxLength) {
+      return str.slice(0, maxLength) + '...';
+  } else {
+      return str;
+  }
+} %>
+
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <% if (project) { %> 
+    <li class="breadcrumb-item">
+      <a href="/project/<%= project.slug %>">
+      <%= truncate(project.title, maxLength) %></a>
+    </li>
+    <% } %>
+    <% if (document) { %> 
+    <li class="breadcrumb-item"><a href="/project/<%= project.slug %>/<%= document.slug %>">
+      <%= truncate(document.title, maxLength) %></a>
+    </li>
+    <% } %>
+    <% if (page) { %> 
+    <li class="breadcrumb-item"><a href="#"><%= truncate(page.title, maxLength) %></a>
+    </li>
+    <% } %>
+  </ol>
+</nav>

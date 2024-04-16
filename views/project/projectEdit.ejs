@@ -10,228 +10,213 @@
   </h1>
   
   <!-- Breadcrumb Nav-->
-  <% function truncate(str, maxLength) {
-    if (str.length > maxLength) {
-        return str.slice(0, maxLength) + '...';
-    } else {
-        return str;
-    }
-  } %>
-  
-  <% if (project) { %>
-  <nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="#"><%= truncate(project.title, 100) %></a></li>
-    </ol>
-  </nav>
-  <% } %>
+  <%- include('../snippets/breadcrumbs.ejs') -%>
 
   <!-- Card -->
-  <div class="container">
-    <div class="card shadow-sm">
-      <div class="card-body">
-        <!-- Tabs -->
-        <ul class="nav nav-tabs" id="assetsTablist" role="tablist">
-          <li class="nav-item" role="presentation">
-            <button class="nav-link tab-link active" id="properties-tab" 
-              data-bs-toggle="tab" data-bs-target="#properties-pane" type="button" 
-              role="tab" aria-controls="properties-tab" aria-selected="true">
-              Properties
-            </button>
-          </li>
-          <li class="nav-item" role="presentation">
-            <button class="nav-link tab-link" id="content-tab" 
-              data-bs-toggle="tab" data-bs-target="#content-pane" type="button" 
-              role="tab" aria-controls="content-tab" aria-selected="false">
-              Content
-            </button>
-          </li>
-          <li class="nav-item" role="presentation">
-            <button class="nav-link tab-link" id="trash-tab" 
-              data-bs-toggle="tab" data-bs-target="#trash-pane" type="button" 
-              role="tab" aria-controls="trash-tab" aria-selected="false">
-              Trash
-            </button>
-          </li>
-          <li class="nav-item" role="presentation">
-            <button class="nav-link tab-link" id="users-tab"  
-              data-bs-toggle="tab" data-bs-target="#users-pane" type="button" 
-              role="tab" aria-controls="users-tab" aria-selected="false">
-              Users
-            </button>
-          </li>
-        </ul>
-        <form>
-          <div class="row gy-4">
-            <!-- Tab Panels -->
-            <div class="col-12 col-md-8 col-xxl-9">
-              <div class="tab-content mt-3" id="tabContent">
-                <!-- Properties -->
-                <div class="tab-pane fade show active" id="properties-pane" 
-                  role="tabpanel" aria-labelledby="properties-pane">
-                  <div class="form-group row">
-                    <label for="title" class="col-sm-2 col-form-label bold">Title</label>
-                    <div class="col-sm-10">
-                      <input type="text" class="form-control" id="title" placeholder="Enter title">
-                    </div>
-                  </div>
-                  <div class="form-group row">
-                    <label for="subtitle" class="col-sm-2 col-form-label bold">Subtitle</label>
-                    <div class="col-sm-10">
-                      <input type="text" class="form-control" id="subtitle" placeholder="Enter subtitle">
-                    </div>
-                  </div>
-                  <div class="form-group row">
-                    <label for="slug" class="col-sm-2 col-form-label bold">Slug</label>
-                    <div class="col-sm-10">
-                      <input type="text" class="form-control" id="slug" placeholder="Enter slug">
-                    </div>
-                  </div>
-                  <div class="form-group row">
-                    <label for="description" class="col-sm-2 col-form-label bold">Description</label>
-                    <div class="col-sm-10">
-                      <textarea class="form-control" id="description" rows="3"
-                        placeholder="Enter description (Markdown Enabled Field)"></textarea>
-                    </div>
-                  </div>
-                  <div class="form-group row">
-                    <label class="col-sm-2 col-form-label bold">Tags</label>
-                    <div class="col-sm-10">
-                      <input type="text" class="form-control" placeholder="Enter tags">
-                    </div>
-                  </div>
-                  <div class="form-group row">
-                    <label class="col-sm-2 col-form-label bold">Permissions</label>
-                    <div class="col-sm-10">
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="noLogin" value="noLogin">
-                        <label class="form-check-label" for="noLogin">No login required</label>
-                      </div>
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="canDuplicate" value="canDuplicate">
-                        <label class="form-check-label" for="canDuplicate">Can be duplicated by you and others</label>
-                      </div>
-                    </div>
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <!-- Tabs -->
+      <ul class="nav nav-tabs" id="assetsTablist" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link tab-link active" id="properties-tab" 
+            data-bs-toggle="tab" data-bs-target="#properties-pane" type="button" 
+            role="tab" aria-controls="properties-tab" aria-selected="true">
+            Properties
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link tab-link" id="content-tab" 
+            data-bs-toggle="tab" data-bs-target="#content-pane" type="button" 
+            role="tab" aria-controls="content-tab" aria-selected="false">
+            Content
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link tab-link" id="trash-tab" 
+            data-bs-toggle="tab" data-bs-target="#trash-pane" type="button" 
+            role="tab" aria-controls="trash-tab" aria-selected="false">
+            Trash
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link tab-link" id="users-tab"  
+            data-bs-toggle="tab" data-bs-target="#users-pane" type="button" 
+            role="tab" aria-controls="users-tab" aria-selected="false">
+            Users
+          </button>
+        </li>
+      </ul>
+      <form>
+        <div class="row gy-4">
+          <!-- Tab Panels -->
+          <div class="col-12 col-md-8 col-xxl-9">
+            <div class="tab-content mt-3" id="tabContent">
+              <!-- Properties -->
+              <div class="tab-pane fade show active" id="properties-pane" 
+                role="tabpanel" aria-labelledby="properties-pane">
+                <div class="form-group row">
+                  <label for="title" class="col-sm-2 col-form-label bold">Title</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="title" placeholder="Enter title">
                   </div>
                 </div>
-                <!-- Content -->
-                <div class="tab-pane fade" id="content-pane" role="tabpanel" 
-                  aria-labelledby="content-pane">
-                  <% if (project && project.documents && project.documents.length > 0) { %>
-                    <!-- Documents List -->
-                    <ul class="list-group">
-                      <% project.documents.forEach(function(document) { %>
-                        <!-- Document Cards -->
-                        <%- include('../snippets/document-list-item.ejs') -%>
-                      <% }); %>  
-                    </ul> 
-                  <% } else { %>
-                  <p>There are no documents.</p>
-                  <% } %>  
-                  <% if (project) { %>
-                  <a href="/project/<%= project.slug %>/document/create/" 
-                    role="button" class="btn btn-12 btn-ds-primary">
-                    Add a Document
-                  </a>    
-                  <% } %>         
-                </div>
-                <!-- Trash -->
-                <div class="tab-pane fade" id="trash-pane" role="tabpanel" 
-                  aria-labelledby="trash-pane">
-                  <div class="table-responsive"> 
-                    <table class="table">
-                      <thead>
-                        <tr>
-                          <th class="bold">Title</th>
-                          <th class="bold">Date Deleted</th>
-                          <th class="bold">Deleted by</th>
-                          <th class="bold">Date Created</th>
-                          <th class="bold">Created by</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <% if (project && project.documents && project.documents.length > 0) { %>
-                          <% project.documents.forEach(function(document) { %>
-                            <% if (document.deleted) { %>
-                              <tr>
-                                <td><%= document.title %></td>
-                                <td><%= document.deleted_at %></td>
-                                <td><%= document.deleted_by %></td>
-                                <td><%= document.created_at %></td>
-                                <td><%= document.created_by %></td>
-                              </tr>
-                            <% } %>
-                          <% }); %>
-                        <% } %>
-                      </tbody>
-                    </table>
+                <div class="form-group row">
+                  <label for="subtitle" class="col-sm-2 col-form-label bold">Subtitle</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="subtitle" placeholder="Enter subtitle">
                   </div>
                 </div>
-                <!-- Users -->
-                <div class="tab-pane fade" id="users-pane" role="tabpanel" aria-labelledby="users-pane">
-                  <div class="table-responsive"> 
-                    <table class="table">
-                      <thead>
-                        <tr>
-                          <th class="bold">Username</th>
-                          <th class="bold">Display Name</th>
-                          <th class="bold">Email</th>
-                          <th class="bold">Role</th>
-                          <th class="bold">Remove</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <% if (users && users.length > 0) { %>
-                          <% users.forEach(function(usr) { %>
-                            <tr>
-                              <td><%= usr.username %></td>
-                              <td><%= usr.first_name %> <%= usr.last_name %></td>
-                              <td><%= usr.email %></td>
-                              <td>
-                                <select class="form-select" name="role" id="role">
-                                  <option value="0" <%= usr.role === 0 ? 'selected' : '' %>>Viewer</option>
-                                  <option value="1" <%= usr.role === 1 ? 'selected' : '' %>>Editor</option>
-                                  <option value="2" <%= usr.role === 2 ? 'selected' : '' %>>Admin</option>
-                                  <option value="3" <%= usr.role === 3 ? 'selected' : '' %>>Owner</option>
-                                </select>
-                              </td>
-                              <td>
-                                <input class="form-check-input" type="checkbox" name="remove" id="remove">
-                              </td>
-                            </tr>
-                          <% }); %>
-                        <% } %>
-                      </tbody>
-                    </table>
+                <div class="form-group row">
+                  <label for="slug" class="col-sm-2 col-form-label bold">Slug</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="slug" placeholder="Enter slug">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="description" class="col-sm-2 col-form-label bold">Description</label>
+                  <div class="col-sm-10">
+                    <textarea class="form-control" id="description" rows="3"
+                      placeholder="Enter description (Markdown Enabled Field)"></textarea>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-2 col-form-label bold">Tags</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" placeholder="Enter tags">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-2 col-form-label bold">Permissions</label>
+                  <div class="col-sm-10">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="noLogin" value="noLogin">
+                      <label class="form-check-label" for="noLogin">No login required</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="canDuplicate" value="canDuplicate">
+                      <label class="form-check-label" for="canDuplicate">Can be duplicated by you and others</label>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="col-12 col-md-4 col-xxl-3 relative" id="action-panel">
-              <div class="card mt-3" id="action-buttons">
-                <div class="card-body">
-                  <div class="d-grid gap-2 col-12 mx-auto">
-                    <button type="submit" class="btn btn-block btn-outline-success">Save Project</button>
-                    <% if (project) { %>
-                    <button type="button" class="btn btn-block btn-outline-danger"
-                      data-bs-toggle="modal" data-bs-target="#deleteProjectModal">Delete Project</button>
-                    <a href="/project/<%= project.slug %>"
-                      role="button" class="btn btn-block btn-outline-secondary">View Project</button>
-                    <% } %>
-                  </div>
-                  <div class="form-check form-switch mt-2">
-                    <input class="form-check-input" type="checkbox" role="switch" id="public">
-                    <label class="form-check-label bold" for="public">Make project public</label>
-                  </div>
+              <!-- Content -->
+              <div class="tab-pane fade" id="content-pane" role="tabpanel" 
+                aria-labelledby="content-pane">
+                <% if (project && project.documents && project.documents.length > 0) { %>
+                  <!-- Documents List -->
+                  <ul class="list-group">
+                    <% project.documents.forEach(function(document) { %>
+                      <!-- Document Cards -->
+                      <%- include('../snippets/document-list-item.ejs') -%>
+                    <% }); %>  
+                  </ul> 
+                <% } else { %>
+                <p>There are no documents.</p>
+                <% } %>  
+                <% if (project) { %>
+                <a href="/project/<%= project.slug %>/document/create/" 
+                  role="button" class="btn btn-12 btn-ds-primary">
+                  Add a Document
+                </a>    
+                <% } %>         
+              </div>
+              <!-- Trash -->
+              <div class="tab-pane fade" id="trash-pane" role="tabpanel" 
+                aria-labelledby="trash-pane">
+                <div class="table-responsive"> 
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th class="bold">Title</th>
+                        <th class="bold">Date Deleted</th>
+                        <th class="bold">Deleted by</th>
+                        <th class="bold">Date Created</th>
+                        <th class="bold">Created by</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% if (project && project.documents && project.documents.length > 0) { %>
+                        <% project.documents.forEach(function(document) { %>
+                          <% if (document.deleted) { %>
+                            <tr>
+                              <td><%= document.title %></td>
+                              <td><%= document.deleted_at %></td>
+                              <td><%= document.deleted_by %></td>
+                              <td><%= document.created_at %></td>
+                              <td><%= document.created_by %></td>
+                            </tr>
+                          <% } %>
+                        <% }); %>
+                      <% } %>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <!-- Users -->
+              <div class="tab-pane fade" id="users-pane" role="tabpanel" aria-labelledby="users-pane">
+                <div class="table-responsive"> 
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th class="bold">Username</th>
+                        <th class="bold">Display Name</th>
+                        <th class="bold">Email</th>
+                        <th class="bold">Role</th>
+                        <th class="bold">Remove</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% if (users && users.length > 0) { %>
+                        <% users.forEach(function(usr) { %>
+                          <tr>
+                            <td><%= usr.username %></td>
+                            <td><%= usr.first_name %> <%= usr.last_name %></td>
+                            <td><%= usr.email %></td>
+                            <td>
+                              <select class="form-select" name="role" id="role">
+                                <option value="0" <%= usr.role === 0 ? 'selected' : '' %>>Viewer</option>
+                                <option value="1" <%= usr.role === 1 ? 'selected' : '' %>>Editor</option>
+                                <option value="2" <%= usr.role === 2 ? 'selected' : '' %>>Admin</option>
+                                <option value="3" <%= usr.role === 3 ? 'selected' : '' %>>Owner</option>
+                              </select>
+                            </td>
+                            <td>
+                              <input class="form-check-input" type="checkbox" name="remove" id="remove">
+                            </td>
+                          </tr>
+                        <% }); %>
+                      <% } %>
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
           </div>
-        </form>
-      </div>
+          <div class="col-12 col-md-4 col-xxl-3 relative" id="action-panel">
+            <div class="card mt-3" id="action-buttons">
+              <div class="card-body">
+                <div class="d-grid gap-2 col-12 mx-auto">
+                  <button type="submit" class="btn btn-block btn-outline-success">Save Project</button>
+                  <% if (project) { %>
+                  <button type="button" class="btn btn-block btn-outline-danger"
+                    data-bs-toggle="modal" data-bs-target="#deleteProjectModal">Delete Project</button>
+                  <a href="/project/<%= project.slug %>"
+                    role="button" class="btn btn-block btn-outline-secondary">View Project</button>
+                  <% } %>
+                </div>
+                <div class="form-check form-switch mt-2">
+                  <input class="form-check-input" type="checkbox" role="switch" id="public">
+                  <label class="form-check-label bold" for="public">Make project public</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
     </div>
   </div>
 </div>
+
 
 <!-- Delete Project Modal -->
 <% if (project) { %>

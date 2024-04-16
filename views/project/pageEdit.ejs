@@ -10,106 +10,82 @@
   </h1>
   
   <!-- Breadcrumb Nav -->
-  <% function truncate(str, maxLength) {
-    if (str.length > maxLength) {
-        return str.slice(0, maxLength) + '...';
-    } else {
-        return str;
-    }
-  } %>
-
-  <nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item">
-        <a href="/project/<%= project.slug %>">
-        <%= truncate(project.title, 100) %></a>
-      </li>
-      <li class="breadcrumb-item"><a href="/project/<%= project.slug %>/<%= document.slug %>">
-        <%= truncate(document.title, 100) %></a>
-      </li>
-      <% if (page) { %> 
-      <li class="breadcrumb-item"><a href="#"><%= truncate(page.title, 100) %></a>
-      </li>
-      <% } %>
-    </ol>
-  </nav>
+  <%- include('../snippets/breadcrumbs.ejs') -%>
 
   <!-- Card -->
-  <div class="container">
-    <div class="card shadow-sm">
-      <div class="card-body">
-        <!-- Tabs -->
-        <ul class="nav nav-tabs" id="assetsTablist" role="tablist">
-          <li class="nav-item" role="presentation">
-            <button class="nav-link tab-link active" id="properties-tab" 
-              data-bs-toggle="tab" data-bs-target="#properties-pane" type="button" 
-              role="tab" aria-controls="properties-tab" aria-selected="true">
-              Properties
-            </button>
-          </li>
-          <li class="nav-item" role="presentation">
-            <button class="nav-link tab-link" id="pages-tab" 
-              data-bs-toggle="tab" data-bs-target="#pages-pane" type="button" 
-              role="tab" aria-controls="pages-tab" aria-selected="false">
-              Pages
-            </button>
-          </li>
-        </ul>
-        <form>
-          <div class="row gy-4">
-            <!-- Tab Panels -->
-            <div class="col-12 col-md-8 col-xxl-9">
-              <div class="tab-content mt-3" id="tabPages">
-                <!-- Properties -->
-                <div class="tab-pane fade show active" id="properties-pane" 
-                  role="tabpanel" aria-labelledby="properties-pane">
-                  <div class="form-group row">
-                    <label for="title" class="col-sm-2 col-form-label bold">Title</label>
-                    <div class="col-sm-10">
-                      <input type="text" class="form-control" id="title" placeholder="Enter title">
-                    </div>
-                  </div>
-                  <div class="form-group row">
-                    <label for="slug" class="col-sm-2 col-form-label bold">Slug</label>
-                    <div class="col-sm-10">
-                      <input type="text" class="form-control" id="slug" placeholder="Enter slug">
-                    </div>
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <!-- Tabs -->
+      <ul class="nav nav-tabs" id="assetsTablist" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link tab-link active" id="properties-tab" 
+            data-bs-toggle="tab" data-bs-target="#properties-pane" type="button" 
+            role="tab" aria-controls="properties-tab" aria-selected="true">
+            Properties
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link tab-link" id="pages-tab" 
+            data-bs-toggle="tab" data-bs-target="#pages-pane" type="button" 
+            role="tab" aria-controls="pages-tab" aria-selected="false">
+            Pages
+          </button>
+        </li>
+      </ul>
+      <form>
+        <div class="row gy-4">
+          <!-- Tab Panels -->
+          <div class="col-12 col-md-8 col-xxl-9">
+            <div class="tab-content mt-3" id="tabPages">
+              <!-- Properties -->
+              <div class="tab-pane fade show active" id="properties-pane" 
+                role="tabpanel" aria-labelledby="properties-pane">
+                <div class="form-group row">
+                  <label for="title" class="col-sm-2 col-form-label bold">Title</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="title" placeholder="Enter title">
                   </div>
                 </div>
-                <!-- Page Content -->
-                <div class="tab-pane fade" id="pages-pane" role="tabpanel" 
-                  aria-labelledby="pages-pane">
-                   <div class="form-group row mt-4">
-                    <div class="col-sm-12">
-                      <textarea class="form-control" id="content" rows="10" placeholder="Enter page content"></textarea>
-                      <small>Markdown enabled field</small>
-                    </div>
+                <div class="form-group row">
+                  <label for="slug" class="col-sm-2 col-form-label bold">Slug</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="slug" placeholder="Enter slug">
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="col-12 col-md-4 col-xxl-3 relative" id="action-panel">
-              <div class="card mt-3" id="action-buttons">
-                <div class="card-body">
-                  <div class="d-grid gap-2 col-12 mx-auto">
-                    <button type="submit" class="btn btn-block btn-outline-success">Save Page</button>
-                    <% if (page) { %>
-                    <button type="button" class="btn btn-block btn-outline-danger"
-                      data-bs-toggle="modal" data-bs-target="#deletePageModal">Delete Page</button>
-                    <a href="/project/<%= project.slug %>/<%= document.slug %>/<%= page.slug %>"
-                      role="button" class="btn btn-block btn-outline-secondary">View Page</button>
-                    <% } %>
-                  </div>
-                  <div class="form-check form-switch mt-2">
-                    <input class="form-check-input" type="checkbox" role="switch" id="public">
-                    <label class="form-check-label bold" for="public">Make page public</label>
+              <!-- Page Content -->
+              <div class="tab-pane fade" id="pages-pane" role="tabpanel" 
+                aria-labelledby="pages-pane">
+                  <div class="form-group row mt-4">
+                  <div class="col-sm-12">
+                    <textarea class="form-control" id="content" rows="10" placeholder="Enter page content"></textarea>
+                    <small>Markdown enabled field</small>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </form>
-      </div>
+          <div class="col-12 col-md-4 col-xxl-3 relative" id="action-panel">
+            <div class="card mt-3" id="action-buttons">
+              <div class="card-body">
+                <div class="d-grid gap-2 col-12 mx-auto">
+                  <button type="submit" class="btn btn-block btn-outline-success">Save Page</button>
+                  <% if (page) { %>
+                  <button type="button" class="btn btn-block btn-outline-danger"
+                    data-bs-toggle="modal" data-bs-target="#deletePageModal">Delete Page</button>
+                  <a href="/project/<%= project.slug %>/<%= document.slug %>/<%= page.slug %>"
+                    role="button" class="btn btn-block btn-outline-secondary">View Page</button>
+                  <% } %>
+                </div>
+                <div class="form-check form-switch mt-2">
+                  <input class="form-check-input" type="checkbox" role="switch" id="public">
+                  <label class="form-check-label bold" for="public">Make page public</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
     </div>
   </div>
 </div>
