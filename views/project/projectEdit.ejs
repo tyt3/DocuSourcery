@@ -10,15 +10,9 @@
   </h1>
   
   <!-- Breadcrumb Nav-->
-  <% if (project) { %> 
-    <% function truncate(str, maxLength) {
-      if (str.length > maxLength) {
-          return str.slice(0, maxLength) + '...';
-      } else {
-          return str;
-      }
-  } %>
+  <%- include('../snippets/truncate.ejs') -%>
   
+  <% if (project) { %>
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a href="#"><%= truncate(project.title, 20) %></a></li>

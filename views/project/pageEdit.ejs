@@ -10,15 +10,7 @@
   </h1>
   
   <!-- Breadcrumb Nav -->
-  <% if (page) { %> 
-    <% function truncate(str, maxLength) {
-      if (str.length > maxLength) {
-          return str.slice(0, maxLength) + '...';
-      } else {
-          return str;
-      }
-    } %>
-  <% } %>
+  <%- include('../snippets/truncate.ejs') -%>
 
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
