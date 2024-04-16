@@ -20,10 +20,16 @@
 
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="#"><%= truncate(project.title, 20) %></a></li>
-      <li class="breadcrumb-item"><a href="#"><%= truncate(document.title, 20) %></a></li>
+      <li class="breadcrumb-item">
+        <a href="/project/<%= project.slug %>">
+        <%= truncate(project.title, 100) %></a>
+      </li>
+      <li class="breadcrumb-item"><a href="/project/<%= project.slug %>/<%= document.slug %>">
+        <%= truncate(document.title, 100) %></a>
+      </li>
       <% if (page) { %> 
-      <li class="breadcrumb-item"><a href="#"><%= truncate(page.title, 20) %></a></li>
+      <li class="breadcrumb-item"><a href="#"><%= truncate(page.title, 100) %></a>
+      </li>
       <% } %>
     </ol>
   </nav>
