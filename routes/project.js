@@ -194,6 +194,7 @@ router.get('/project/:projectSlug/:documentSlug/edit', ensureAuth, async (req, r
   const { projectSlug, documentSlug } = req.params;
   try {
     // TODO: Get project and document objects and send to frontend
+    // TODO: Confirm that document is in project
     // TODO: Populate all pages in document
     // TODO: Convert description field HTML to Markdown with turndown.js
 
@@ -243,6 +244,7 @@ router.get('/project/:projectSlug/:documentSlug/', async (req, res) => {
   const { projectSlug, documentSlug } = req.params;
   try {
     // TODO: Get project and document objects and send to frontend
+    // TODO: Confirm that document is in project
     // TODO: Populate all pages in document
     
     var viewType;
@@ -277,10 +279,15 @@ router.get('/project/:projectSlug/:documentSlug/page/create', ensureAuth, async 
   // TODO: Get project and document, error if not found 
 
   try {
+    const project = await Project.findOne({ slug: projectSlug });
+    const document = await Document.findOne({ slug: documentSlug });
+
+    // TODO: Confirm that document is in project
+
     res.render('project/pageEdit.ejs', { 
       user: req.user,
-      project: null, // TODO: Replace with project
-      document: null, // TODO: Replace with document
+      project: project,
+      document: project,
       page: null // Don't replace
     });
   } catch (err) {
@@ -321,6 +328,7 @@ router.get('/project/:projectSlug/:documentSlug/:pageSlug/edit', ensureAuth, asy
   const { projectSlug, documentSlug, pageSlug } = req.params;
   try {
     // TODO: Get project, document, and page objects and send to frontend
+    // TODO: Confirm that document is in project and page is in document
     // TODO: Convert description field HTML to Markdown with turndown.js
 
     res.render('project/pageEdit.ejs', { 
@@ -364,12 +372,12 @@ router.put('/page/restore/:id', ensureAuth, async (req, res) => {
   }
 });
 
-
 // View Page
 router.get('/project/:projectSlug/:documentSlug/:pageSlug', async (req, res) => {
   const { projectSlug, documentSlug, pageSlug } = req.params;
   try {
     // TODO: Get project, document, and page objects and send to frontend
+    // TODO: Confirm that document is in project and page is in document
 
     res.render('project/project.ejs', { 
       user: req.user,

@@ -12,17 +12,32 @@
   <ol class="breadcrumb">
     <% if (project) { %> 
     <li class="breadcrumb-item">
+      <span data-bs-toggle="tooltip" data-bs-title="Project" 
+        data-bs-custom-class="ds-tooltip" class="material-symbols-outlined me-2">
+      empty_dashboard
+      </span>
       <a href="/project/<%= project.slug %>">
       <%= truncate(project.title, 100) %></a>
     </li>
     <% } %>
     <% if (document) { %> 
-    <li class="breadcrumb-item"><a href="/project/<%= project.slug %>/<%= document.slug %>">
+    <li class="breadcrumb-item">
+      <span data-bs-toggle="tooltip" data-bs-title="Document" 
+      data-bs-custom-class="ds-tooltip" class="material-symbols-outlined me-2">
+      folder_open
+      </span>
+      <a href="/project/<%= project.slug %>/<%= document.slug %>">
       <%= truncate(document.title, 100) %></a>
     </li>
     <% } %>
     <% if (page) { %> 
-    <li class="breadcrumb-item"><a href="#"><%= truncate(page.title, 100) %></a>
+    <li class="breadcrumb-item">
+      <span data-bs-toggle="tooltip" data-bs-title="Page" 
+      data-bs-custom-class="ds-tooltip" class="material-symbols-outlined me-2">
+      description
+      </span>
+      <a href="#">
+      <%= truncate(page.title, 100) %></a>
     </li>
     <% } %>
   </ol>

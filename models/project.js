@@ -13,6 +13,7 @@ const ProjectSchema = new Schema({
   deleted: { type: Boolean, default: false },
   deletedDate: { type: Date },
   deletedBy: { type: Schema.Types.ObjectId, ref: "user" },
+  trash: { type: Boolean, default: false },
   tags: [
     { type: Schema.Types.ObjectId, ref: "tag" }
   ],
