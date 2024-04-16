@@ -103,6 +103,7 @@ router.put('/project/restore/:id', ensureAuth, async (req, res) => {
   }
 });
 
+
 // View Project
 router.get('/project/:slug', async (req, res) => {
   const projectSlug = req.params.slug;
@@ -125,7 +126,7 @@ router.get('/project/:slug', async (req, res) => {
 });
 
 // View Published Projects
-router.get('/projects', ensureAuth, async (req, res) => {
+router.get('/projects', async (req, res) => {
   // TODO: Get all projects where public===true
 
   try {
