@@ -6,13 +6,13 @@ const TagSchema = new Schema({
   title: { type: String, maxLength: 50, unique: true, required: true },
   description: { type: String, required: true }
   projects: [
-    { type: Schema.Types.ObjectId, ref: "project", required: true }
+    { type: Schema.Types.ObjectId, ref: "project" }
   ],
   documents: [
-    { type: Schema.Types.ObjectId, ref: "document", required: true }
+    { type: Schema.Types.ObjectId, ref: "document" }
   ],
   pages: [
-    { type: Schema.Types.ObjectId, ref: "page", required: true }
+    { type: Schema.Types.ObjectId, ref: "page" }
   ],
   createdDate: { type: Date, default: Date.now },
   createdBy: { type: Schema.Types.ObjectId, ref: "user", required: true }
