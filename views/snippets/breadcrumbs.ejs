@@ -1,7 +1,5 @@
 <!-- Truncate Function -->
 
-<%= const maxLength = 100; %>
-
 <% function truncate(str, maxLength) {
   if (str.length > maxLength) {
       return str.slice(0, maxLength) + '...';
@@ -15,16 +13,16 @@
     <% if (project) { %> 
     <li class="breadcrumb-item">
       <a href="/project/<%= project.slug %>">
-      <%= truncate(project.title, maxLength) %></a>
+      <%= truncate(project.title, 100) %></a>
     </li>
     <% } %>
     <% if (document) { %> 
     <li class="breadcrumb-item"><a href="/project/<%= project.slug %>/<%= document.slug %>">
-      <%= truncate(document.title, maxLength) %></a>
+      <%= truncate(document.title, 100) %></a>
     </li>
     <% } %>
     <% if (page) { %> 
-    <li class="breadcrumb-item"><a href="#"><%= truncate(page.title, maxLength) %></a>
+    <li class="breadcrumb-item"><a href="#"><%= truncate(page.title, 100) %></a>
     </li>
     <% } %>
   </ol>
