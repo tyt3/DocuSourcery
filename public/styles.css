@@ -37,6 +37,15 @@ body {
   --bs-tooltip-color: var(--bs-white);
 }
 
+a {
+  color: var(--primary-color);
+}
+
+/* Apply darker variant on hover */
+a:hover {
+  color: var(--secondary-color-dark);
+}
+
 
 /* Text */
 
