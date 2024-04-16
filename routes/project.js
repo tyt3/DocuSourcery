@@ -280,7 +280,7 @@ router.get('/project/:projectSlug/:documentSlug/page/create', ensureAuth, async 
 
   try {
     const project = await Project.findOne({ slug: projectSlug });
-    const document = await Project.findOne({ slug: documentSlug });
+    const document = await Document.findOne({ slug: documentSlug });
 
     // TODO: Confirm that document is in project
 
@@ -371,7 +371,6 @@ router.put('/page/restore/:id', ensureAuth, async (req, res) => {
     throw err;
   }
 });
-
 
 // View Page
 router.get('/project/:projectSlug/:documentSlug/:pageSlug', async (req, res) => {
