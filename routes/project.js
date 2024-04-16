@@ -99,7 +99,8 @@ router.get('/project/:slug', async (req, res) => {
     const project = await Project.findOne({ slug: projectSlug });
     res.render('project/project.ejs', { 
       user: req.user,
-      project: project
+      project: project,
+      type: "project"
     });
   } catch (err) {
     throw err;
@@ -205,10 +206,13 @@ router.get('/project/:projectSlug/:documentSlug/', async (req, res) => {
   const { projectSlug, documentSlug } = req.params;
   try {
     // TODO: Get project and document objects and send to frontend
-    res.render('project/documentEdit.ejs', { 
+    
+    res.render('project/project.ejs', { 
       user: req.user,
       project: null,
-      document: document
+      document: document,
+      type: document.landingPage ? "document" : "page";
+
     });
   } catch (err) {
     throw err;
@@ -311,11 +315,12 @@ router.get('project/:projectSlug/:documentSlug/:pageSlug', async (req, res) => {
   const { projectSlug, documentSlug, pageSlug } = req.params;
   try {
     // TODO: Get project, document, and page objects and send to frontend
-    res.render('project/page.ejs', { 
+    res.render('project/project.ejs', { 
       user: req.user,
       project: null,
       document: null,
-      page: null
+      page: null,
+      type: "page"
     });
   } catch (err) {
     throw err;
