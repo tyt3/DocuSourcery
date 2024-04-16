@@ -11,8 +11,8 @@ const ProjectSchema = new Schema({
   createdBy: { type: Schema.Types.ObjectId, ref: "user", required: true },
   modifiedDate: { type: Date, default: Date.now },
   deleted: { type: Boolean, default: false },
-  deletedDate: { type: Date, default: null },
-  deletedBy: { type: Schema.Types.ObjectId, ref: "user", default: null },
+  deletedDate: { type: Date },
+  deletedBy: { type: Schema.Types.ObjectId, ref: "user" },
   tags: [
     { type: Schema.Types.ObjectId, ref: "tag" }
   ],
