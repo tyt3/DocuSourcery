@@ -100,7 +100,9 @@ router.get('/project/:slug', async (req, res) => {
     res.render('project/project.ejs', { 
       user: req.user,
       project: project,
-      type: "project"
+      document: null,
+      page: null,
+      viewType: "project"
     });
   } catch (err) {
     throw err;
@@ -207,18 +209,19 @@ router.get('/project/:projectSlug/:documentSlug/', async (req, res) => {
   try {
     // TODO: Get project and document objects and send to frontend
 
-var type;
+var viewType;
 
 if (document.landingPage || document.pages.length === 0) {
-    type = "document";
+    viewType = "document";
 } else {
-    type = "page";
+    viewType = "page";
 }
 
     res.render('project/project.ejs', { 
       user: req.user,
-      project: null,
+      project: project,
       document: document,
+      page: null,
       type: type
     });
   } catch (err) {
@@ -324,10 +327,10 @@ router.get('project/:projectSlug/:documentSlug/:pageSlug', async (req, res) => {
     // TODO: Get project, document, and page objects and send to frontend
     res.render('project/project.ejs', { 
       user: req.user,
-      project: null,
-      document: null,
-      page: null,
-      type: "page"
+      project: project,
+      document: document,
+      page: page,
+      viewType: "page"
     });
   } catch (err) {
     throw err;
