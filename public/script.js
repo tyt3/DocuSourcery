@@ -1,36 +1,12 @@
-// //  Implement AJAX requests to server-side
+ ////////////////////
+//  AJAX requests //
+///////////////////
 
 
 
-// EDIT FORMS
-
-// Make action-button div dynamically sticky 
-const actionPanel = document.getElementById('action-panel');
-const actionButtons = document.getElementById('action-buttons');
-
-// Set the offset (15px below the top of the parent)
-const offset = 15;
-
-// Add a scroll event listener
-window.addEventListener('scroll', () => {
-  // Check if actionPanel and parentRect are not null
-  if (actionPanel && actionButtons) {
-    const parentRect = actionPanel.getBoundingClientRect();
-    const parentTop = parentRect.top + window.scrollY;
-
-    if (window.scrollY >= parentTop + offset) {
-      // Make the action-buttons div sticky
-      actionButtons.style.position = 'sticky';
-      actionButtons.style.top = `${offset}px`;
-    } else {
-      // Remove sticky behavior
-      actionButtons.style.position = 'static';
-    }
-  }
-});
-
-
-// VIEWPORT HEIGHT STYLING
+// ///////////////////////////
+// VIEWPORT HEIGHT STYLING //
+////////////////////////////
 
 // Calculate and set viewport height, minus top navbar
 
@@ -82,3 +58,30 @@ if (projectNavbar) {
   // Execute the function on window resize
   window.addEventListener('resize', handleResize);
 };
+
+
+// Action Buttons
+// Make action-button div dynamically sticky 
+const actionPanel = document.getElementById('action-panel');
+const actionButtons = document.getElementById('action-buttons');
+
+// Set the offset (top navbar height plus 15px below the top of the parent)
+const offset = topNavbarHeight + 15;
+
+// Add a scroll event listener
+window.addEventListener('scroll', () => {
+  // Check if actionPanel and parentRect are not null
+  if (actionPanel && actionButtons) {
+    const parentRect = actionPanel.getBoundingClientRect();
+    const parentTop = parentRect.top + window.scrollY;
+
+    if (window.scrollY >= parentTop + offset) {
+      // Make the action-buttons div sticky
+      actionButtons.style.position = 'sticky';
+      actionButtons.style.top = `${offset}px`;
+    } else {
+      // Remove sticky behavior
+      actionButtons.style.position = 'static';
+    }
+  }
+});
