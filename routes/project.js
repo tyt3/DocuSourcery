@@ -48,8 +48,8 @@ router.post('/project/create', ensureAuth, async (req, res) => {
 });
 
 // Edit Project View
-router.get('/project/edit/:slug', ensureAuth, async (req, res) => {
-  const projectSlug = req.params.slug;
+router.get('/project/:projectSlug/edit/', ensureAuth, async (req, res) => {
+  const projectSlug = req.params.projectSlug;
   try {
     const project = await Project.findOne({ slug: projectSlug });
     res.render('project/projectEdit.ejs', { 
@@ -122,7 +122,8 @@ router.get('/projects', ensureAuth, async (req, res) => {
 // DOCUMENT
 
 // Create Document View
-router.get('/document/create', ensureAuth, async (req, res) => {
+router.get('project/:projectSlug/document/create', ensureAuth, async (req, res) => {
+  const projectId = req.params.projectSlug;
   try {
     res.render('project/documentEdit.ejs', { 
       user: req.user,
@@ -134,7 +135,8 @@ router.get('/document/create', ensureAuth, async (req, res) => {
 });
 
 // Create Document
-router.post('/document/create', ensureAuth, async (req, res) => {
+router.post('/document/create/:projectId', ensureAuth, async (req, res) => {
+  const projectId = req.params.projectId;
   const { title } = req.body; // TODO: Add remaining fields
 
   // Validate form fields
@@ -154,8 +156,8 @@ router.post('/document/create', ensureAuth, async (req, res) => {
 });
 
 // Edit Document View
-router.get('/document/edit/:slug', ensureAuth, async (req, res) => {
-  const documentSlug = req.params.slug;
+router.get('project/:projectSlug/:documentSlug/edit', ensureAuth, async (req, res) => {
+  const { projectSlug, documentSlug } = req.params;
   try {
     // TODO: Get project and document objects and send to frontend
     res.render('project/documentEdit.ejs', { 
@@ -199,8 +201,8 @@ router.put('/document/restore/:id', ensureAuth, async (req, res) => {
 });
 
 // View Document
-router.get('/document/:slug', async (req, res) => {
-  const documentSlug = req.params.slug;
+router.get('/project/:projectSlug/:documentSlug/', async (req, res) => {
+  const { projectSlug, documentSlug } = req.params;
   try {
     // TODO: Get project and document objects and send to frontend
     res.render('project/documentEdit.ejs', { 
@@ -216,7 +218,8 @@ router.get('/document/:slug', async (req, res) => {
 // PAGE
 
 // Create Page View
-router.get('/page/create', ensureAuth, async (req, res) => {
+router.get('project/:projectSlug/:documentSlug/page/create', ensureAuth, async (req, res) => {
+  const { projectSlug, documentSlug } = req.params;
   try {
     res.render('project/pageEdit.ejs', { 
       user: req.user,
@@ -230,28 +233,35 @@ router.get('/page/create', ensureAuth, async (req, res) => {
 });
 
 // Create Page
-router.post('/page/create', ensureAuth, async (req, res) => {
-  const { title } = req.body; // TODO: Add remaining fields
+router.post('/page/create/:projectId/:docId', ensureAuth, async (req, res) => {
+  const { projectId, docId } = req.params;
+  const { title } = req.body;
 
   // Validate form fields
   // Title length is less than or equal to 255
 
   try {
+    // Assuming you have a Page schema with projectId and docId as references
     const page = new Page({
       title: title,
+      projectId: projectId,
+      docId: docId
+      // Add remaining fields as needed
     });
 
     const newPage = await page.save();
-    await newPage.save();
+    res.status(201).json(newPage); // Return the created page as JSON
 
   } catch (err) {
-    throw err;
+    console.error(err);
+    res.status(500).send('Internal Server Error');
   }
 });
 
+
 // Edit Page View
-router.get('/page/edit/:slug', ensureAuth, async (req, res) => {
-  const pageSlug = req.params.slug;
+router.get('project/:projectSlug/:documentSlug/:pageSlug/edit', ensureAuth, async (req, res) => {
+  const { projectSlug, documentSlug, pageSlug } = req.params;
   try {
     // TODO: Get project, document, and page objects and send to frontend
     res.render('project/pageEdit.ejs', { 
@@ -295,9 +305,10 @@ router.put('/page/restore/:id', ensureAuth, async (req, res) => {
   }
 });
 
+
 // View Page
-router.get('/page/:slug', async (req, res) => {
-  const pageSlug = req.params.slug;
+router.get('project/:projectSlug/:documentSlug/:pageSlug', async (req, res) => {
+  const { projectSlug, documentSlug, pageSlug } = req.params;
   try {
     // TODO: Get project, document, and page objects and send to frontend
     res.render('project/page.ejs', { 
