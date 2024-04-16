@@ -118,10 +118,12 @@
                   <% } else { %>
                   <p>There are no pages.</p>
                   <% } %>  
-                  <a href="/document/<%= document.slug %>/document/create/" 
+                  <% if (document) { %>
+                  <a href="/project/<%= project.slug %>/<%= document.slug %>/page/create/" 
                     role="button" class="btn btn-12 btn-ds-primary">
                     Add a Page
-                  </a>           
+                  </a>   
+                  <% } %>          
                 </div>
                 <!-- Trash -->
                 <div class="tab-pane fade" id="trash-pane" role="tabpanel" 
