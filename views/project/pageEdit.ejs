@@ -16,7 +16,7 @@
   <div class="card shadow-sm">
     <div class="card-body">
       <!-- Tabs -->
-      <ul class="nav nav-tabs" id="assetsTablist" role="tablist">
+      <!-- <ul class="nav nav-tabs" id="assetsTablist" role="tablist">
         <li class="nav-item" role="presentation">
           <button class="nav-link tab-link active" id="properties-tab" 
             data-bs-toggle="tab" data-bs-target="#properties-pane" type="button" 
@@ -31,14 +31,14 @@
             Pages
           </button>
         </li>
-      </ul>
+      </ul> -->
       <form>
         <div class="row gy-4">
           <!-- Tab Panels -->
           <div class="col-12 col-md-8 col-xxl-9">
-            <div class="tab-content mt-3" id="tabPages">
+<!--             <div class="tab-content mt-3" id="tabPages"> -->
               <!-- Properties -->
-              <div class="tab-pane fade show active" id="properties-pane" 
+<!--               <div class="tab-pane fade show active" id="properties-pane" 
                 role="tabpanel" aria-labelledby="properties-pane">
                 <div class="form-group row">
                   <label for="title" class="col-sm-2 col-form-label bold">Title</label>
@@ -52,9 +52,9 @@
                     <input type="text" class="form-control" id="slug" placeholder="Enter slug">
                   </div>
                 </div>
-              </div>
+              </div> -->
               <!-- Page Content -->
-              <div class="tab-pane fade" id="pages-pane" role="tabpanel" 
+<!--               <div class="tab-pane fade" id="pages-pane" role="tabpanel" 
                 aria-labelledby="pages-pane">
                 <div class="form-group row mt-4">
                   <div class="col-sm-12">
@@ -63,10 +63,23 @@
                   </div>
                 </div>
               </div>
+            </div> -->
+            <div class="form-group">
+              <label for="title" class="bold">Title</label>
+              <input type="text" class="form-control" id="title" placeholder="Enter title">
+            </div>
+            <div class="form-group">
+              <label for="slug" class="bold">Slug</label>
+              <input type="text" class="form-control" id="slug" placeholder="Enter slug">
+            </div>
+            <div class="form-group">
+              <label for="content" class="bold">Body</label>
+              <textarea class="form-control" id="content" rows="10" placeholder="Enter page content"></textarea>
+              <small class="bold">* Markdown-enabled field</small>
             </div>
           </div>
           <div class="col-12 col-md-4 col-xxl-3 relative" id="action-panel">
-            <div class="card mt-3" id="action-buttons">
+            <div class="card" id="action-buttons">
               <div class="card-body">
                 <div class="d-grid gap-2 col-12 mx-auto">
                   <button type="submit" class="btn btn-block btn-outline-success">Save Page</button>
