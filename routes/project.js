@@ -20,7 +20,9 @@ router.get('/project/create', ensureAuth, async (req, res) => {
     res.render('project/projectEdit.ejs', { 
       user: req.user, 
       users: [req.user],
-      project: null 
+      project: null,
+      document: null, // Don't replace
+      page: null // Don't replace
     });
   } catch (err) {
     throw err;
@@ -65,7 +67,9 @@ router.get('/project/:projectSlug/edit/', ensureAuth, async (req, res) => {
     res.render('project/projectEdit.ejs', { 
       user: req.user, 
       users: [],
-      project: project
+      project: project,
+      document: null, // Don't replace
+      page: null // Don't replace
     });
   } catch (err) {
     throw err;
@@ -119,8 +123,8 @@ router.get('/project/:slug', async (req, res) => {
     res.render('project/project.ejs', { 
       user: req.user,
       project: project,
-      document: null,
-      page: null,
+      document: null, // Don't replace
+      page: null, // Don't replace
       viewType: "project"
     });
   } catch (err) {
@@ -156,7 +160,8 @@ router.get('/project/:projectSlug/document/create', ensureAuth, async (req, res)
     res.render('project/documentEdit.ejs', { 
       user: req.user,
       project: project,
-      document: null,
+      document: null, // Don't replace
+      page: null // Don't replace
     });
   } catch (err) {
     throw err;
@@ -194,8 +199,9 @@ router.get('/project/:projectSlug/:documentSlug/edit', ensureAuth, async (req, r
 
     res.render('project/documentEdit.ejs', { 
       user: req.user,
-      project: null,
-      document: null
+      project: null, // TODO: Replace
+      document: null, // TODO: Replace
+      page: null, // Don't replace 
     });
   } catch (err) {
     throw err;
@@ -273,9 +279,9 @@ router.get('/project/:projectSlug/:documentSlug/page/create', ensureAuth, async 
   try {
     res.render('project/pageEdit.ejs', { 
       user: req.user,
-      project: null,
-      document: null,
-      page: null
+      project: null, // TODO: Replace with project
+      document: null, // TODO: Replace with document
+      page: null // Don't replace
     });
   } catch (err) {
     throw err;
