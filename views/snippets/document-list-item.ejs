@@ -33,7 +33,7 @@
         <!-- Page Cards -->
         <% if (project.documents && project.documents.length > 0) { %>
           <% document.pages.forEach(function(page) { %>
-            <% include './page-list-item.ejs' %>
+            <%- include './page-list-item.ejs' -%>
           <% }); %>
         <% }
       </ul>
