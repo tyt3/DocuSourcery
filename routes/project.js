@@ -206,13 +206,20 @@ router.get('/project/:projectSlug/:documentSlug/', async (req, res) => {
   const { projectSlug, documentSlug } = req.params;
   try {
     // TODO: Get project and document objects and send to frontend
-    
+
+var type;
+
+if (document.landingPage || document.pages.length === 0) {
+    type = "document";
+} else {
+    type = "page";
+}
+
     res.render('project/project.ejs', { 
       user: req.user,
       project: null,
       document: document,
-      type: document.landingPage ? "document" : "page";
-
+      type: type
     });
   } catch (err) {
     throw err;
