@@ -147,7 +147,7 @@ router.get('/projects', async (req, res) => {
 
 // Create Document View
 router.get('/project/:projectSlug/document/create', ensureAuth, async (req, res) => {
-  const projectId = req.params.projectSlug;
+  const projectSlug = req.params.projectSlug;
 
   // TODO: add error handling
   const project = await Project.findOne({ slug: projectSlug });
