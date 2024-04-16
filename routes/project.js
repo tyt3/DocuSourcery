@@ -146,7 +146,7 @@ router.get('/projects', async (req, res) => {
 // DOCUMENT
 
 // Create Document View
-router.get('project/:projectSlug/document/create', ensureAuth, async (req, res) => {
+router.get('/project/:projectSlug/document/create', ensureAuth, async (req, res) => {
   const projectId = req.params.projectSlug;
 
   // TODO: Get project to send to frontend
@@ -183,7 +183,7 @@ router.post('/document/create/:projectId', ensureAuth, async (req, res) => {
 });
 
 // Edit Document View
-router.get('project/:projectSlug/:documentSlug/edit', ensureAuth, async (req, res) => {
+router.get('/project/:projectSlug/:documentSlug/edit', ensureAuth, async (req, res) => {
   const { projectSlug, documentSlug } = req.params;
   try {
     // TODO: Get project and document objects and send to frontend
@@ -263,7 +263,7 @@ router.get('/project/:projectSlug/:documentSlug/', async (req, res) => {
 // PAGE
 
 // Create Page View
-router.get('project/:projectSlug/:documentSlug/page/create', ensureAuth, async (req, res) => {
+router.get('/project/:projectSlug/:documentSlug/page/create', ensureAuth, async (req, res) => {
   const { projectSlug, documentSlug } = req.params;
   
   // TODO: Get project and document, error if not found 
@@ -309,7 +309,7 @@ router.post('/page/create/:projectId/:docId', ensureAuth, async (req, res) => {
 
 
 // Edit Page View
-router.get('project/:projectSlug/:documentSlug/:pageSlug/edit', ensureAuth, async (req, res) => {
+router.get('/project/:projectSlug/:documentSlug/:pageSlug/edit', ensureAuth, async (req, res) => {
   const { projectSlug, documentSlug, pageSlug } = req.params;
   try {
     // TODO: Get project, document, and page objects and send to frontend
@@ -358,7 +358,7 @@ router.put('/page/restore/:id', ensureAuth, async (req, res) => {
 
 
 // View Page
-router.get('project/:projectSlug/:documentSlug/:pageSlug', async (req, res) => {
+router.get('/project/:projectSlug/:documentSlug/:pageSlug', async (req, res) => {
   const { projectSlug, documentSlug, pageSlug } = req.params;
   try {
     // TODO: Get project, document, and page objects and send to frontend
