@@ -186,6 +186,8 @@
 </div>
 
 <!-- Delete Document Modal -->
-<%- include('../snippets/delete-document-modal.ejs') -%>
-
+<% if (document) { %>
+  <%- include('../snippets/delete-document-modal.ejs') -%>
+<% } %>  
+  
 <%- include('../baseFooter') -%>
