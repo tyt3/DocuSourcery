@@ -17,7 +17,6 @@ const ProjectSchema = new Schema({
     { type: Schema.Types.ObjectId, ref: "tag" }
   ],
   permissions: { type: Map },
-  landingPage: { type: Boolean, default: false },
   views: { type: Number, default: 0 },
   documents: [
     { type: Schema.Types.ObjectId, ref: "document", required: true }
