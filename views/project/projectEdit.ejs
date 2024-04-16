@@ -24,6 +24,7 @@
             Properties
           </button>
         </li>
+        <% if (project) { %> 
         <li class="nav-item" role="presentation">
           <button class="nav-link tab-link" id="content-tab" 
             data-bs-toggle="tab" data-bs-target="#content-pane" type="button" 
@@ -45,6 +46,7 @@
             Users
           </button>
         </li>
+        <% } %> 
       </ul>
       <form>
         <div class="row gy-4">
@@ -77,8 +79,8 @@
                   <div class="col-sm-10">
                     <textarea class="form-control" id="description" rows="3"
                       placeholder="Enter description"></textarea>
-                  </div>
                   <small class="bold">* Markdown-enabled field</small>
+                  </div>
                 </div>
                 <div class="form-group row">
                   <label class="col-sm-2 col-form-label bold">Tags</label>
@@ -202,7 +204,7 @@
                   <button type="button" class="btn btn-block btn-outline-danger"
                     data-bs-toggle="modal" data-bs-target="#deleteProjectModal">Delete Project</button>
                   <a href="/project/<%= project.slug %>"
-                    role="button" class="btn btn-block btn-outline-secondary">View Project</button>
+                    role="button" class="btn btn-block btn-outline-secondary">View Project</a>
                   <% } %>
                 </div>
                 <div class="form-check form-switch mt-2">
@@ -217,7 +219,6 @@
     </div>
   </div>
 </div>
-
 
 <!-- Delete Project Modal -->
 <% if (project) { %>
