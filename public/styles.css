@@ -27,6 +27,12 @@ body {
   background-image: linear-gradient(to bottom, var(--secondary-color), var(--secondary-color), var(--tertiary-color));
 }
 
+.breadcrumb-item {
+  display: flex; /* Make it a flex container */
+  align-items: center; /* Align items vertically in the center */
+}
+
+
 
 /* Text */
 
