@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 const { populateCurrentUser: populateCurrentUser } = require('../routes/middleware');
 
 
-// Define User model
+// Define Page model
 const PageSchema = new Schema({
   title: { type: String, required: true, maxLength: 255 },
   slug: { type: String, required: true, maxLength: 50 },
