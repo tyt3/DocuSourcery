@@ -37,6 +37,7 @@ router.post('/project/create', ensureAuth, async (req, res) => {
     // Slug is unique
     // Slug length is less than 25 characters
     // Slug contains only letters, numbers, and dashes
+  // TODO: Convert description field Markdown to HTML with markdown.js
 
   try {
     const project = new Project({
@@ -57,6 +58,7 @@ router.get('/project/:projectSlug/edit/', ensureAuth, async (req, res) => {
 
   // TODO: Get project to send to frontend
   // TODO: Populate all documents and pages in project
+  // TODO: Convert description field HTML to Markdown with turndown.js
 
   try {
     const project = await Project.findOne({ slug: projectSlug });
@@ -75,6 +77,7 @@ router.put('/project/:id', ensureAuth, async (req, res) => {
   const projectId = req.params.id;
 
   // TODO: Apply same middleware as in project/create to validate form fields
+  // TODO: Convert description field Markdown to HTML with markdown.js
 
   try {
     // TODO: Implement
@@ -164,6 +167,7 @@ router.post('/document/create/:projectId', ensureAuth, async (req, res) => {
   const { title } = req.body; // TODO: Add remaining fields
 
   // TODO: Apply middleware to validate form fields
+  // TODO: Convert description field Markdown to HTML with markdown.js
 
   try {
     const document = new Document({
@@ -184,6 +188,7 @@ router.get('project/:projectSlug/:documentSlug/edit', ensureAuth, async (req, re
   try {
     // TODO: Get project and document objects and send to frontend
     // TODO: Populate all pages in document
+    // TODO: Convert description field HTML to Markdown with turndown.js
 
     res.render('project/documentEdit.ejs', { 
       user: req.user,
@@ -282,6 +287,7 @@ router.post('/page/create/:projectId/:docId', ensureAuth, async (req, res) => {
 
   // TODO: Get project and document, error if not found
   // TODO: Validate form fields
+  // TODO: Convert description field Markdown to HTML with markdown.js
 
   try {
     // Assuming you have a Page schema with projectId and docId as references
@@ -307,6 +313,7 @@ router.get('project/:projectSlug/:documentSlug/:pageSlug/edit', ensureAuth, asyn
   const { projectSlug, documentSlug, pageSlug } = req.params;
   try {
     // TODO: Get project, document, and page objects and send to frontend
+    // TODO: Convert description field HTML to Markdown with turndown.js
 
     res.render('project/pageEdit.ejs', { 
       user: req.user,
