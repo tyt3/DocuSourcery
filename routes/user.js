@@ -170,9 +170,9 @@ router.get('/profile/:username', ensureAuth, async (req, res) => {
   // Get user profile
   const username = req.params.username;
   try {
-    // Find user profile based on profileId
+    // Find user profile based on username
     const userProfile = await User.findOne({ username: username });
-    const userProjects = await Project.find({ users.id: userProfile._id });
+    const userProjects = await Project.find({ 'users.id': userProfile._id });
 
     if (!userProfile) {
       return res.redirect('/');
@@ -180,7 +180,6 @@ router.get('/profile/:username', ensureAuth, async (req, res) => {
     // Render profile page
     res.render('user/profile.ejs', {
       profile: userProfile,
-      user: req.user,
       projects: userProjects
     });
   } catch (err) {
