@@ -140,7 +140,7 @@ router.get('/project/:slug', async (req, res) => {
 
 // View Published Projects
 router.get('/projects', async (req, res) => {
-  await Project.find({public: true}, {_id: 0})
+  await Project.find({public: true})
     .then((project_list) => {
       res.render('project/projects.ejs', {
         user: req.user,
