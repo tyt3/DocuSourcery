@@ -2,7 +2,7 @@
 <!-- Project Top Navbar -->
 <nav class="navbar d-xl-none bg-ds-secondary" data-bs-theme="dark">
   <div class="container">
-    <div class="row">
+    <div class="row w-100 gx-0">
       <div class="col-auto" id="navbar-toggler">
         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu"
           aria-controls="offcanvasMenu" aria-expanded="false" aria-label="Toggle navigation">
@@ -10,14 +10,14 @@
         </button>
       </div>
       <div class="col" id="search">
-        <form method="POST" class="d-flex justify-content-end" role="search" action="/project/search">
+        <form method="POST" class="d-flex justify-content-end ms-2" role="search" action="/project/search">
           <input
-            class="form-control me-2 bg-white"
+            class="form-control me-2 bg-white border-ds-primary"
             type="keywords"
             name="keywords"
             placeholder="Search the documentation"
             aria-label="Search">
-          <button class="btn btn-ds-outline-primary border-ds-primary"
+          <button class="btn btn-ds-outline-primary"
             data-bs-toggle="tooltip" data-bs-placement="bottom" 
             data-bs-title='Search' type="submit">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
@@ -36,11 +36,13 @@
 <!-- Offcanvas Navbar -->
 <div class="offcanvas offcanvas-start bg-ds-secondary" tabindex="-1" id="offcanvasMenu" aria-labelledby="offcanvasMenuLabel">
   <div class="offcanvas-header">
-    <h4 class="offcanvas-title" id="offcanvasMenuLabel">DocuSourcery</h5>
+    <img src="https://cdn.glitch.global/7b5eb0c7-6676-473b-a061-efb01c2ba784/Docusourcery-Logo-large-V4-green-stars-no-texture.png?v=1713313695844" 
+             alt="DocuSourcery logo" width="50" class="d-inline-block align-text-center">
+    <h1 class="fs-1 offcanvas-title" id="offcanvasMenuLabel">DocuSourcery</h1>
     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
   <div class="offcanvas-body">
-    <h1 class="fs-6 mb-2 text-start">
+    <h1 class="fs-6 text-start mb-2">
       Documentation Overview
     </h1>
     <a href="#">Principles and Objectives</a>
@@ -51,25 +53,7 @@
         <div class="col-10">
           Data Dictionary
         </div>
-        <div class="col-2">
-          <i class="fa fa-caret-down align-top"></i>
-        </div>
-      </div>
-    </a>
-    <div class="dropdown-container">
-      <a href="#">Introduction</a>
-      <a href="#">Data Standards/Schemas, Controlled Vocabularies & Encoding Schemes</a>
-      <a href="#">Archival Collection Metadata Element Set</a>
-      <a href="#">Serial Collection Metadata Element Set</a>
-      <a href="#">Monograph Collection Metadata Element Set</a>
-      <a href="#">Mixed Collection Metadata Element Set</a>
-    </div>
-    <a href="#" role="button" class="dropdown-btn ml-auto">
-      <div class="row">
-        <div class="col-10">
-          Data Dictionary
-        </div>
-        <div class="col-2">
+        <div class="col-2 d-flex justify-content-end">
           <i class="fa fa-caret-down align-top"></i>
         </div>
       </div>
@@ -145,8 +129,10 @@
     </div>
     <!-- Main Content --> 
     <div class="col-12 col-xl-10">
-      
       <div class="container py-5">
+        <!-- Breadcrumb Nav-->
+        <%- include('../snippets/breadcrumbs.ejs') -%>
+
         <h1>
           Project
         </h1>

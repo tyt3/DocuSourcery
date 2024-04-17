@@ -381,12 +381,24 @@ a.badge-tag:link {
   border: 2px solid var(--primary-color);
 }
 
+.border-ds-primary-dark {
+  border: 2px solid var(--primary-color-dark);
+}
+
 .border-ds-secondary {
   border: 2px solid var(--secondary-color);
 }
 
+.border-ds-secondary-dark {
+  border: 2px solid var(--secondary-color-dark);
+}
+
 .border-ds-tertiary {
   border: 2px solid var(--tertiary-color);
+}
+
+.border-ds-tertiary-dark {
+  border: 2px solid var(--tertiary-color-dark);
 }
 
 .border-ds-off-black {
