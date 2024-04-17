@@ -15,7 +15,6 @@ const bcrypt = require('bcrypt');
 
 // Import data model
 const User = require('../models/user');
-const Profile = require('../models/profile');
 
 // AUTH
 // testing Retrieve all user msg
@@ -31,7 +30,7 @@ router.get('/alllllUsers', async function (req, res) {
 
 // testing Retrieve all profile msg
 router.get('/alllllProfiles', async function (req, res) {
-  await Profile.find({})
+  await User.find({profilePublic: true}, {_id: 0, password: 0, profilePublic: 0, })
     .then((profile_list) => {
       res.json(profile_list);
     })
