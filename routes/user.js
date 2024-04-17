@@ -30,7 +30,7 @@ router.get('/alllllUsers', async function (req, res) {
 
 // testing Retrieve all profile msg
 router.get('/alllllProfiles', async function (req, res) {
-  await User.find({profilePublic: true}, {_id: 0, password: 0, profilePublic: 0, })
+  await User.find({profilePublic: true}, {_id: 0, password: 0, profilePublic: 0, apiKey: 0})
     .then((profile_list) => {
       res.json(profile_list);
     })
