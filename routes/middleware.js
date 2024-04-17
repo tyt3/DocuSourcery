@@ -10,7 +10,8 @@ function ensureAuth(req, res, next) {
     return next();
   } else {
     // Store the original requested URL in the session
-    req.session.returnTo = req.originalUrl;
+    req.session.returnTo = req.url;
+    console.log(req.session.returnTo);
     req.flash('error', 'You must be logged in to access this page.');
     res.redirect('/login');
   }
