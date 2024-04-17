@@ -180,6 +180,7 @@ router.get('/profile/:username', ensureAuth, async (req, res) => {
     // Render profile page
     res.render('user/profile.ejs', {
       profile: userProfile,
+      user: req.user,
       projects: userProjects
     });
   } catch (err) {
