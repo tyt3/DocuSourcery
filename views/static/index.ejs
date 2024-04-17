@@ -1,29 +1,36 @@
 <%- include('../baseHeader') -%>
 <!-- Landing Area -->
-<div class="jumbotron d-flex align-items-center">
-  <div class="container py-5 text-off-black">
-    <!-- Header -->
-    <header>
-      <h1 class="mb-2">DocuSourcery</h1>
-      <p class="text-center fs-3 fst-italic fw-semibold">Documentation made magical</p>
-    </header>
-    <div class="d-flex justify-content-center">
-      <img class="img-jumbotron py-2 py-lg-4" 
-        src="https://cdn.glitch.global/7b5eb0c7-6676-473b-a061-efb01c2ba784/Docusourcery-Logo-large-V4-green-stars-no-texture.png?v=1713313695844">
-    </div>
-    <!--Action Buttons -->
-    <div class="row gy-4 mt-2">
-      <div class="col-lg d-grid gap-2 d-lg-flex justify-content-center justify-content-lg-end">
-        <a class="btn btn-ds-primary btn-12 btn-lg"
-          href="/signup" role="button">Get Started</a>
+<div class="jumbotron">
+  <div class="container py-5 h-100">
+    <div class="row">
+      <!-- Header -->
+      <div class="col-12">
+        <header class="mb-auto">
+          <h1 class="mb-2">DocuSourcery</h1>
+          <p class="text-center fs-3 fst-italic fw-semibold">Documentation made magical</p>
+        </header>
       </div>
-      <div class="col-lg d-grid gap-2 d-lg-flex justify-content-center">
-        <a class="btn btn-ds-primary btn-12 btn-lg"
-          href="/projects" role="button">Browse Projects</a>
+      <!-- Logo -->
+      <div class="col-12 d-flex justify-content-center">
+        <img class="img-jumbotron" 
+          src="https://cdn.glitch.global/7b5eb0c7-6676-473b-a061-efb01c2ba784/Docusourcery-Logo-large-V4-green-stars-no-texture.png?v=1713313695844">
       </div>
-      <div class="col-lg d-grid gap-2 d-lg-flex justify-content-center justify-content-lg-start">
-        <a class="btn btn-ds-primary btn-12 btn-lg"
-          href="/about" role="button">Learn More</a>
+      <!--Action Buttons -->
+      <div class="col-12">
+        <div class="row gy-4 mt-auto">
+          <div class="col-lg d-grid gap-2 d-lg-flex justify-content-center justify-content-lg-end">
+            <a class="btn btn-ds-primary btn-12 btn-lg"
+              href="/signup" role="button">Get Started</a>
+          </div>
+          <div class="col-lg d-grid gap-2 d-lg-flex justify-content-center">
+            <a class="btn btn-ds-primary btn-12 btn-lg"
+              href="/projects" role="button">Browse Projects</a>
+          </div>
+          <div class="col-lg d-grid gap-2 d-lg-flex justify-content-center justify-content-lg-start">
+            <a class="btn btn-ds-primary btn-12 btn-lg"
+              href="/about" role="button">Learn More</a>
+          </div>
+        </div>
       </div>
     </div>
   </div>

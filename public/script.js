@@ -8,80 +8,79 @@
 // VIEWPORT HEIGHT STYLING //
 ////////////////////////////
 
-// Calculate and set viewport height, minus top navbar
+// Function to calculate and set viewport height, minus top navbar
+function calculateViewportHeight() {
+  // Get the top navbar element
+  var topNavbar = document.getElementById('primaryNavbar');
 
-var topNavbar = document.getElementById('primaryNavbar');
-var viewportHeight = window.innerHeight;
+  // Calculate the viewport height
+  var viewportHeight = window.innerHeight;
 
-// Calculate the height of the top navbar
-var topNavbarHeight = topNavbar.offsetHeight;
+  // Calculate the height of the top navbar
+  var topNavbarHeight = topNavbar.offsetHeight;
 
-// Calculate the height of the target div
-var vh_ds_100 = viewportHeight - topNavbarHeight;
+  // Calculate the height of the target div
+  var vh_ds_100 = viewportHeight - topNavbarHeight;
 
+  // Set the height of the jumbotron
+  var jumbotron = document.querySelector('.jumbotron');
+  if (jumbotron) {
+    jumbotron.style.minHeight = vh_ds_100 + 'px';
+  }
 
-// Jumbotron
-var jumbotron = document.querySelector('.jumbotron');
-if (jumbotron) {
-  jumbotron.style.minHeight = vh_ds_100 + 'px'
-};
-
-// Project Side navbars
-
-// Function to handle the resizing of vh-ds-100 divs
-function handleResize() {
-  // Get the viewport width
-  const viewportWidth = window.innerWidth;
-
-  // Select all elements with the vh-ds-100 class
-  const projectNabars = document.querySelectorAll('.project-nav');
-
-  // Loop through each div
-  projectNabars.forEach(function(div) {
-    // Check if viewport width is less than 1200px
-    if (viewportWidth < 1200) {
-      // Remove the height property
-      div.style.removeProperty('height');
+  // Set the height of project side navbars
+  var projectNavbars = document.querySelectorAll('.project-nav');
+  projectNavbars.forEach(function(navbar) {
+    if (window.innerWidth < 1200) {
+      // Remove the height property if viewport width is less than 1200px
+      navbar.style.removeProperty('height');
     } else {
-      // Add the height property back
-      div.style.height = vh_ds_100 + 'px';
-      div.style.top = topNavbarHeight + 'px';
+      // Set the height and top position properties
+      navbar.style.height = vh_ds_100 + 'px';
+      navbar.style.top = topNavbarHeight + 'px';
     }
   });
-}
 
-var projectNavbar = document.querySelector('.project-nav');
-if (projectNavbar) {
-  // Execute the function on page load
-  window.addEventListener('load', handleResize);
+  // Update offset for action buttons
+  var offset = topNavbarHeight + 15;
 
-  // Execute the function on window resize
-  window.addEventListener('resize', handleResize);
-};
-
-
-// Action Buttons
-// Make action-button div dynamically sticky 
-const actionPanel = document.getElementById('action-panel');
-const actionButtons = document.getElementById('action-buttons');
-
-// Set the offset (top navbar height plus 15px below the top of the parent)
-const offset = topNavbarHeight + 15;
-
-// Add a scroll event listener
-window.addEventListener('scroll', () => {
-  // Check if actionPanel and parentRect are not null
+  // Make action buttons sticky
+  const actionPanel = document.getElementById('action-panel');
+  const actionButtons = document.getElementById('action-buttons');
   if (actionPanel && actionButtons) {
     const parentRect = actionPanel.getBoundingClientRect();
     const parentTop = parentRect.top + window.scrollY;
-
     if (window.scrollY >= parentTop + offset) {
-      // Make the action-buttons div sticky
       actionButtons.style.position = 'sticky';
       actionButtons.style.top = `${offset}px`;
     } else {
-      // Remove sticky behavior
       actionButtons.style.position = 'static';
     }
   }
-});
+}
+
+// Call the calculateViewportHeight function on page load
+window.addEventListener('load', calculateViewportHeight);
+
+// Call the calculateViewportHeight function on window resize
+window.addEventListener('resize', calculateViewportHeight);
+
+///////////////////////
+// Sidenav Dropdown //
+/////////////////////
+
+/* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
+var dropdown = document.getElementsByClassName("dropdown-btn");
+var i;
+
+for (i = 0; i < dropdown.length; i++) {
+  dropdown[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var dropdownContent = this.nextElementSibling;
+    if (dropdownContent.style.display === "block") {
+      dropdownContent.style.display = "none";
+    } else {
+      dropdownContent.style.display = "block";
+    }
+  });
+}

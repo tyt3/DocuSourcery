@@ -1,4 +1,5 @@
 <%- include('../baseHeader') -%>
+<!-- Project Top Navbar -->
 <nav class="navbar d-xl-none bg-ds-secondary" data-bs-theme="dark">
   <div class="container">
     <div class="row">
@@ -31,6 +32,8 @@
     </div>
   </div>
 </nav>
+  
+<!-- Offcanvas Navbar -->
 <div class="offcanvas offcanvas-start bg-ds-secondary" tabindex="-1" id="offcanvasMenu" aria-labelledby="offcanvasMenuLabel">
   <div class="offcanvas-header">
     <h4 class="offcanvas-title" id="offcanvasMenuLabel">DocuSourcery</h5>
@@ -58,15 +61,61 @@
     </div>
   </div>
 </div>
+
+<!-- Main Project Navbar & Content-->
 <div class="container">
   <div class="row">
-    <div class="col-xl-2 project-nav .d-none .d-xl-block border-end">
-      <div style="max-width: 100%;">
+    <!-- Project Side Navbar -->
+    <div class="col-lg-3 col-xl-2 project-nav text-wrap py-4 .d-none .d-xl-block border-end">
+      <h1 class="fs-6 mb-2 text-start">
+        Documentation Overview
+      </h1>
+      <a href="#">Principles and Objectives</a>
+      <a href="#">Getting Started</a>
+      <a href="#" class="active-page">Using the Data Layers Repository</a>
+      <div class="d-flex align-items-center">
+        <a href="#" class="d-inline-block">Data Dictionary</a>
+        <button class="dropdown-btn ms-auto"> 
+          <i class="fa fa-caret-down"></i>
+        </button>
       </div>
-    </div>  
-    <div class="col-12 col-xl-8">
-      <!-- Main Content -->
-      <div class="container my-5">
+      <div class="dropdown-container">
+        <a href="#">Introduction</a>
+        <a href="#">Data Standards/Schemas, Controlled Vocabularies & Encoding Schemes</a>
+        <a href="#">Archival Collection Metadata Element Set</a>
+        <a href="#">Serial Collection Metadata Element Set</a>
+        <a href="#">Monograph Collection Metadata Element Set</a>
+        <a href="#">Mixed Collection Metadata Element Set</a>
+      </div>
+      <a href="#">Application Profiles</a>
+      <a href="#">Metadata Element Set Chart</a>
+      <a href="#">Data Extraction and Transformation Workflow</a>
+      <a href="#">Best Practices for Creating Extension Layers</a>
+      <a href="#">Publishing an Extension Layer</a>
+      <div class="accordion accordion-flush m-0" id="accordionPanelsStayOpenExample">
+        <div class="accordion-item bg-transparent">
+          <h2 class="accordion-header bg-transparent">
+            <button class="accordion-button p-0" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+              Data Dictionary
+            </button>
+          </h2>
+          <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show">
+            <div class="accordion-body py-0 ps-2">
+              <a href="#">Introduction</a>
+              <a href="#">Data Standards/Schemas, Controlled Vocabularies & Encoding Schemes</a>
+              <a href="#">Archival Collection Metadata Element Set</a>
+              <a href="#">Serial Collection Metadata Element Set</a>
+              <a href="#">Monograph Collection Metadata Element Set</a>
+              <a href="#">Mixed Collection Metadata Element Set</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Main Content --> 
+    <div class="col-12 col-lg-9 col-xl-10">
+      
+      <div class="container py-5">
         <h1>
           Project
         </h1>
@@ -75,10 +124,9 @@
         </p>
       </div>  
     </div>
-    <div class="col-xl-2 project-nav .d-none .d-xl-block border-start">
-      <div style="max-width: 100%;">
-      </div>
-    </div> 
+    <!-- Section Nav -->
+<!--     <div class="col-xl-2 project-nav text-wrap .d-none .d-xl-block border-start">
+    </div>  -->
   </div>
 </div>
 <%- include('../baseFooter') -%>
