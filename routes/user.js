@@ -15,6 +15,7 @@ const bcrypt = require('bcrypt');
 
 // Import data model
 const User = require('../models/user');
+const Project = require('../models/project');
 
 // AUTH
 // testing Retrieve all user msg
@@ -171,6 +172,7 @@ router.get('/profile/:username', ensureAuth, async (req, res) => {
   try {
     // Find user profile based on profileId
     const userProfile = await User.findOne({ username: username });
+    const userProjects = await Project.find({ users.id: userProfile._id });
 
     if (!userProfile) {
       return res.redirect('/');
@@ -179,7 +181,7 @@ router.get('/profile/:username', ensureAuth, async (req, res) => {
     res.render('user/profile.ejs', {
       profile: userProfile,
       user: req.user,
-      projects: []
+      projects: userProjects
     });
   } catch (err) {
     console.error(err);
