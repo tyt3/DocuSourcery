@@ -59,24 +59,16 @@
         <!-- Breadcrumb Nav-->
         <%- include('../snippets/breadcrumbs.ejs') -%>
 
-        <h1 class="text-start light">
-         CaD@Pitt Documentation
-        </h1>
-        <div>
-          The CaD@Pitt project is based in the University of Pittsburgh Library System and aims to increase the visibility and discoverability of library collections, make library collections data accessible for computational use, and enable scholars to extend/enrich collections data with critical, research-driven layers of additional data.
-        </div>
-        <hr>
-        <h2 class="fs-6 text-uppercase light">
-          Table of Contents
-        </h2>
-        <p>
-          
-        </p>
+        <!-- Page Content -->
+        <% if (page) { %>
+          <%- include('../snippets/page-content.ejs') -%>
+        <% } else if (document) { %>
+          <%- include('../snippets/document-content.ejs') -%>
+        <% } else { %> 
+          <%- include('../snippets/project-content.ejs') -%>
+        <% } %>
       </div>  
     </div>
-    <!-- Section Nav -->
-<!--     <div class="col-xl-2 project-nav text-wrap .d-none .d-xl-block border-start">
-    </div>  -->
   </div>
 </div>
 <%- include('../baseFooter') -%>
