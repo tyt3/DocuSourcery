@@ -134,16 +134,16 @@ router.get('/project/:slug', async (req, res) => {
 
 // View Published Projects
 router.get('/projects', async (req, res) => {
-  // TODO: Get all projects where public===true
-
-  try {
-    res.render('project/projects.ejs', { 
-      user: req.user,
-      project: null 
+  await Project.find({public: true}, {_id: 0})
+    .then((project_list) => {
+      res.render('project/projects.ejs', {
+        user: req.user,
+        project: project_list
+      });
+    })
+    .catch((err) => {
+      res.status(500).send(err);
     });
-  } catch (err) {
-    throw err;
-  }
 });
 
 
