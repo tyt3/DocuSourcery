@@ -15,7 +15,6 @@ const bcrypt = require('bcrypt');
 
 // Import data model
 const User = require('../models/user');
-const Profile = require('../models/profile');
 
 // AUTH
 // testing Retrieve all user msg
@@ -31,7 +30,7 @@ router.get('/alllllUsers', async function (req, res) {
 
 // testing Retrieve all profile msg
 router.get('/alllllProfiles', async function (req, res) {
-  await Profile.find({})
+  await User.find({profilePublic: true}, {_id: 0, password: 0, profilePublic: 0, apiKey: 0})
     .then((profile_list) => {
       res.json(profile_list);
     })
@@ -74,25 +73,12 @@ router.post('/signup', ensureNotAuth, checkUsernameAndEmail, validatePassword, a
     const user = new User({
       username: username,
       email: email,
-      first_name: first_name,
-      last_name: last_name,
+      firstName: first_name,
+      lastName: last_name,
       password: hashedPassword,
     });
 
     const newUser = await user.save();
-
-    // Create the Profile document linked to the User
-    const profile = new Profile({
-      first_name: first_name,
-      last_name: last_name,
-      user_id: newUser._id, // Link to the user document
-    });
-
-    await profile.save();
-
-    // Optionally, update the User document with the profile ID
-    newUser.profile_id = profile._id;
-    await newUser.save();
 
     // Redirect or log the user in directly
     res.redirect('/dashboard');
