@@ -120,13 +120,19 @@ router.get('/project/:slug', async (req, res) => {
 
   try {
     const project = await Project.findOne({ slug: projectSlug });
-    res.render('project/project.ejs', { 
-      user: req.user,
-      project: project,
-      document: null, // Don't replace
-      page: null, // Don't replace
-      viewType: "project"
-    });
+    if ((project.permissions.loginRequired && req.user) || !project.permissions.loginRequired) {
+      res.render('project/project.ejs', { 
+        user: req.user,
+        project: project,
+        document: null, // Don't replace
+        page: null, // Don't replace
+        viewType: "project"
+      });
+    }
+    else {
+      req.session.returnTo = req.url;
+      res.redirect('/login');
+    }
   } catch (err) {
     throw err;
   }
