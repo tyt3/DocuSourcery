@@ -9,34 +9,47 @@
         </div>
         <!-- Document Title -->
         <div class="col-11 d-flex align-items-center">
-          <span data-bs-toggle="tooltip" data-bs-title="Document" 
-            data-bs-custom-class="ds-tooltip" class="material-symbols-outlined me-2">
+          <span data-bs-toggle="tooltip" 
+            data-bs-title="Drag and drop document to change order" 
+            data-bs-custom-class="ds-tooltip"
+            class="material-symbols-outlined me-2">
             folder_open
           </span>
-          <a href="#">Data Extraction and Transformation Workflow</a>
+          <a href="project/<%= project.slug %>/<%= document.slug %>/edit"><%= document.title %></a>
         </div>
-        <!-- View and Edit Icons -->
-        <!-- <div class="col-3">
-          <a href="/document/<%= document.slug %>">
-            <span class="material-symbols-outlined">
-              visibility
-            </span>
-          </a>
-          <a href="/document/edit/<%= document.slug %>">
-            <span class="material-symbols-outlined">
-              edit
-            </span>
-          </a>
-        </div> -->
       </div>
       <!-- Pages List -->
       <ul class="card-list mt-2">
         <!-- Page Cards -->
-        <% if (project.documents && project.documents.length > 0) { %>
+        <% if (document && documents.pages.length > 0) { %>
           <% document.pages.forEach(function(page) { %>
-            <%- include './page-list-item.ejs' -%>
+            <li class="mb-2">
+              <div class="card">
+                <div class="card-body py-1">
+                  <!-- Drag Icon -->
+                  <div class="row gy-2">
+                    <div class="col-1">
+                      <span data-bs-toggle="tooltip" 
+                        data-bs-title="Drag and drop page to change order" 
+                        data-bs-custom-class="ds-tooltip" 
+                        class="material-symbols-outlined">
+                        drag_handle
+                      </span>
+                    </div>
+                    <!-- Page Title -->
+                    <div class="col-11 d-flex align-items-center">
+                      <span data-bs-toggle="tooltip" data-bs-title="Page" 
+                        data-bs-custom-class="ds-tooltip" class="material-symbols-outlined me-2">
+                        description
+                      </span>
+                      <a href="/page/edit/<%= page.slug %>"><%= page.title %></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </li>
           <% }); %>
-        <% }
+        <% } %>
       </ul>
     </div>
   </div>

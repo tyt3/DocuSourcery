@@ -22,9 +22,13 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.jumbotron {
-  background-color: var(--secondary-color); /* For browsers that do not support gradients */
-  background-image: linear-gradient(to bottom, var(--secondary-color), var(--secondary-color), var(--tertiary-color));
+a {
+  color: var(--primary-color);
+}
+
+/* Apply darker variant on hover */
+a:hover {
+  color: var(--secondary-color-dark);
 }
 
 .breadcrumb-item {
@@ -32,6 +36,10 @@ body {
   align-items: center; /* Align items vertically in the center */
 }
 
+.ds-tooltip {
+  --bs-tooltip-bg: var(--primary-color);
+  --bs-tooltip-color: var(--bs-white);
+}
 
 
 /* Text */
@@ -121,6 +129,9 @@ button.nav-link.tab-link {
   z-index: 1000;
 }
 
+.card-list {
+  list-style-type: none;
+}
 
 /* Forms */
 
@@ -370,6 +381,29 @@ a.badge-tag:link {
 
 
 /* Pages */
+
+/* Index */
+
+.jumbotron {
+  background-color: var(--secondary-color); /* For browsers that do not support gradients */
+  background-image: linear-gradient(to bottom, var(--secondary-color), var(--secondary-color), var(--tertiary-color));
+}
+
+/* For screens large or larger */
+@media screen and (min-width: 992px) {
+  .img-jumbotron {
+      height: 50vh;
+      width: auto;
+  }
+}
+
+/* For screens smaller */
+@media screen and (max-width: 991px) {
+  img.img-jumbotron {
+      height: calc(100vh / 3);
+      width: auto;
+  }
+}
 
 /* Profile Page */
 

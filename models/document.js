@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-// Define User model
+// Define Document model
 const DocumentSchema = new Schema({
   slug: { type: String, required: true, maxLength: 50 },
   title: { type: String, required: true, maxLength: 255 },
@@ -18,7 +18,7 @@ const DocumentSchema = new Schema({
   landingPage: { type: Boolean, default: false },
   projectId: { type: Schema.Types.ObjectId, ref: "project", required: true },
   pages: [
-    { type: Schema.Types.ObjectId, ref: "page", required: true }
+    { type: Schema.Types.ObjectId, ref: "page" }
   ]
 });
 
