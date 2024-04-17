@@ -108,7 +108,7 @@ button.nav-link.tab-link {
   }
 }
 
-.project-nav a {
+.project-nav a, .offcanvas-body a {
   color: var(--off-black);
   text-decoration: none;
   line-height: 1.25;
@@ -116,7 +116,7 @@ button.nav-link.tab-link {
   display: block;
 }
 
-.project-nav a:hover {
+.project-nav a:hover, .offcanvas-body a:hover {
   color: var(--secondary-color);
 }
 
