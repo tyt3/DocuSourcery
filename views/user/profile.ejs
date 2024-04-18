@@ -30,7 +30,7 @@
       <% } %>
       <% if (profile.bio) { %>
       <p class="contact"><strong>Bio:</strong> 
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer id semper lorem. Morbi pretium velit non ex laoreet fringilla. Morbi finibus pharetra nisi in volutpat. Praesent cursus consectetur turpis, sit amet dapibus felis finibus sed. Vivamus in magna pretium, vulputate massa at, rhoncus nulla. Nam ut viverra enim, vitae tempor mauris. Phasellus ullamcorper sem sed justo fringilla, ut vulputate ipsum viverra. Nunc pharetra congue ipsum ac auctor. Fusce suscipit lectus eu tincidunt mollis. Aliquam eget arcu mauris. Interdum et malesuada fames ac ante ipsum primis in faucibus.
+        <%= profile.bio %>
       <% } %>
       <% if (profile.id.toString() === user.id.toString()) { %>
       <div class="d-grid gap-2 d-md-flex justify-content-center justify-content-md-start mt-4">
