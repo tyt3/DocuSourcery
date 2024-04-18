@@ -57,7 +57,7 @@
   Table of Contents
 </h3>
 
-<% if (project && project.documents && project.documents.length > 0) { %>
+<% if (project && project.documents && Array.isArray(project.documents) && project.documents.length > 0) { %>
   <ol>
     <% project.documents.forEach(function(document) { %>
       <li>
