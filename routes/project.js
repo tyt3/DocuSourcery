@@ -406,6 +406,7 @@ router.get('/tag/:slug', async (req, res) => {
     const tag = await Tag.findOne({ slug: tagSlug });
     res.render('project/tag.ejs', { 
       user: req.user,
+      tag: tag
     });
   } catch (err) {
     throw err;
