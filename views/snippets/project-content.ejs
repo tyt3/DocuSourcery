@@ -11,7 +11,7 @@
   </div>
   <% if (user && user.id ) { %>
     <% const minRole = 1; %>
-    <% const userFound = project.users.some(user => user._id === user.id && user.role >= minRole); %>
+    <% const userFound = project.users.some(user => user.get('id') === user.id && user.get('role') >= minRole); %>
     <% if (userFound) { %>
     <div class="col-auto">
       <a href="/project/<%= project.title %>/edit" class="text-decoration-none">
@@ -32,9 +32,10 @@
     <% let userIndex = 0; %>
 
     <% project.users.forEach(function(user, userIndex) { %>
-      <span class="badge rounded-pill bg-ds-primary">
-        <a href="/profile/<%= user.username %>"><%= user.firstName %> <%= user.lastName %></a>
-      </span>
+        <% console.log(user); %>
+        <a href="/profile/<%= user.get('username') %>">
+          <%= user.get('firstName') %> <%= user.get('lastName') %>
+        </a>
       <% if (userIndex !== project.users.length - 1) { %>, <% } %>
       <% userIndex++; %>
     <% }); %>
@@ -44,7 +45,7 @@
   <% if (project && project.tags && project.tags.length > 0) { %>
     <% project.tags.forEach(function(tag) { %>
       <span class="badge rounded-pill bg-ds-primary">
-        <%= tag.title %>
+        <%= tag.get('title') %>
       </span>
     <% }); %>
   <% } %>
