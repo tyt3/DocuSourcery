@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col">
-    <h1 class="text-start light">
+    <h1 class="text-start light mb-2">
       <%= project.title %>
     </h1>
     <% if (project.subtitle) { %>
@@ -19,22 +19,45 @@
   </div>
   <% } %>
 </div>
-<div>
+<div class="mt-4">
   <%= project.description %>
+</div>
+<p class="mt-4">
+  <span class="bold">Collaborators</span>:
+  <% if (project && project.users && project.users.length > 0) { %>
+    <% let userIndex = 0; %>
+
+    <% project.users.forEach(function(user, userIndex) { %>
+      <span class="badge rounded-pill bg-ds-primary">
+        <a href="/profile/<%= username %>"><%= user.firstName %> <%= user.lastName %></a>
+      </span>
+      <% if (userIndex !== project.users.length - 1) { %>, <% } %>
+      <% userIndex++; %>
+    <% }); %>
+  <% } %>
+</p>
+<div class="mt-4">
+  <% if (project && project.tags && project.tags.length > 0) { %>
+    <% project.tags.forEach(function(tag) { %>
+      <span class="badge rounded-pill bg-ds-primary">
+        <%= tag.title %>
+      </span>
+    <% }); %>
+  <% } %>
 </div>
 <hr>
 <h3 class="fs-6 text-uppercase light">
   Table of Contents
 </h3>
 
-<% if (project && project.documents && project.documents.length> 0) { %>
+<% if (project && project.documents && project.documents.length > 0) { %>
   <ol>
     <% project.documents.forEach(function(document) { %>
       <li>
         <a href="/project/<%= project.slug %>/<%= document.slug %>">
           <%= document.title %>
         </a>
-        <% if (document && documents.pages.length> 0) { %>
+        <% if (document && documents.pages.length > 0) { %>
           <ul>
             <% document.pages.forEach(function(page) { %>
               <li>
