@@ -197,7 +197,7 @@ router.get('/profile/:username', ensureAuth, async (req, res) => {
 });
 
 // Edit Profile
-router.put('/profile', ensureAuth, async (req, res) => {
+router.post('/profile', ensureAuth, async (req, res) => {
   try {
     const { pronouns, title, website, bio, profilePhotoURL } = req.body;
     const updatedProfile = await User.findOneAndUpdate(
