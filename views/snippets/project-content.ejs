@@ -61,15 +61,15 @@
   <ol>
     <% project.documents.forEach(function(document) { %>
       <li>
-        <a href="/project/<%= project.slug %>/<%= document.slug %>">
-          <%= document.title %>
+        <a href="/project/<%= project.slug %>/<%= document.get('slug') %>">
+          <%= document.get('title') %>
         </a>
         <% if (document && document.pages.length > 0) { %>
           <ul>
             <% document.pages.forEach(function(page) { %>
               <li>
                 <a href="/project/<%= project.slug %>/<%= document.slug %>/<%= page.slug %>">
-                  <%= page.title %>/
+                  <%= page.get('title') %>/
                 </a>
               </li>
             <% }); %>
