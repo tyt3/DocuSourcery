@@ -32,10 +32,8 @@
     <% let userIndex = 0; %>
 
     <% project.users.forEach(function(user, userIndex) { %>
-        <% console.log(user); %>
         <a href="/profile/<%= user.get('username') %>">
-          <%= user.get('firstName') %> <%= user.get('lastName') %>
-        </a>
+          <%= user.get('firstName') %> <%= user.get('lastName') %></a>
       <% if (userIndex !== project.users.length - 1) { %>, <% } %>
       <% userIndex++; %>
     <% }); %>
