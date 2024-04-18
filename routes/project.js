@@ -73,17 +73,26 @@ router.post('/project/create', ensureAuth, async (req, res) => {
 
   try {
     const project = new Project({
+      slug: slug,
       title: title,
       subtitle: subtitle,
-      slug: slug,
       description: description,
+      createdBy: req.user._id,
+      public: public,
       tags: linkedTags,
       permissions: {loginRequired: noLogin, duplicatable: canDuplicate},
-      public: public
+      users: [
+        {
+          id: req.user._id,
+          firstName: req.user.firstName,
+          lastName: req.user.lastName,
+          role: 3,
+          username: req.user.username
+        }
+      ]
     });
 
     const newProject = await project.save();
-    await newProject.save();
 
     // Render the new project
     res.render('project/projectEdit.ejs', { 
