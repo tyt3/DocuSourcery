@@ -92,7 +92,7 @@ router.post('/signup', ensureNotAuth, checkUsernameAndEmail, validatePassword, a
     res.redirect('/dashboard');
   } catch (err) {
     console.error(err);
-    res.status(500).send('An error occurred during sign up.');
+    res.status(500).send(`An error occurred during sign up: ${err}`);
   }
 });
 
