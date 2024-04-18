@@ -50,8 +50,10 @@ router.get('/signup', ensureNotAuth, async (req, res) => {
 });
 
 router.post('/signup', ensureNotAuth, checkUsernameAndEmail, validatePassword, async (req, res) => {
-  const { first_name, last_name, email, password, username } = req.body;
-
+  const { firstName, lastName, username, email, password, passwordConf, pronouns,
+  title, website, bio, photoUrl } = req.body;
+  
+  // TODO: implement form validation middleware
   try {
     // Check if the email or username already exists
     const existingUserByEmail = await User.findOne({ email: email });
@@ -74,9 +76,14 @@ router.post('/signup', ensureNotAuth, checkUsernameAndEmail, validatePassword, a
     const user = new User({
       username: username,
       email: email,
-      firstName: first_name,
-      lastName: last_name,
+      firstName: firstName,
+      lastName: lastName,
       password: hashedPassword,
+      pronouns: pronouns,
+      title: title,
+      website: website,
+      bio: bio,
+      profilePhotoUrl: photoUrl
     });
 
     const newUser = await user.save();
