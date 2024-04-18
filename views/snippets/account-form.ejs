@@ -1,32 +1,32 @@
 <div class="row">
   <div class="col">
     <div class="form-group">
-      <label for="first_name" class="bold">First Name
+      <label for="firstName" class="bold">First Name
         <span class="required-field">*</span>
       </label>
       <input 
         type="text" 
         class="form-control" 
-        id="first_name" 
-        name="first_name" 
+        id="firstName" 
+        name="firstName" 
         <% if (user) { %>
-        value="<%= user.first_name %>" 
+        value="<%= user.firstName %>" 
         <% } %>
         required>
     </div>
   </div>
   <div class="col">
     <div class="form-group">
-      <label for="last_name" class="bold">Last Name
+      <label for="lastName" class="bold">Last Name
         <span class="required-field">*</span>
       </label>
       <input 
         type="text" 
         class="form-control" 
-        id="last_name" 
-        name="last_name" 
+        id="lastName" 
+        name="lastName" 
         <% if (user) { %>
-        value="<%= user.last_name %>" 
+        value="<%= user.lastName %>" 
         <% } %>
         required>
     </div>
