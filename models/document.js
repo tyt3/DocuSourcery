@@ -12,13 +12,10 @@ const DocumentSchema = new Schema({
   deleted: { type: Boolean, default: false },
   deletedDate: { type: Date },
   deletedBy: { type: Schema.Types.ObjectId, ref: "user" },
-  tags: [
-    { type: Schema.Types.ObjectId, ref: "tag" }
-  ],
   landingPage: { type: Boolean, default: false },
   projectId: { type: Schema.Types.ObjectId, ref: "project", required: true },
   pages: [
-    { type: Schema.Types.ObjectId, ref: "page" }
+    { type: Map }
   ]
 });
 

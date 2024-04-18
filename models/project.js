@@ -15,13 +15,13 @@ const ProjectSchema = new Schema({
   deletedBy: { type: Schema.Types.ObjectId, ref: "user" },
   public: { type: Boolean, default: false },
   trash: { type: Boolean, default: false },
+  views: { type: Number, default: 0 },
   tags: [
-    { type: Schema.Types.ObjectId, ref: "tag" }
+    { type: Map }
   ],
   permissions: { type: Map },
-  views: { type: Number, default: 0 },
   documents: [
-    { type: Schema.Types.ObjectId, ref: "document", required: true }
+    { type: Map }
   ],
   users: [
     { type: Map }

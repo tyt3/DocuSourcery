@@ -12,10 +12,10 @@ const ProfileSchema = new Schema({
   profilePhotoUrl: { type: String },
   profilePublic: { type: Boolean, default: false },
   following: [
-    { type: Schema.Types.ObjectId, ref: "profile" }
+    { type: Map }
   ],
   followers: [
-    { type: Schema.Types.ObjectId, ref: "profile" }
+    { type: Map }
   ],
   userId: { type: Schema.Types.ObjectId, ref: "user", required: true, unique: true }
 });
