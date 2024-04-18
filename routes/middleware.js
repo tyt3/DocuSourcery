@@ -83,7 +83,7 @@ const checkAuthUsernameAndEmail = async (req, res, next) => {
 
 // Validate Password
 function validatePassword(req, res, next) {
-  const { password, password_conf } = req.body;
+  const { password, passwordConf } = req.body;
   let valid = true;
   const errors = [];
 
@@ -108,9 +108,9 @@ function validatePassword(req, res, next) {
     valid = false;
     errors.push("Password must contain at least 1 special character.");
   }
-  if (password !== password_conf) {
+  if (password !== passwordConf) {
     valid = false;
-    errors.push("Passwords do not match.");
+    errors.push(`Passwords do not match: ${password} != ${passwordConf}`);
   }
 
   // If not valid, send error messages
