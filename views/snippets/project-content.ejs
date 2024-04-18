@@ -45,7 +45,7 @@
   <% if (project && project.tags && project.tags.length > 0) { %>
     <% project.tags.forEach(function(tag) { %>
       <a href="/tag/<$= tag.get('slug') %>"> 
-        <span class="badge rounded-pill bg-ds-primary">
+        <span class="badge rounded-pill bg-ds-primary me-1">
           <%= tag.get('title') %>
         </span>
       </a>
