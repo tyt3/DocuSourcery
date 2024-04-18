@@ -64,7 +64,7 @@
         <a href="/project/<%= project.slug %>/<%= document.get('slug') %>">
           <%= document.get('title') %>
         </a>
-        <% if (document && document.pages.length > 0) { %>
+        <% if (document && Array.isArray(document.pages) && document.pages.length > 0) { %>
           <ul>
             <% document.pages.forEach(function(page) { %>
               <li>
