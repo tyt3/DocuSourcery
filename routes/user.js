@@ -200,16 +200,16 @@ router.get('/profile/:username', ensureAuth, async (req, res) => {
 router.put('/profile', ensureAuth, async (req, res) => {
   try {
     const { pronouns, title, website, bio, profilePhotoURL } = req.body;
-    await User.findOneAndUpdate(
+    const updatedProfile = await User.findOneAndUpdate(
       { _id: req.user._id },
       { $set: { pronouns, title, website, bio, profilePhotoURL } },
       { new: true, runValidators: true }
     );
-    
+
     const userProjects = await Project.find({ 'users.id': req.user._id });
     // Render profile page
     res.render('user/profile.ejs', {
-      profile: req.user,
+      profile: updatedProfile,
       user: req.user,
       projects: userProjects
     });
