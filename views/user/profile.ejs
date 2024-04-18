@@ -22,7 +22,7 @@
       <% if (profile.title) { %>
       <p class="contact"><strong>Title:</strong> <%= profile.title %></p>
        <% } %>
-      <p class="contact"><strong>Email:</strong> <a href="#"><%= profile.email %></a></p>
+      <p class="contact"><strong>Email:</strong> <a href="mailto:<%= profile.email %>"><%= profile.email %></a></p>
       <% if (profile.website) { %>
       <p class="contact"><strong>Website:</strong> 
         <a href="<%= user.website %>" target="_blank"><%= profile.website %></a>
