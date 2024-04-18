@@ -400,7 +400,7 @@ router.get('/project/:projectSlug/:documentSlug/:pageSlug', async (req, res) => 
 
 
 // TAGS
-router.get('/tag/:slug', ensureAuth, async (req, res) => {
+router.get('/tag/:slug', async (req, res) => {
   const tagSlug = req.params.slug;
   try {
     const tag = await Tag.findOne({ slug: tagSlug });
