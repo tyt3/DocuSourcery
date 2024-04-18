@@ -9,14 +9,18 @@
     </h2>
     <% } %>
   </div>
-  <% if (user.id ) { %>
-  <div class="col-auto">
-    <a href="/project/<%= project.title %>/edit" class="text-decoration-none">
-      <span class="material-symbols-outlined">
-        edit
-      </span>
-    </a>
-  </div>
+  <% if (user && user.id ) { %>
+    <% const minRole = 1; %>
+    <% const userFound = project.users.some(user => user._id === user.id && user.role >= minRole); %>
+    <% if (userFound) { %>
+    <div class="col-auto">
+      <a href="/project/<%= project.title %>/edit" class="text-decoration-none">
+        <span class="material-symbols-outlined">
+          edit
+        </span>
+      </a>
+    </div>
+    <% } %>
   <% } %>
 </div>
 <div class="mt-4">
