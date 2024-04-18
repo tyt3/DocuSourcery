@@ -29,7 +29,7 @@
 
     <% project.users.forEach(function(user, userIndex) { %>
       <span class="badge rounded-pill bg-ds-primary">
-        <a href="/profile/<%= username %>"><%= user.firstName %> <%= user.lastName %></a>
+        <a href="/profile/<%= user.username %>"><%= user.firstName %> <%= user.lastName %></a>
       </span>
       <% if (userIndex !== project.users.length - 1) { %>, <% } %>
       <% userIndex++; %>
