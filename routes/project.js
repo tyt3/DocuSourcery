@@ -32,7 +32,7 @@ router.get('/project/create', ensureAuth, async (req, res) => {
 
 // Create Project
 router.post('/project/create', ensureAuth, async (req, res) => {
-  const { title, subtitle, slug, description, tags, noLogin, canDuplicate, public } = req.body;
+  const { title, subtitle, slug, description, tags, noLogin, canDuplicate, isPublic } = req.body;
 
   // TODO: Write and apply middleware to validate form fields
     // Title length is less than or equal to 255 characters 
@@ -78,9 +78,9 @@ router.post('/project/create', ensureAuth, async (req, res) => {
       subtitle: subtitle,
       description: description,
       createdBy: req.user._id,
-      public: public,
+      public: isPublic,
       tags: linkedTags,
-      permissions: {loginRequired: noLogin, duplicatable: canDuplicate},
+      permissions: {noLogin: noLogin, duplicatable: canDuplicate},
       users: [
         {
           id: req.user._id,
