@@ -32,7 +32,7 @@ router.get('/project/create', ensureAuth, async (req, res) => {
 
 // Create Project
 router.post('/project/create', ensureAuth, async (req, res) => {
-  const { title } = req.body; // TODO: Add remaining fields
+  const { title, subtitle, slug, description, tags, noLogin, canDuplicate, public } = req.body;
 
   // TODO: Write and apply middleware to validate form fields
     // Title length is less than or equal to 255 characters 
@@ -41,17 +41,61 @@ router.post('/project/create', ensureAuth, async (req, res) => {
     // Slug length is less than 25 characters
     // Slug contains only letters, numbers, and dashes
   // TODO: Convert description field Markdown to HTML with markdown.js
+  // TODO: Check whether tags exist, if not create them (comma separated list in text box?) and add to project record
+  let linkedTags = [];
+  try {
+    if (tags) {
+      const tagsArray = tags.split(',').map(tag => tag.trim());
+
+      for (const tagTitle of tagsArray) {
+        let tag = await Tag.findOne({ title: tagTitle });
+
+        if (!tag) {
+          // Create a new tag if it doesn't exist
+          tag = new Tag({
+            title: tagTitle,
+            slug: tagTitle.replace(/\s+/g, '-').toLowerCase(), // Replace whitespace with hyphens
+            createdBy: req.user._id
+          });
+          await tag.save();
+        }
+        linkedTags.push({
+          title: tag.title,
+          slug: tag.slug,
+          id: tag._id // ObjectId of the tag record
+        });
+      }
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).send(`An error occurred during tag handling: ${err}`);
+  }
 
   try {
     const project = new Project({
       title: title,
+      subtitle: subtitle,
+      slug: slug,
+      description: description,
+      tags: linkedTags,
+      permissions: {loginRequired: noLogin, duplicatable: canDuplicate},
+      public: public
     });
 
     const newProject = await project.save();
     await newProject.save();
 
+    // Render the new project
+    res.render('project/projectEdit.ejs', { 
+      user: req.user, 
+      users: [],
+      project: newProject,
+      document: null, // Don't replace
+      page: null // Don't replace
+    });
   } catch (err) {
-    throw err;
+    console.error(err);
+    res.status(500).send(`An error occurred during project creation: ${err}`);
   }
 });
 
