@@ -110,7 +110,62 @@
                   <ul class="list-group">
                     <% project.documents.forEach(function(document) { %>
                       <!-- Document Cards -->
-                      <%- include('../snippets/document-list-item.ejs') -%>
+                      <li class="card-list mb-3">
+                        <div class="card">
+                          <div class="card-body py-1">
+                            <div class="row gy-2 d-flex align-items-center">
+                              <div class="col-1">
+                                <span class="material-symbols-outlined">
+                                  drag_handle
+                                </span>
+                              </div>
+                              <!-- Document Title -->
+                              <div class="col-11 d-flex align-items-center">
+                                <span data-bs-toggle="tooltip" 
+                                  data-bs-title="Drag and drop document to change order" 
+                                  data-bs-custom-class="ds-tooltip"
+                                  class="material-symbols-outlined me-2">
+                                  folder_open
+                                </span>
+                                <a href="project/<%= project.slug %>/<%= document.get('slug') %>/edit"><%= document.get('title') %></a>
+                              </div>
+                            </div>
+                            <!-- Pages List -->
+                            <ul class="card-list mt-2">
+                              <!-- Page Cards -->
+                              <% if (document && document.pages && Array.isArray(document.pages) && document.pages.length > 0) { %>
+                                <% document.pages.forEach(function(page) { %>
+                                  <li class="mb-2">
+                                    <div class="card">
+                                      <div class="card-body py-1">
+                                        <!-- Drag Icon -->
+                                        <div class="row gy-2">
+                                          <div class="col-1">
+                                            <span data-bs-toggle="tooltip" 
+                                              data-bs-title="Drag and drop page to change order" 
+                                              data-bs-custom-class="ds-tooltip" 
+                                              class="material-symbols-outlined">
+                                              drag_handle
+                                            </span>
+                                          </div>
+                                          <!-- Page Title -->
+                                          <div class="col-11 d-flex align-items-center">
+                                            <span data-bs-toggle="tooltip" data-bs-title="Page" 
+                                              data-bs-custom-class="ds-tooltip" class="material-symbols-outlined me-2">
+                                              description
+                                            </span>
+                                            <a href="/page/edit/<%= page.get('slug') %>"><%= page.get('title') %></a>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </li>
+                                <% }); %>
+                              <% } %>
+                            </ul>
+                          </div>
+                        </div>
+                      </li>
                     <% }); %>  
                   </ul> 
                 <% } else { %>

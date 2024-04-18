@@ -1,4 +1,4 @@
-<div class="modal fade" id="deleteProject" name="deleteProjectModal" 
+<div class="modal fade" id="deleteProjectModal" name="deleteProjectModal" 
   tabindex="-1" aria-labelledby="deleteProjectModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -9,7 +9,7 @@
           aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <p>Are you sure you want to delete your project, "{{ project.title }}"? 
+        <p>Are you sure you want to delete your project, "<%= project.title %>"? 
           <% if (project.deleted) { %>
           <strong>This action cannot be undone.</strong>
           <% } %>
