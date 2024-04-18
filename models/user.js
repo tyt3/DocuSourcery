@@ -24,7 +24,6 @@ const UserSchema = new Schema({
     { type: Schema.Types.ObjectId, ref: "profile" }
   ],
   apiKey: { type: String, minLength: 20, maxLength: 128, unique: true }
-  // profileId: { type: Schema.Types.ObjectId, ref: "profile", unique: true }
 });
 
 // Export model
