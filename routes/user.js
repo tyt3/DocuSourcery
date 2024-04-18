@@ -205,10 +205,17 @@ router.put('/profile', ensureAuth, async (req, res) => {
       { $set: { pronouns, title, website, bio, profilePhotoURL } },
       { new: true, runValidators: true }
     );
-    res.redirect('/profile');
+    
+    const userProjects = await Project.find({ 'users.id': req.user._id });
+    // Render profile page
+    res.render('user/profile.ejs', {
+      profile: req.user,
+      user: req.user,
+      projects: userProjects
+    });
   } catch (err) {
     console.error(err);
-    res.status(500).send('Server error');
+    res.status(500).send(`Server error: ${err}`);
   }
 });
 
