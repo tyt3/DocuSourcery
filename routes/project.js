@@ -10,6 +10,7 @@ const User = require('../models/user');
 const Project = require('../models/project');
 const Document = require('../models/document');
 const Page = require('../models/page');
+const Tag = require('../models/tag');
 
 
 // PROJECT
@@ -391,6 +392,20 @@ router.get('/project/:projectSlug/:documentSlug/:pageSlug', async (req, res) => 
       document: null, // TODO: Replace with document
       page: null, // TODO: Replace with page
       viewType: "page"
+    });
+  } catch (err) {
+    throw err;
+  }
+});
+
+
+// TAGS
+router.get('/tag/:slug', ensureAuth, async (req, res) => {
+  const tagSlug = req.params.slug;
+  try {
+    const tag = await Tag.findOne({ slug: tagSlug });
+    res.render('project/tag.ejs', { 
+      user: req.user,
     });
   } catch (err) {
     throw err;

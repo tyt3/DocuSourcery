@@ -166,6 +166,12 @@ button.nav-link.tab-link {
   list-style-type: none;
 }
 
+.card-list-item {
+  border-top-width: 0;
+  border-right-width: 0;
+  border-left: 0;
+}
+
 /* Forms */
 
 /* All Forms */ 
@@ -315,6 +321,11 @@ button.nav-link.tab-link {
 
 /* Badges */
 
+
+.badge:hover {
+  background-color: var(--secondary-color);
+}
+
 .badge {
   .close {
     margin-left: 0.25rem;
@@ -326,12 +337,6 @@ button.nav-link.tab-link {
 
 a.badge-tag:link {
   text-decoration: none;
-}
-
-.card-list-item {
-  border-top-width: 0;
-  border-right-width: 0;
-  border-left: 0;
 }
 
 
