@@ -210,6 +210,15 @@ router.get('/projects', async (req, res) => {
     });
 });
 
+// Search Published Projects
+router.get('/projects/:keywords', async (req, res) => {
+  try {
+    // TODO: Implement
+  } catch (err) {
+    throw err;
+  }
+});
+
 
 // DOCUMENT
 
