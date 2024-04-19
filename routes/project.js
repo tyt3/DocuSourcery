@@ -41,7 +41,6 @@ router.post('/project/create', ensureAuth, async (req, res) => {
     // Slug length is less than 25 characters
     // Slug contains only letters, numbers, and dashes
   // TODO: Convert description field Markdown to HTML with markdown.js
-  // TODO: Check whether tags exist, if not create them (comma separated list in text box?) and add to project record
   let linkedTags = [];
   try {
     if (tags) {
