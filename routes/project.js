@@ -72,6 +72,13 @@ router.post('/project/create', ensureAuth, async (req, res) => {
   }
 
   try {
+    if (isPublic === "on") {
+      isPublic = true;
+    }
+    else {
+      isPublic = false;
+    }
+
     const project = new Project({
       slug: slug,
       title: title,
