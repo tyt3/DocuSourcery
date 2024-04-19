@@ -48,7 +48,7 @@
         </li>
         <% } %> 
       </ul>
-      <form>
+      <form id="projectForm">
         <div class="row gy-4">
           <!-- Tab Panels -->
           <div class="col-12 col-md-8 col-xxl-9">
@@ -254,9 +254,9 @@
             <div class="card mt-3" id="action-buttons">
               <div class="card-body">
                 <div class="d-grid gap-2 col-12 mx-auto">
-                  <button type="submit" formmethod="POST" formaction="/project/create" class="btn btn-block btn-outline-success">Save Project</button>
+                  <button type="submit" id="saveProjectBtn" class="btn btn-block btn-outline-success">Save Project</button>
                   <% if (project) { %>
-                  <button type="button" class="btn btn-block btn-outline-danger"
+                  <button type="button" id="deleteProjectBtn" class="btn btn-block btn-outline-danger"
                     data-bs-toggle="modal" data-bs-target="#deleteProjectModal">Delete Project</button>
                   <a href="/project/<%= project.slug %>"
                     role="button" class="btn btn-block btn-outline-secondary">View Project</a>
@@ -271,6 +271,38 @@
           </div>
         </div>
       </form>
+      <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const projectForm = document.getElementById('projectForm');
+            const saveProjectBtn = document.getElementById('saveProjectBtn');
+            const deleteProjectBtn = document.getElementById('deleteProjectBtn');
+    
+            // Add click event listener to Save Project button
+            saveProjectBtn.addEventListener('click', function () {
+                projectForm.action = '/project/create';
+                projectForm.method = 'POST';
+                projectForm.submit();
+            });
+    
+            // Add click event listener to Delete Project button
+            deleteProjectBtn.addEventListener('click', function () {
+                // const projectId = '<%= project.id %>'; // Replace with actual project ID
+                // fetch(`/project/${projectId}`, {
+                //     method: 'DELETE'
+                // })
+                // .then(response => {
+                //     if (response.ok) {
+                //         // Handle success, maybe redirect or show a message
+                //     } else {
+                //         // Handle error
+                //     }
+                // })
+                // .catch(error => {
+                //     console.error('Error:', error);
+                // });
+            });
+        });
+    </script>
     </div>
   </div>
 </div>
