@@ -255,7 +255,6 @@ router.get('/project/:projectSlug/:documentSlug/edit', ensureAuth, async (req, r
   try {
     // TODO: Get project and document objects and send to frontend
     // TODO: Confirm that document is in project
-    // TODO: Populate all pages in document
     // TODO: Convert description field HTML to Markdown with turndown.js
 
     res.render('project/documentEdit.ejs', { 
