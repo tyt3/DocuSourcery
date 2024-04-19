@@ -473,6 +473,20 @@ img.features {
   width: auto;
 }
 
+@media (max-width: 767px) {
+  img.features {
+    max-height: 150px;
+    width: auto;
+  }
+}
+
+@media (max-width: 767px) {
+  p.lead {
+    text-align: center;
+  }
+}
+
+
 /* Profile Page */
 
 p.contact {
