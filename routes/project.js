@@ -157,7 +157,7 @@ router.delete('/project/:id', ensureAuth, async (req, res) => {
     // Redirect to Dashboard
     // If project.deleted=false:
     // - set to deleted=true
-    // - set deletedAt=now
+    // - set deletedDate=now
     // - set deletedBy=authenticatedUserID
     // if project.deleted=true: 
     // - delete object
@@ -304,6 +304,12 @@ router.delete('/document/:id', ensureAuth, async (req, res) => {
   const documentId = req.params.id;
   try {
     // TODO: Implement
+    // If project.deleted=false:
+    // - set to deleted=true
+    // - set deletedDate=now
+    // - set deletedBy=authenticatedUserID
+    // if project.deleted=true: 
+    // - delete object
   } catch (err) {
     throw err;
   }
@@ -437,6 +443,12 @@ router.delete('/page/:id', ensureAuth, async (req, res) => {
   const pageId = req.params.id;
   try {
     // TODO: Implement
+    // If project.deleted=false:
+    // - set to deleted=true
+    // - set deletedDate=now
+    // - set deletedBy=authenticatedUserID
+    // if project.deleted=true: 
+    // - delete object
   } catch (err) {
     throw err;
   }
