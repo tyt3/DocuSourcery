@@ -275,7 +275,6 @@
         document.addEventListener('DOMContentLoaded', function () {
             const projectForm = document.getElementById('projectForm');
             const saveProjectBtn = document.getElementById('saveProjectBtn');
-            const deleteProjectBtn = document.getElementById('deleteProjectBtn');
     
             // Add click event listener to Save Project button
             saveProjectBtn.addEventListener('click', function () {
@@ -283,24 +282,6 @@
                 projectForm.method = 'POST';
                 projectForm.submit();
             });
-    
-            // Add click event listener to Delete Project button
-            // deleteProjectBtn.addEventListener('click', function () {
-                // const projectId = '<%= project.id %>'; // Replace with actual project ID
-                // fetch(`/project/${projectId}`, {
-                //     method: 'DELETE'
-                // })
-                // .then(response => {
-                //     if (response.ok) {
-                //         // Handle success, maybe redirect or show a message
-                //     } else {
-                //         // Handle error
-                //     }
-                // })
-                // .catch(error => {
-                //     console.error('Error:', error);
-                // });
-            // });
         });
     </script>
     </div>
