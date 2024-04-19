@@ -101,7 +101,6 @@ router.post('/project/create', ensureAuth, async (req, res) => {
     // Render the new project
     res.render('project/projectEdit.ejs', { 
       user: req.user, 
-      users: [],
       project: newProject,
       document: null, // Don't replace
       page: null // Don't replace
