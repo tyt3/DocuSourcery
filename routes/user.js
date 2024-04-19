@@ -246,7 +246,9 @@ router.get('/dashboard', ensureAuth, async (req, res) => {
         ...project.toObject(),
         canEdit: project.users.some(u => u.id === req.user._id && u.role > 1),
         isCreator: project.createdBy._id === req.user._id
-      }))
+      })),
+      pins: null, // TODO: Implement
+      trash: null, // TODO: Implement
     });
   } catch (err) {
     console.error('Error fetching dashboard data:', err);
