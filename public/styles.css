@@ -468,6 +468,11 @@ a.badge-tag:link {
   }
 }
 
+img.features {
+  max-height: 300px;
+  width: auto;
+}
+
 /* Profile Page */
 
 p.contact {
