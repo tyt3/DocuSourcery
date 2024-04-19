@@ -153,6 +153,14 @@ router.delete('/project/:id', ensureAuth, async (req, res) => {
   const projectId = req.params.id;
   try {
     // TODO: Implement
+    // Must be authenticated
+    // Redirect to Dashboard
+    // If project.deleted=false:
+    // - set to deleted=true
+    // - set deletedAt=now
+    // - set deletedBy=authenticatedUserID
+    // if project.deleted=true: 
+    // - delete object
   } catch (err) {
     throw err;
   }
