@@ -72,11 +72,9 @@ router.post('/project/create', ensureAuth, async (req, res) => {
   }
 
   try {
+    let publicChoice = false;
     if (isPublic === "on") {
-      isPublic = true;
-    }
-    else {
-      isPublic = false;
+      publicChoice = true;
     }
 
     const project = new Project({
@@ -85,7 +83,7 @@ router.post('/project/create', ensureAuth, async (req, res) => {
       subtitle: subtitle,
       description: description,
       createdBy: req.user._id,
-      public: isPublic,
+      public: publicChoice,
       tags: linkedTags,
       permissions: {noLogin: noLogin, duplicatable: canDuplicate},
       users: [
