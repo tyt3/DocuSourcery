@@ -149,22 +149,38 @@ function validatePassword(req, res, next) {
 }
 
 
-// Populate fields with authenticated user ID
-function populateCurrentUser(req, res, next) {
-  if (req.isAuthenticated()) {
-    const userId = req.user._id;
-    if (!this.createdBy) {
-      this.createdBy = userId;
-    }
-    if (!this.updatedBy) {
-      this.updatedBy = userId;
-    }
-    if (!this.deletedBy && this.deleted) {
-      this.deletedBy = userId;
-    }
+// Validate Slug
+function validateSlug(req, res, next) {
+  const { slug } = req.body;
+  let valid = true;
+  const errors = [];
+
+  // Check for valid slug lengths
+  if (!slug) {
+    valid = false;
+    errors.push("Slug is required.");
   }
-  next();
-};
+  if (slug.length < 1) {
+    valid = false;
+    errors.push("Slug must be at least one character.");
+  }
+  if (title.length > 25) {
+    valid = false;
+    errors.push("Slug must be less than or equal to 25 characters.");
+  }
+  // Use regex to check if slug contains unaccepted character types
+  if (!/^[a-zA-Z0-9\-]+$/.test(slug)) {
+    valid = false;
+    errors.push("Slug must only contain letters, numbers, and dashes.");
+  }
+
+  // If not valid, send error messages
+  if (!valid) {
+    return res.status(400).json({ errors });
+  }
+
+  next(); // Move to the next middleware
+}
 
 
 // Validate Title and Subtitle
@@ -197,6 +213,24 @@ function validateTitles(req, res, next) {
 
   next(); // Move to the next middleware
 }
+
+
+// Populate fields with authenticated user ID
+function populateCurrentUser(req, res, next) {
+  if (req.isAuthenticated()) {
+    const userId = req.user._id;
+    if (!this.createdBy) {
+      this.createdBy = userId;
+    }
+    if (!this.updatedBy) {
+      this.updatedBy = userId;
+    }
+    if (!this.deletedBy && this.deleted) {
+      this.deletedBy = userId;
+    }
+  }
+  next();
+};
 
 
 // Export the middleware functions
