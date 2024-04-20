@@ -206,5 +206,6 @@ module.exports = {
   validatePassword: validatePassword,
   checkUsernameAndEmail: checkUsernameAndEmail,
   checkAuthUsernameAndEmail: checkAuthUsernameAndEmail,
-  populateCurrentUser: populateCurrentUser
+  populateCurrentUser: populateCurrentUser,
+  validateTitles: validateTitles,
 };
