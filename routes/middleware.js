@@ -150,36 +150,48 @@ function validatePassword(req, res, next) {
 
 
 // Validate Slug
-function validateSlug(req, res, next) {
-  const { slug } = req.body;
-  let valid = true;
-  const errors = [];
+const validateSlug = async (req, res, next) => {
+  try {
+    const { slug } = req.body;
+    let valid = true;
+    const errors = [];
 
-  // Check for valid slug lengths
-  if (!slug) {
-    valid = false;
-    errors.push("Slug is required.");
-  }
   if (slug.length < 1) {
-    valid = false;
-    errors.push("Slug must be at least one character.");
-  }
-  if (title.length > 25) {
-    valid = false;
-    errors.push("Slug must be less than or equal to 25 characters.");
-  }
-  // Use regex to check if slug contains unaccepted character types
-  if (!/^[a-zA-Z0-9\-]+$/.test(slug)) {
-    valid = false;
-    errors.push("Slug must only contain letters, numbers, and dashes.");
-  }
+    // Check if any other project uses the same slug
+    const duplicateSlug = await Project.findOne({ slug: slug });
+    if (duplicateSlug) {
+      valid = false;
+      errors.push("Slug must be unique.");
+    }
+    // Check for valid slug lengths
+    if (!slug) {
+      valid = false;
+      errors.push("Slug is required.");
+    }
+    if (slug.length < 1) {
+      valid = false;
+      errors.push("Slug must be at least one character.");
+    }
+    if (title.length > 25) {
+      valid = false;
+      errors.push("Slug must be less than or equal to 25 characters.");
+    }
+    // Use regex to check if slug contains unaccepted character types
+    if (!/^[a-zA-Z0-9\-]+$/.test(slug)) {
+      valid = false;
+      errors.push("Slug must only contain letters, numbers, and dashes.");
+    }
 
-  // If not valid, send error messages
-  if (!valid) {
-    return res.status(400).json({ errors });
-  }
+    // If not valid, send error messages
+    if (!valid) {
+      return res.status(400).json({ errors });
+    }
 
-  next(); // Move to the next middleware
+    next(); // Move to the next middleware
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json(`Error occurred during slug validation: ${err}`);
+  }
 }
 
 
