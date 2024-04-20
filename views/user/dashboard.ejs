@@ -70,11 +70,11 @@
                 <p class="text-center">
                   <em>You don't have any projects yet.</em>
                 </p>
+                <% } %>
                 <div class="d-grid gap-2 d-md-flex justify-content-center">
                   <a class="btn btn-12 btn-ds-primary" role="button" href="/project/create">Create
                     a Project</a>
                 </div>
-                <% } %>
             </div>
             <!-- Pinned Projects Pane -->
             <div class="tab-pane fade" id="pinned-projects-pane" role="tabpanel" 
@@ -85,12 +85,9 @@
                   <li class="list-group-item">
                     <div class="row">
                       <div class="col-3 col-md-2 d-none d-md-block">
-                        <a href="/project/pin/<%= project.id %>">
-                          <span class="material-symbols-outlined">keep</span>
-                        </a>
+                        <a href="/project/pin/<%= project.id %>"><span class="material-symbols-outlined">keep</span></a>
                       </div>
-                      <div class="col-12 col-md-9 col-xxl-10">
-                        <a href="/project/<%= project.slug %>"><%= project.title %></a>
+                      <div class="col-12 col-md-9 col-xxl-10"><a href="/project/<%= project.slug %>"><%= project.title %></a>
                       </div>
                     </div>
                   </li>
@@ -98,12 +95,12 @@
                 <% }); %>
                 <% } else { %>
                 <p class="text-center"><em>You don't have any pinned projects yet.</em></p>
+                <% } %>
                 <div class="d-grid gap-2 d-md-flex justify-content-center">
                   <a class="btn btn-12 btn-ds-primary" role="button" href="#">
                     Browse Projects
                   </a>
                 </div>
-                <% } %>
             </div>
           </div>
           <!-- Archived Projects Pane -->
