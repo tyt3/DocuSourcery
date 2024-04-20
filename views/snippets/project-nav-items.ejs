@@ -8,9 +8,9 @@
     <% if (doc.pages && doc.pages.length > 0) { %>
       <!-- Check that document is active -->
       <% if (document && document.id.toString() === doc.id.toString()) { %>
-        <a href="<%= doc.slug %>" role="button" class="dropdown-btn ml-auto active">
+        <a href="/project/<%= project.slug %>/<%= doc.slug %>" role="button" class="dropdown-btn ml-auto active">
       <% } else { %>
-        <a href="<%= doc.slug %>" role="button" class="dropdown-btn ml-auto">
+        <a href="/project/<%= project.slug %>/<%= doc.slug %>" role="button" class="dropdown-btn ml-auto">
       <% } %>
         <div class="row">
           <div class="col-10">
