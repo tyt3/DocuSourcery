@@ -240,10 +240,10 @@ router.get('/project/:slug', async (req, res) => {
 // View Published Projects
 router.get('/projects', async (req, res) => {
   await Project.find({public: true})
-    .then((project_list) => {
+    .then((projects) => {
       res.render('project/projects.ejs', {
         user: req.user,
-        project: project_list
+        projects: projects
       });
     })
     .catch((err) => {
