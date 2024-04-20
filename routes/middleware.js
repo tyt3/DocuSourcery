@@ -167,6 +167,38 @@ function populateCurrentUser(req, res, next) {
 };
 
 
+// Validate Title and Subtitle
+function validateTitles(req, res, next) {
+  const { title, subtitle } = req.body;
+  let valid = true;
+  const errors = [];
+
+  // Check for valid title/subtitle lengths
+  if (title.length < 1) {
+    valid = false;
+    errors.push("Title must be at least one character.");
+  }
+  if (title.length > 255) {
+    valid = false;
+    errors.push("Title must be less than or equal to 255 characters.");
+  }
+  // Subtitle not mandatory, but if it is present, should be <= 255 characters
+  if (subtitle) {
+    if (subtitle.length > 255) {
+      valid = false;
+      errors.push("Subtitle must be less than or equal to 255 characters.");
+    }
+  }
+
+  // If not valid, send error messages
+  if (!valid) {
+    return res.status(400).json({ errors });
+  }
+
+  next(); // Move to the next middleware
+}
+
+
 // Export the middleware functions
 module.exports = {
   ensureAuth: ensureAuth,
