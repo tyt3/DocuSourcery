@@ -4,7 +4,7 @@ const router = express.Router();
 const mongoose = require('mongoose');
 
 // Import middleware
-const { ensureAuth, validateTitles } = require('./middleware');
+const { ensureAuth, validateTitles, validateSlug } = require('./middleware');
 
 // Import data models
 const User = require('../models/user');
@@ -32,13 +32,9 @@ router.get('/project/create', ensureAuth, async (req, res) => {
 });
 
 // Create Project
-router.post('/project/create', ensureAuth, validateTitles, async (req, res) => {
+router.post('/project/create', ensureAuth, validateTitles, validateSlug, async (req, res) => {
   const { title, subtitle, slug, description, tags, noLogin, canDuplicate, isPublic } = req.body;
 
-  // TODO: Write and apply middleware to validate form fields
-    // Slug is unique
-    // Slug length is less than 25 characters
-    // Slug contains only letters, numbers, and dashes
   // TODO: Convert description field Markdown to HTML with markdown.js
   let linkedTags = [];
   try {
