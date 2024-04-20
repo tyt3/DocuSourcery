@@ -48,7 +48,7 @@
         </li>
         <% } %> 
       </ul>
-      <form id="projectForm">
+      <form id="projectForm" method="POST" action="/project/create">
         <div class="row gy-4">
           <!-- Tab Panels -->
           <div class="col-12 col-md-8 col-xxl-9">
@@ -198,10 +198,10 @@
                           <% if (document.deleted) { %>
                             <tr>
                               <td><%= document.title %></td>
-                              <td><%= document.deleted_at %></td>
-                              <td><%= document.deleted_by %></td>
-                              <td><%= document.created_at %></td>
-                              <td><%= document.created_by %></td>
+                              <td><%= document.deletedDate %></td>
+                              <td><%= document.deletedBy %></td>
+                              <td><%= document.createdDate %></td>
+                              <td><%= document.createdBy %></td>
                             </tr>
                           <% } %>
                         <% }); %>
@@ -224,18 +224,18 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <% if (users && users.length > 0) { %>
-                        <% users.forEach(function(usr) { %>
+                      <% if (project.users && Array.isArray(project.users) && project.users.length > 0) { %>
+                        <% project.users.forEach(function(usr) { %>
                           <tr>
-                            <td><%= usr.username %></td>
-                            <td><%= usr.first_name %> <%= usr.last_name %></td>
-                            <td><%= usr.email %></td>
+                            <td><%= usr.get('username') %></td>
+                            <td><%= usr.get('first_name') %> <%= usr.get('last_name') %></td>
+                            <td><%= usr.get('email') %></td>
                             <td>
                               <select class="form-select" name="role" id="role">
-                                <option value="0" <%= usr.role === 0 ? 'selected' : '' %>>Viewer</option>
-                                <option value="1" <%= usr.role === 1 ? 'selected' : '' %>>Editor</option>
-                                <option value="2" <%= usr.role === 2 ? 'selected' : '' %>>Admin</option>
-                                <option value="3" <%= usr.role === 3 ? 'selected' : '' %>>Owner</option>
+                                <option value="0" <%= usr.get('role') === 0 ? 'selected' : '' %>>Viewer</option>
+                                <option value="1" <%= usr.get('role') === 1 ? 'selected' : '' %>>Editor</option>
+                                <option value="2" <%= usr.get('role') === 2 ? 'selected' : '' %>>Admin</option>
+                                <option value="3" <%= usr.get('role') === 3 ? 'selected' : '' %>>Owner</option>
                               </select>
                             </td>
                             <td>
@@ -254,12 +254,18 @@
             <div class="card mt-3" id="action-buttons">
               <div class="card-body">
                 <div class="d-grid gap-2 col-12 mx-auto">
-                  <button type="submit" id="saveProjectBtn" class="btn btn-block btn-outline-success">Save Project</button>
+                  <button type="submit" id="saveProjectBtn" class="btn btn-block btn-outline-success">
+                    Save Project
+                  </button>
                   <% if (project) { %>
                   <button type="button" id="deleteProjectBtn" class="btn btn-block btn-outline-danger"
-                    data-bs-toggle="modal" data-bs-target="#deleteProjectModal">Delete Project</button>
+                    data-bs-toggle="modal" data-bs-target="#deleteProjectModal">
+                    Delete Project
+                  </button>
                   <a href="/project/<%= project.slug %>"
-                    role="button" class="btn btn-block btn-outline-secondary">View Project</a>
+                    role="button" class="btn btn-block btn-outline-secondary">
+                    View Project
+                  </a>
                   <% } %>
                 </div>
                 <div class="form-check form-switch mt-2">
@@ -271,19 +277,6 @@
           </div>
         </div>
       </form>
-      <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const projectForm = document.getElementById('projectForm');
-            const saveProjectBtn = document.getElementById('saveProjectBtn');
-    
-            // Add click event listener to Save Project button
-            saveProjectBtn.addEventListener('click', function () {
-                projectForm.action = '/project/create';
-                projectForm.method = 'POST';
-                projectForm.submit();
-            });
-        });
-    </script>
     </div>
   </div>
 </div>
