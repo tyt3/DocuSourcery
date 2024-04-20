@@ -156,7 +156,6 @@ const validateSlug = async (req, res, next) => {
     let valid = true;
     const errors = [];
 
-  if (slug.length < 1) {
     // Check if any other project uses the same slug
     const duplicateSlug = await Project.findOne({ slug: slug });
     if (duplicateSlug) {
