@@ -1,6 +1,7 @@
 // Route handlers
 const express = require('express');
 const router = express.Router();
+const mongoose = require('mongoose');
 
 // Import middleware
 const { ensureAuth } = require('./middleware');
@@ -250,22 +251,63 @@ router.get('/project/:projectSlug/document/create', ensureAuth, async (req, res)
 
 // Create Document
 router.post('/document/create/:projectId', ensureAuth, async (req, res) => {
+  console.log('Received form data:', req.body); // This will show all data received from the form
+  const { title, description, slug, landingPage } = req.body;
   const projectId = req.params.projectId;
-  const { title } = req.body; // TODO: Add remaining fields
 
-  // TODO: Apply middleware to validate form fields
-  // TODO: Convert description field Markdown to HTML with markdown.js
+  console.log('Received projectId:', projectId);
+  console.log('Received data:', { title, description, slug, landingPage });
+
+  if (!mongoose.Types.ObjectId.isValid(projectId)) {
+    console.log('Invalid project ID:', projectId);
+    return res.status(400).send('Invalid project ID.');
+  }
+
+  // Ensure required fields are present
+  if (!title || !slug) {
+    console.log('Validation error: Missing required fields.');
+    return res.status(400).send('Missing required fields: title or slug.');
+  }
 
   try {
-    const document = new Document({
-      title: title,
+    // Find the project to ensure it exists
+    console.log('Looking up project:', projectId);
+    const project = await Project.findById(projectId);
+    if (!project) {
+      console.log('No project found with ID:', projectId);
+      return res.status(404).send('Project not found.');
+    }
+
+    // Create a new document
+    const newDocument = new Document({
+      title,
+      description,
+      slug,
+      createdBy: req.user._id,
+      projectId,
+      landingPage
     });
 
-    const newDocument = await document.save();
-    await newDocument.save();
+    console.log('Document prepared for saving:', newDocument);
 
+    // Save the document
+    await newDocument.save();
+    console.log('Document saved successfully:', newDocument);
+
+    // Update the project to include this new document
+    project.documents.push({
+      _id: newDocument._id,
+      title: newDocument.title,
+      slug: newDocument.slug
+    });
+    await project.save();
+    console.log('Project updated with new document:', project);
+    
+    res.redirect(`/project/${project.slug}/${newDocument.slug}`);
+    
   } catch (err) {
-    throw err;
+    console.error('Error creating document:', err);
+    res.status(500).send('Server error while creating document.');
   }
 });
 
@@ -332,26 +374,44 @@ router.get('/project/:projectSlug/:documentSlug/', async (req, res) => {
     // TODO: Confirm that document is in project
     // TODO: Populate all pages in document
     
+    // Find the project by its slug
+    const project = await Project.findOne({ slug: projectSlug });
+    if (!project) {
+      return res.status(404).send('Project not found');
+    }
+
+    // Find the document within this project using the document slug and ensure it belongs to the project
+    const document = await Document.findOne({
+      slug: documentSlug,
+      projectId: project._id
+    }).populate('pages'); // Assuming 'pages' is a field to populate
+
+    if (!document) {
+      return res.status(404).send('Document not found in the specified project');
+    }
+
     var viewType;
     var page = null;
 
     // Determine if the document or its first page should be rendered
-    if (document.landingPage || document.pages.length === 0) {
-        viewType = "document";
+    if (document.landingPage || (document.pages && document.pages.length === 0)) {
+      viewType = "document";
     } else {
-        viewType = "page";
-        page = document.pages.find(page => page.order === 0);
+      viewType = "page";
+      page = document.pages.find(page => page.order === 0);
     }
+
 
     res.render('project/project.ejs', { 
       user: req.user,
-      project: null, // TODO: Replace with project
-      document: null, // TODO: Replace with document
+      project: project, // TODO: Replace with project
+      document: document, // TODO: Replace with document
       page: page,
       viewType: viewType
     });
   } catch (err) {
-    throw err;
+    console.error('Error retrieving document:', err);
+    res.status(500).send('Internal server error');
   }
 });
 
