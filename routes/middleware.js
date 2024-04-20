@@ -253,4 +253,5 @@ module.exports = {
   checkAuthUsernameAndEmail: checkAuthUsernameAndEmail,
   populateCurrentUser: populateCurrentUser,
   validateTitles: validateTitles,
+  validateSlug: validateSlug
 };
