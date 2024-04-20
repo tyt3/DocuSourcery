@@ -16,15 +16,22 @@ const ProjectSchema = new Schema({
   public: { type: Boolean, default: false },
   views: { type: Number, default: 0 },
   tags: [
-    { type: Map }
+    { type: Schema.Types.ObjectId, ref: "tag" }
   ],
   permissions: { type: Map },
   documents: [
-    { type: Map }
+    { type: Schema.Types.ObjectId, ref: "document" }
   ],
-  users: [
-    { type: Map }
-  ],
+  users: [{
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'user'
+    },
+    role: {
+        type: Number,
+        enum: [0, 1, 2, 3] // 0 for viewer, 1 for collaborator, 2 for admin, 3 for owner
+    }
+}]
 });
 
 // Export model
