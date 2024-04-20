@@ -172,7 +172,7 @@ const validateSlug = async (req, res, next) => {
       valid = false;
       errors.push("Slug must be at least one character.");
     }
-    if (title.length > 25) {
+    if (slug.length > 25) {
       valid = false;
       errors.push("Slug must be less than or equal to 25 characters.");
     }
