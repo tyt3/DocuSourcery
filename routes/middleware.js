@@ -29,6 +29,33 @@ function ensureNotAuth(req, res, next) {
   }
 };
 
+
+// Validate API key before allowing API request
+const checkApiKey = async (req, res, next) => {
+  // Extract API key from request header
+  const apiKey = req.headers['api-key'];
+
+  if (!apiKey) {
+    return res.status(401).json({ error: 'API key is missing' });
+  }
+
+  try {
+    // Query the database to find a user with the provided API key
+    const authUser = await User.findOne({ apiKey });
+
+    if (!authUser) {
+      return res.status(401).json({ error: 'Invalid API key' });
+    }
+
+    // Attach the user object to the request for later use
+    req.user = authUser;
+    next();
+  } catch (error) {
+    console.error('Error while validating API key:', error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
 // Ensure that given username and email are unique
 const checkUsernameAndEmail = async (req, res, next) => {
   try {
