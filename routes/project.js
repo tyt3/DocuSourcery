@@ -185,7 +185,14 @@ router.get('/project/:slug', async (req, res) => {
   // TODO: Populate all documents and pages in project
 
   try {
-    const project = await Project.findOne({ slug: projectSlug });
+    // Find the project by its slug and populate its 'documents' field
+    const project = await Project.findOne({ slug: projectSlug }).populate('documents');
+
+    // Iterate over each document of the project and populate its 'pages' field
+    await Promise.all(project.documents.map(async (doc) => {
+        await doc.populate('pages').execPopulate();
+    }));
+    
     if ((project.permissions.loginRequired && req.user) || !project.permissions.loginRequired) {
       res.render('project/project.ejs', { 
         user: req.user,
