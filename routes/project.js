@@ -116,6 +116,7 @@ router.get('/project/:projectSlug/edit/', ensureAuth, async (req, res) => {
   const projectSlug = req.params.projectSlug;
 
   // TODO: Get project to send to frontend
+  // TODO: Populate all documents and pages in project
   // TODO: Convert description field HTML to Markdown with turndown.js
 
   try {
@@ -124,8 +125,8 @@ router.get('/project/:projectSlug/edit/', ensureAuth, async (req, res) => {
       user: req.user, 
       users: [],
       project: project,
-      documents: null, // TODO: Replace with documents
-      pages: null //  TODO: Replace with pages
+      document: null, // Don't replace
+      page: null // Don't replace
     });
   } catch (err) {
     throw err;
