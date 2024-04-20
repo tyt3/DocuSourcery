@@ -48,12 +48,12 @@ app.set("views", __dirname + "/views/");
 const staticRouter = require("./routes/static");
 const userRouter = require("./routes/user");
 const projectRouter = require("./routes/project");
-const apiRouter = require("./routes/api");
+// const apiRouter = require("./routes/api");
 
 app.use("/", staticRouter);
 app.use("/", userRouter);
 app.use("/", projectRouter);
-app.use("/api/", apiRouter); // TODO: Update this
+// app.use("/api", apiRouter); // TODO: Update this
 
 // listen for requests :)
 const listener = app.listen(process.env.PORT, function() {
