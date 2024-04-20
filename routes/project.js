@@ -132,8 +132,12 @@ router.get('/project/:projectSlug/edit/', ensureAuth, async (req, res) => {
 router.put('/project/:id', ensureAuth, async (req, res) => {
   const projectId = req.params.id;
 
-  // TODO: Apply same middleware as in project/create to validate form fields
-  // TODO: Convert description field Markdown to HTML with markdown.js
+    // TODO: Implement 
+    // Apply same middleware as in project/create to validate form fields
+    // Convert description field Markdown to HTML with markdown.js
+    // Get form fields from request
+    // Validate input, flash error message and reload if any errors
+    // Update object with new data
 
   try {
     // TODO: Implement
@@ -165,6 +169,8 @@ router.put('/project/restore/:id', ensureAuth, async (req, res) => {
   const projectId = req.params.id;
   try {
     // TODO: Implement
+    // Get project by ID
+    // Set deleted to false
   } catch (err) {
     throw err;
   }
@@ -177,6 +183,7 @@ router.get('/project/:slug', async (req, res) => {
 
   // TODO: Get project to send to frontend
   // TODO: Populate all documents and pages in project
+  // TODO: Increment project views
 
   try {
     // Find the project by its slug and populate its 'documents' field
@@ -232,17 +239,45 @@ router.get('/project/:slug', async (req, res) => {
 
 // View Published Projects
 router.get('/projects', async (req, res) => {
-  await Project.find({public: true})
-    .then((project_list) => {
-      res.render('project/projects.ejs', {
-        user: req.user,
-        project: project_list
-      });
-    })
-    .catch((err) => {
-      res.status(500).send(err);
+  try {
+    // Retrieve all projects where public === true and sort by views in descending order
+    const projects = await Project.find({ public: true }).sort({ views: -1 });
+    // Aggregate query to get all tags and sort by the length of their projects array
+    const tags = await Tag.aggregate([
+      {$project: {
+          _id: 1,
+          title: 1,
+          slug: 1,
+          numProjects: { $size: '$projects' } // Compute the length of the projects array
+        }},
+      {$sort: { numProjects: -1 }} // Sort by projectsCount in descending order
+    ]);
+
+    // Render the projects template with sorted projects
+    res.render('project/projects.ejs', {
+      user: req.user,
+      projects: projects,
+      tags: tags,
     });
+  } catch (err) {
+    // Handle errors
+    console.error('Error:', err);
+    res.status(500).send(err);
+  }
 });
+
+// router.get('/projects', async (req, res) => {
+//   await Project.find({public: true})
+//     .then((projects) => {
+//       res.render('project/projects.ejs', {
+//         user: req.user,
+//         projects: projects
+//       });
+//     })
+//     .catch((err) => {
+//       res.status(500).send(err);
+//     });
+// });
 
 // Search Published Projects
 router.get('/projects/:keywords', async (req, res) => {
@@ -374,7 +409,12 @@ router.get('/project/:projectSlug/:documentSlug/edit', ensureAuth, async (req, r
 router.put('/document/:id', ensureAuth, async (req, res) => {
   const documentId = req.params.id;
   try {
-    // TODO: Implement
+    // TODO: Implement 
+    // Apply same middleware as in project/create to validate form fields
+    // Convert description field Markdown to HTML with markdown.js
+    // Get form fields from request
+    // Validate input, flash error message and reload if any errors
+    // Update object with new data
   } catch (err) {
     throw err;
   }
@@ -385,11 +425,11 @@ router.delete('/document/:id', ensureAuth, async (req, res) => {
   const documentId = req.params.id;
   try {
     // TODO: Implement
-    // If project.deleted=false:
+    // If document.deleted=false:
     // - set to deleted=true
     // - set deletedDate=now
     // - set deletedBy=authenticatedUserID
-    // if project.deleted=true: 
+    // if document.deleted=true: 
     // - delete object
   } catch (err) {
     throw err;
@@ -401,6 +441,8 @@ router.put('/document/restore/:id', ensureAuth, async (req, res) => {
   const documentId = req.params.id;
   try {
     // TODO: Implement
+    // Get document by ID
+    // Set deleted to false
   } catch (err) {
     throw err;
   }
@@ -413,6 +455,7 @@ router.get('/project/:projectSlug/:documentSlug/', async (req, res) => {
     // TODO: Get project and document objects and send to frontend
     // TODO: Confirm that document is in project
     // TODO: Populate all pages in document
+    // TODO: Increment project views
     
     // Find the project by its slug
     const project = await Project.findOne({ slug: projectSlug });
@@ -531,7 +574,12 @@ router.get('/project/:projectSlug/:documentSlug/:pageSlug/edit', ensureAuth, asy
 router.put('/page/:id', ensureAuth, async (req, res) => {
   const pageId = req.params.id;
   try {
-    // TODO: Implement
+    // TODO: Implement 
+    // Apply same middleware as in project/create to validate form fields
+    // Convert body field Markdown to HTML with markdown.js
+    // Get form fields from request
+    // Validate input, flash error message and reload if any errors
+    // Update object with new data
   } catch (err) {
     throw err;
   }
@@ -542,11 +590,11 @@ router.delete('/page/:id', ensureAuth, async (req, res) => {
   const pageId = req.params.id;
   try {
     // TODO: Implement
-    // If project.deleted=false:
+    // If page.deleted=false:
     // - set to deleted=true
     // - set deletedDate=now
     // - set deletedBy=authenticatedUserID
-    // if project.deleted=true: 
+    // if page.deleted=true: 
     // - delete object
   } catch (err) {
     throw err;
@@ -558,6 +606,8 @@ router.put('/page/restore/:id', ensureAuth, async (req, res) => {
   const pageId = req.params.id;
   try {
     // TODO: Implement
+    // Get page by ID
+    // Set deleted to false
   } catch (err) {
     throw err;
   }
@@ -567,8 +617,10 @@ router.put('/page/restore/:id', ensureAuth, async (req, res) => {
 router.get('/project/:projectSlug/:documentSlug/:pageSlug', async (req, res) => {
   const { projectSlug, documentSlug, pageSlug } = req.params;
   try {
-    // TODO: Get project, document, and page objects and send to frontend
-    // TODO: Confirm that document is in project and page is in document
+    // TODO: Implement
+    // Get project, document, and page objects and send to frontend
+    // Confirm that document is in project and page is in document
+    // Increment project views
 
     res.render('project/project.ejs', { 
       user: req.user,

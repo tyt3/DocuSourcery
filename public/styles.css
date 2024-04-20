@@ -325,11 +325,6 @@ span.required {
 
 /* Badges */
 
-
-.badge:hover {
-  background-color: var(--secondary-color);
-}
-
 .badge {
   .close {
     margin-left: 0.25rem;
@@ -338,6 +333,12 @@ span.required {
     text-shadow: 0 1px 0 rgba(#000000, 0.5);
   }
 }
+
+.badge:hover {
+  background-color: var(--secondary-color);
+  color: white;
+}
+
 
 a.badge-tag:link {
   text-decoration: none;
