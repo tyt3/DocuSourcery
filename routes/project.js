@@ -245,10 +245,12 @@ router.get('/projects', async (req, res) => {
     // Aggregate query to get all tags and sort by the length of their projects array
     const tags = await Tag.aggregate([
       {$project: {
-          name: 1,
-          projectsCount: { $size: '$projects' } // Compute the length of the projects array
+          _id: 1,
+          title: 1,
+          slug: 1,
+          numProjects: { $size: '$projects' } // Compute the length of the projects array
         }},
-      {$sort: { projectsCount: -1 }} // Sort by projectsCount in descending order
+      {$sort: { numProjects: -1 }} // Sort by projectsCount in descending order
     ]);
 
     // Render the projects template with sorted projects

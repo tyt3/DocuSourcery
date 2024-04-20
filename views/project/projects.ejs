@@ -5,35 +5,22 @@
     Projects
   </h1>
   
-<!-- First Section-->
-<div id="browseMethod">
-  <div class="d-grid gap-2 d-sm-flex justify-content-center justify-content-lg-start my-4">
-    <a class="btn btn-primary btn-action bg-pitt-royal border-pitt-royal"
-      data-bs-toggle="collapse" data-bs-target="#browseByTagCollapse"
-      aria-expanded="false" aria-controls="browseByTagButton"
-      href="" role="button">Browse by Tag</a>
-  </div>
-
-  <!-- Browse Methods -->
-  <div class="accordion-group">
-    <!-- Browse by Tag  -->
-    <div
-      class="accordion-collapse collapse accordionCollapse"
-      data-bs-parent="#browseMethod"
-      id="browseByTagCollapse">
-      <% if (tags && tags.length > 0) { %>
-        <% tags.forEach(function(tag) { %>
-          <% if tag.projects.length > 0 { %>
-          <a href="/tag/<%= tag.get('slug') %>" 
-            class="badge badge-tag bg-ds-primary me-1">
-            <%= tag.get('title') %>
-            <span class="badge bg-ds-secondary"> tag.projects.length </span>
-          </a>
-          <% } %>
-        <% }); %>  
+<!-- Browse by Tag  -->
+<div>
+  <h2 class="fs-6 text-uppercase light">
+    Browse Projects by Tag
+  </h2>
+  <% if (tags && tags.length > 0) { %>
+    <% tags.forEach(function(tag) { %>
+      <% if (tag.numProjects > 0) { %>
+      <a href="/tag/<%= tag.slug %>" 
+        class="badge badge-tag bg-ds-primary me-1">
+        <%= tag.title %>
+        <span class="badge bg-ds-tertiary"><%= tag.numProjects %></span>
+      </a>
       <% } %>
-    </div>
-  </div>
+    <% }); %>  
+  <% } %>
 </div>
 
 <!-- Second Section -->
