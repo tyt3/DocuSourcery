@@ -2,6 +2,7 @@
 
 // Import data models
 const User = require('../models/user');
+const Project = require('../models/project');
 
 
 // Check if the user is authenticated\
