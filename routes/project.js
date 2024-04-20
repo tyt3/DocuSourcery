@@ -317,12 +317,23 @@ router.get('/project/:projectSlug/:documentSlug/edit', ensureAuth, async (req, r
   try {
     // TODO: Get project and document objects and send to frontend
     // TODO: Confirm that document is in project
-    // TODO: Convert description field HTML to Markdown with turndown.js
+    // TODO: Convert description field HTML to Markdown with turndown.j
+
+    // TODO: add graceful error handling
+    const project = await Project.findOne({ slug: projectSlug });
+    if (!project) {
+      return res.status(404).json({ error: 'Project not found' });
+    }
+
+    const document = project.documents.find(doc => doc.slug === documentSlug);
+    if (!document) {
+        return res.status(404).json({ error: 'Document not found' });
+    }
 
     res.render('project/documentEdit.ejs', { 
       user: req.user,
-      project: null, // TODO: Replace
-      document: null, // TODO: Replace
+      project: project,
+      document: document,
       page: null, // Don't replace 
     });
   } catch (err) {
