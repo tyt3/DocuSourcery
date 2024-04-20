@@ -18,10 +18,10 @@ const UserSchema = new Schema({
   profilePhotoUrl: { type: String },
   profilePublic: { type: Boolean, default: false },
   projects: [
-    { type: Map }
+    { type: Schema.Types.ObjectId, ref: "project" }
   ],
   pinnedProjects: [
-    { type: Map }
+    { type: Schema.Types.ObjectId, ref: "project" }
   ],
   apiKey: { type: String, minLength: 20, maxLength: 128, unique: true }
 });
