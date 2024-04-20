@@ -51,7 +51,7 @@ router.post('/project/create', checkApiKey, async (req, res) => {
     }
   } catch (err) {
     console.error(err);
-    res.status(500).send(`An error occurred during tag handling: ${err}`);
+    return res.status(500).send(`An error occurred during tag handling: ${err}`);
   }
 
   try {
@@ -83,10 +83,10 @@ router.post('/project/create', checkApiKey, async (req, res) => {
     const newProject = await project.save();
 
     // Return the new project JSON
-    res.status(201).json(newProject);
+    return res.status(201).json(newProject);
   } catch (err) {
     console.error(err);
-    res.status(500).send(`An error occurred during project creation: ${err}`);
+    return res.status(500).send(`An error occurred during project creation: ${err}`);
   }
 });
 
@@ -109,7 +109,7 @@ router.get('/project/:projectSlug/edit/', checkApiKey, async (req, res) => {
     });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: `Internal Server Error: ${err}` });
+    return res.status(500).json({ message: `Internal Server Error: ${err}` });
   }
 });
 
@@ -124,7 +124,7 @@ router.put('/project/:id', checkApiKey, async (req, res) => {
     // TODO: Implement
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: `Internal Server Error: ${err}` });
+    return res.status(500).json({ message: `Internal Server Error: ${err}` });
   }
 });
 
@@ -143,7 +143,7 @@ router.delete('/project/:id', checkApiKey, async (req, res) => {
     // - delete object
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: `Internal Server Error: ${err}` });
+    return res.status(500).json({ message: `Internal Server Error: ${err}` });
   }
 });
 
@@ -154,7 +154,7 @@ router.put('/project/restore/:id', checkApiKey, async (req, res) => {
     // TODO: Implement
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: `Internal Server Error: ${err}` });
+    return res.status(500).json({ message: `Internal Server Error: ${err}` });
   }
 });
 
@@ -169,14 +169,14 @@ router.get('/project/:slug', checkApiKey, async (req, res) => {
   try {
     const project = await Project.findOne({ slug: projectSlug });
     if ((project.permissions.loginRequired && req.user) || !project.permissions.loginRequired) {
-      res.status(200).json(project);
+      return res.status(200).json(project);
     }
     else {
-      res.status(400).json({ message: "Project not found under the provided slug value." });
+      return res.status(400).json({ message: "Project not found under the provided slug value." });
     }
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: `Internal Server Error: ${err}` });
+    return res.status(500).json({ message: `Internal Server Error: ${err}` });
   }
 });
 
@@ -184,10 +184,10 @@ router.get('/project/:slug', checkApiKey, async (req, res) => {
 router.get('/projects', checkApiKey, async (req, res) => {
   await Project.find({public: true})
     .then((project_list) => {
-      res.status(200).json(project_list);
+      return res.status(200).json(project_list);
     })
     .catch((err) => {
-      res.status(500).send(err);
+      return res.status(500).send(err);
     });
 });
 
@@ -197,7 +197,7 @@ router.get('/projects/:keywords', async (req, res) => {
     // TODO: Implement
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: `Internal Server Error: ${err}` });
+    return res.status(500).json({ message: `Internal Server Error: ${err}` });
   }
 });
 
@@ -218,11 +218,11 @@ router.post('/document/create/:projectId', checkApiKey, async (req, res) => {
     });
 
     const newDocument = await document.save();
-    res.status(201).json(newDocument);
+    return res.status(201).json(newDocument);
 
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: `Internal Server Error: ${err}` });
+    return res.status(500).json({ message: `Internal Server Error: ${err}` });
   }
 });
 
@@ -233,7 +233,7 @@ router.put('/document/:id', checkApiKey, async (req, res) => {
     // TODO: Implement
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: `Internal Server Error: ${err}` });
+    return res.status(500).json({ message: `Internal Server Error: ${err}` });
   }
 });
 
@@ -250,7 +250,7 @@ router.delete('/document/:id', checkApiKey, async (req, res) => {
     // - delete object
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: `Internal Server Error: ${err}` });
+    return res.status(500).json({ message: `Internal Server Error: ${err}` });
   }
 });
 
@@ -261,7 +261,7 @@ router.put('/document/restore/:id', checkApiKey, async (req, res) => {
     // TODO: Implement
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: `Internal Server Error: ${err}` });
+    return res.status(500).json({ message: `Internal Server Error: ${err}` });
   }
 });
 
@@ -293,7 +293,7 @@ router.get('/project/:projectSlug/:documentSlug/', async (req, res) => {
     });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: `Internal Server Error: ${err}` });
+    return res.status(500).json({ message: `Internal Server Error: ${err}` });
   }
 });
 
@@ -319,7 +319,7 @@ router.get('/project/:projectSlug/:documentSlug/page/create', checkApiKey, async
     });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: `Internal Server Error: ${err}` });
+    return res.status(500).json({ message: `Internal Server Error: ${err}` });
   }
 });
 
@@ -342,11 +342,11 @@ router.post('/page/create/:projectId/:docId', checkApiKey, async (req, res) => {
     });
 
     const newPage = await page.save();
-    res.status(201).json(newPage); // Return the created page as JSON
+    return res.status(201).json(newPage); // Return the created page as JSON
 
   } catch (err) {
     console.error(err);
-    res.status(500).send('Internal Server Error');
+    return res.status(500).send('Internal Server Error');
   }
 });
 
@@ -367,7 +367,7 @@ router.get('/project/:projectSlug/:documentSlug/:pageSlug/edit', checkApiKey, as
     });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: `Internal Server Error: ${err}` });
+    return res.status(500).json({ message: `Internal Server Error: ${err}` });
   }
 });
 
@@ -378,7 +378,7 @@ router.put('/page/:id', checkApiKey, async (req, res) => {
     // TODO: Implement
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: `Internal Server Error: ${err}` });
+    return res.status(500).json({ message: `Internal Server Error: ${err}` });
   }
 });
 
@@ -395,7 +395,7 @@ router.delete('/page/:id', checkApiKey, async (req, res) => {
     // - delete object
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: `Internal Server Error: ${err}` });
+    return res.status(500).json({ message: `Internal Server Error: ${err}` });
   }
 });
 
@@ -406,7 +406,7 @@ router.put('/page/restore/:id', checkApiKey, async (req, res) => {
     // TODO: Implement
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: `Internal Server Error: ${err}` });
+    return res.status(500).json({ message: `Internal Server Error: ${err}` });
   }
 });
 
@@ -426,7 +426,7 @@ router.get('/project/:projectSlug/:documentSlug/:pageSlug', async (req, res) => 
     });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: `Internal Server Error: ${err}` });
+    return res.status(500).json({ message: `Internal Server Error: ${err}` });
   }
 });
 
@@ -436,10 +436,10 @@ router.get('/tag/:slug', checkApiKey, async (req, res) => {
   const tagSlug = req.params.slug;
   try {
     const tag = await Tag.findOne({ slug: tagSlug });
-    res.status(200).json(tag);
+    return res.status(200).json(tag);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: `Internal Server Error: ${err}` });
+    return res.status(500).json({ message: `Internal Server Error: ${err}` });
   }
 });
 
@@ -456,7 +456,7 @@ router.get('/trash', checkApiKey, async (req, res) => {
     });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: `Internal Server Error: ${err}` });
+    return res.status(500).json({ message: `Internal Server Error: ${err}` });
   }
 });
 
@@ -467,7 +467,7 @@ router.delete('/trash', checkApiKey, async (req, res) => {
 
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: `Internal Server Error: ${err}` });
+    return res.status(500).json({ message: `Internal Server Error: ${err}` });
   }
 });
 
@@ -479,7 +479,7 @@ router.delete('/project/trash/:id', checkApiKey, async (req, res) => {
     // TODO: Delete all project documents and pages where role=3 and deleted=true
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: `Internal Server Error: ${err}` });
+    return res.status(500).json({ message: `Internal Server Error: ${err}` });
   }
 });
 
