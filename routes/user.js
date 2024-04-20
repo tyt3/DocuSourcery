@@ -229,9 +229,7 @@ router.get('/dashboard', ensureAuth, async (req, res) => {
     // Ensure the user is part of the project users and project is neither deleted nor trashed
     const projects = await Project.find({
       'users.id': req.user._id,
-      deleted: false,
-      trash: false,
-      public: true // Assuming you want to display only public projects on the dashboard
+      deleted: false
     }).populate({
       path: 'createdBy',
       select: 'username email' // Only fetch the username and email of the creator
