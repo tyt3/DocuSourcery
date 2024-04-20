@@ -33,7 +33,7 @@ xhr.onload = function() {
 var xhr = new XMLHttpRequest();
 
 //  Configure Request
-xhr.open("POST", "https://api.example.com/endpoint", true);
+// xhr.open("POST", "https://api.example.com/endpoint", true);
 
 // Send Data
 var data = {
@@ -191,3 +191,54 @@ app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
 
+
+///////////////////////
+// drag and drop   //
+/////////////////////
+
+
+// implement  drop 
+function allowDrop(ev) {
+  ev.preventDefault(); // Prevent default behavior (prevent it from being dropped in some other element)
+}
+
+function drag(ev) {
+  ev.dataTransfer.setData("text", ev.target.id); // Get the id of the draggable item
+}
+
+function drop(ev) {
+  ev.preventDefault();
+  var data = ev.dataTransfer.getData("text");
+  ev.target.appendChild(document.getElementById(data));
+  updateBackend(data); // Call the function to update the backend after dropping
+}
+
+//   drag
+function allowDrop(ev) {
+  ev.preventDefault(); // Prevent default behavior (prevent it from being dropped in some other element)
+}
+
+function drag(ev) {
+  ev.dataTransfer.setData("text", ev.target.id); // Get the id of the draggable item
+}
+
+function drop(ev) {
+  ev.preventDefault();
+  var data = ev.dataTransfer.getData("text");
+  ev.target.appendChild(document.getElementById(data));
+  updateBackend(data); // Call the function to update the backend after dropping
+}
+
+//   update backend
+function updateBackend(itemId) {
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", "your-backend-url", true);
+  xhr.setRequestHeader("Content-Type", "application/json");
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+      console.log('Response from server: ', this.responseText); // Handle the response from the server
+    }
+  };
+  var data = JSON.stringify({ item_id: itemId });
+  xhr.send(data);
+}
