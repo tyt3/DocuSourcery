@@ -4,7 +4,7 @@ const router = express.Router();
 const mongoose = require('mongoose');
 
 // Import middleware
-const { ensureAuth } = require('./middleware');
+const { ensureAuth, validateTitles } = require('./middleware');
 
 // Import data models
 const User = require('../models/user');
@@ -32,12 +32,10 @@ router.get('/project/create', ensureAuth, async (req, res) => {
 });
 
 // Create Project
-router.post('/project/create', ensureAuth, async (req, res) => {
+router.post('/project/create', ensureAuth, validateTitles, async (req, res) => {
   const { title, subtitle, slug, description, tags, noLogin, canDuplicate, isPublic } = req.body;
 
   // TODO: Write and apply middleware to validate form fields
-    // Title length is less than or equal to 255 characters 
-    // Subtitle length is less than or equal to 255 characters 
     // Slug is unique
     // Slug length is less than 25 characters
     // Slug contains only letters, numbers, and dashes
