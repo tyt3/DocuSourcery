@@ -105,7 +105,7 @@
                   <label class="col-sm-2 col-form-label bold">Tags</label>
                   <div class="col-sm-10">
                     <input type="text" name="tags" id="tags" class="form-control" 
-                    <% if (project.tags && Array.isArray(project.tags) && project.tags.length > 0) { %>
+                    <% if (project && project.tags && Array.isArray(project.tags) && project.tags.length > 0) { %>
                       value="<% var tagTitles = project.tags.map(function(tag) { return tag.get('title'); }).join(','); %><%= tagTitles %>"
                     <% }; %>
                     placeholder="Enter tags">
@@ -118,7 +118,7 @@
                     <div class="form-check">
                       <input class="form-check-input" type="checkbox" name="noLogin" 
                       id="noLogin"
-                      <% if (project.noLogin) { %>
+                      <% if (project && project.noLogin) { %>
                         checked
                       <% } %>
                       >
@@ -127,7 +127,7 @@
                     <div class="form-check">
                       <input class="form-check-input" type="checkbox" name="canDuplicate" 
                       id="canDuplicate"
-                      <% if (project.duplicatable) { %>
+                      <% if (project && project.duplicatable) { %>
                         checked
                       <% } %>
                       >
@@ -258,7 +258,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <% if (project.users && Array.isArray(project.users) && project.users.length > 0) { %>
+                      <% if (project && project.users && Array.isArray(project.users) && project.users.length > 0) { %>
                         <% project.users.forEach(function(usr) { %>
                           <tr>
                             <td><%= usr.get('username') %></td>
