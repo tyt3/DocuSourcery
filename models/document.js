@@ -15,7 +15,7 @@ const DocumentSchema = new Schema({
   landingPage: { type: Boolean, default: false },
   projectId: { type: Schema.Types.ObjectId, ref: "project", required: true },
   pages: [
-    { type: Map }
+    { type: Schema.Types.ObjectId, ref: "page" }
   ]
 });
 
