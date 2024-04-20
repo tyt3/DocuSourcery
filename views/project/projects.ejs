@@ -4,5 +4,79 @@
   <h1>
     Projects
   </h1>
+  
+<!-- First Section-->
+<div id="browseMethod">
+  <div class="d-grid gap-2 d-sm-flex justify-content-center justify-content-lg-start my-4">
+    <a class="btn btn-primary btn-action bg-pitt-royal border-pitt-royal"
+      data-bs-toggle="collapse" data-bs-target="#browseByTagCollapse"
+      aria-expanded="false" aria-controls="browseByTagButton"
+      href="" role="button">Browse by Tag</a>
+  </div>
+
+  <!-- Browse Methods -->
+  <div class="accordion-group">
+    <!-- Browse by Tag  -->
+    <div
+      class="accordion-collapse collapse accordionCollapse"
+      data-bs-parent="#browseMethod"
+      id="browseByTagCollapse">
+      <% if (tags && tags.length > 0) { %>
+        <% tags.forEach(function(tag) { %>
+          <% if tag.projects.length > 0 { %>
+          <a href="/tag/<%= tag.get('slug') %>" 
+            class="badge badge-tag bg-ds-primary me-1">
+            <%= tag.get('title') %>
+            <span class="badge bg-ds-secondary"> tag.projects.length </span>
+          </a>
+          <% } %>
+        <% }); %>  
+      <% } %>
+    </div>
+  </div>
+</div>
+
+<!-- Second Section -->
+<hr class="my-4"/>
+<!-- <div class="row gy-4"> -->
+  <!--Filters-->
+  <!-- <div class="col-md col-lg-4">
+  </div> -->
+
+  <!-- Project Cards-->
+  <!-- <div class="col-md col-lg-8"> -->
+  <h2 class="text-center text-md-start">Projects</h2>
+  <p><em><%= projects.length %></em></p>
+  <div class="row gy-4">
+    <% projects.forEach(function(project) { %>
+    <div class="col-md-6 col-xl-4">
+      <div class="card h-100 shadow-sm">
+        <div class="card-header">
+          <div class="row">
+            <div class="col text-end">
+              <span class="material-symbols-outlined">keep</span>
+              <span class="material-symbols-outlined">tag</span>
+              <span class="material-symbols-outlined">edit</span>
+              <span class="material-symbols-outlined">delete</span>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">
+            <a href="#"><%= project.title %></a>
+          </h5>
+          <h* class="card-subtitle">
+            <%= project.subtitle %>
+          <p class="card-text mt-2">
+            <strong>Last modified</strong>: <%= project.dateModified %>
+          </p>
+        </div>
+        <div class="card-footer border-top-0 mb-2 bg-white">
+          <a class="btn btn-ds-primary" href="/project/<%= project.slug %>">View Project</a>
+        </div>
+      </div>
+    </div>
+    <% }); %>
+  </div>
 </div>
 <%- include('../baseFooter') -%>

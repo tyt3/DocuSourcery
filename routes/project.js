@@ -242,11 +242,20 @@ router.get('/projects', async (req, res) => {
   try {
     // Retrieve all projects where public === true and sort by views in descending order
     const projects = await Project.find({ public: true }).sort({ views: -1 });
+    // Aggregate query to get all tags and sort by the length of their projects array
+    const tags = await Tag.aggregate([
+      {$project: {
+          name: 1,
+          projectsCount: { $size: '$projects' } // Compute the length of the projects array
+        }},
+      {$sort: { projectsCount: -1 }} // Sort by projectsCount in descending order
+    ]);
 
     // Render the projects template with sorted projects
     res.render('project/projects.ejs', {
       user: req.user,
-      projects: projects
+      projects: projects,
+      tags: tags,
     });
   } catch (err) {
     // Handle errors
