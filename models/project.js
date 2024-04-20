@@ -14,7 +14,6 @@ const ProjectSchema = new Schema({
   deletedDate: { type: Date },
   deletedBy: { type: Schema.Types.ObjectId, ref: "user" },
   public: { type: Boolean, default: false },
-  trash: { type: Boolean, default: false },
   views: { type: Number, default: 0 },
   tags: [
     { type: Map }
