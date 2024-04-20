@@ -187,11 +187,12 @@ const validateSlug = async (req, res, next) => {
       return res.status(400).json({ errors });
     }
 
-    next(); // Move to the next middleware
   } catch (err) {
     console.error(err);
     return res.status(500).json(`Error occurred during slug validation: ${err}`);
   }
+
+  next(); // Move to the next middleware
 }
 
 
