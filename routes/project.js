@@ -239,17 +239,34 @@ router.get('/project/:slug', async (req, res) => {
 
 // View Published Projects
 router.get('/projects', async (req, res) => {
-  await Project.find({public: true})
-    .then((projects) => {
-      res.render('project/projects.ejs', {
-        user: req.user,
-        projects: projects
-      });
-    })
-    .catch((err) => {
-      res.status(500).send(err);
+  try {
+    // Retrieve all projects where public === true and sort by views in descending order
+    const projects = await Project.find({ public: true }).sort({ views: -1 });
+
+    // Render the projects template with sorted projects
+    res.render('project/projects.ejs', {
+      user: req.user,
+      projects: projects
     });
+  } catch (err) {
+    // Handle errors
+    console.error('Error:', err);
+    res.status(500).send(err);
+  }
 });
+
+// router.get('/projects', async (req, res) => {
+//   await Project.find({public: true})
+//     .then((projects) => {
+//       res.render('project/projects.ejs', {
+//         user: req.user,
+//         projects: projects
+//       });
+//     })
+//     .catch((err) => {
+//       res.status(500).send(err);
+//     });
+// });
 
 // Search Published Projects
 router.get('/projects/:keywords', async (req, res) => {
