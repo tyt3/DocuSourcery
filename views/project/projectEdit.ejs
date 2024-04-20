@@ -60,7 +60,7 @@
                   <label for="title" class="col-sm-2 col-form-label bold">Title</label>
                   <div class="col-sm-10">
                     <input type="text" class="form-control" name="title" id="title" 
-                    <% if (project) % { >
+                    <% if (project)  { %>
                       value="<%= project.title %>"
                     <% }; %>
                     placeholder="Enter title">
@@ -70,7 +70,7 @@
                   <label for="subtitle" class="col-sm-2 col-form-label bold">Subtitle</label>
                   <div class="col-sm-10">
                     <input type="text" class="form-control" name="subtitle" id="subtitle" 
-                    <% if (project) % { >
+                    <% if (project)  { %>
                       value="<%= project.subtitle %>"
                     <% }; %>
                     placeholder="Enter subtitle">
@@ -80,7 +80,7 @@
                   <label for="slug" class="col-sm-2 col-form-label bold">Slug</label>
                   <div class="col-sm-10">
                     <input type="text" class="form-control" name="slug" id="slug" 
-                    <% if (project) % { >
+                    <% if (project)  { %>
                       value="<%= project.slug %>"
                     <% }; %>
                     placeholder="Enter slug">
@@ -91,7 +91,7 @@
                   <div class="col-sm-10">
                     <textarea class="form-control" name="description" id="description" 
                       rows="3" placeholder="Enter description"
-                      <% if (project) % { >
+                      <% if (project)  { %>
                         ><%= project.description %></textarea>
                       <% } else { %>
                         ></textarea>
@@ -103,13 +103,13 @@
                   <label class="col-sm-2 col-form-label bold">Tags</label>
                   <div class="col-sm-10">
                     <input type="text" name="tags" id="tags" class="form-control" 
-                    <% if (project.tags && Array.isArray(project.tags) && project.tags.length > 0) % {>
+                    <% if (project.tags && Array.isArray(project.tags) && project.tags.length > 0) { %>
                       value="
                       <% project.tags.forEach(function(tag) { %>
                         <%= tag.title %>, 
                       <% }); %>
                       "
-                      <% }; %>
+                    <% }; %>
                     placeholder="Enter tags">
                   </div>
                 </div>
