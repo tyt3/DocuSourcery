@@ -182,15 +182,30 @@ router.get('/project/:slug', async (req, res) => {
     // Find the project by its slug and populate its 'documents' field
     const project = await Project.findOne({ slug: projectSlug }).populate('documents');
 
-    // Iterate over each document of the project and populate its 'pages' field
-    await Promise.all(project.documents.map(async (doc) => {
-        await doc.populate('pages').execPopulate();
-    }));
-    
+    // Check if project is found
+    if (!project) {
+      return res.status(404).send('Project not found');
+    }
+
+    // Check if documents are populated
+    if (!project.documents || !Array.isArray(project.documents)) {
+      return res.status(404).send('Documents not found for the project');
+    }
+
+    // Retrieve document details for each document ObjectId
+    const documents = [];
+    for (const doc of project.documents) {
+      const document = await Document.findById(doc._id);
+      if (document) {
+        documents.push(document);
+      }
+    }
+
     if ((project.permissions.loginRequired && req.user) || !project.permissions.loginRequired) {
       res.render('project/project.ejs', { 
         user: req.user,
         project: project,
+        documents: documents,
         document: null, // Don't replace
         page: null, // Don't replace
         viewType: "project"
