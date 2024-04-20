@@ -185,6 +185,10 @@ button.nav-link.tab-link {
   height: 1em;
 }
 
+span.required {
+  color: #D93025;
+}
+
 /* Profile Form */
 
 #profileFormSwitch {
