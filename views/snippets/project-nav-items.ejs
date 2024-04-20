@@ -8,9 +8,9 @@
     <% if (doc.pages && doc.pages.length > 0) { %>
       <!-- Check that document is active -->
       <% if (document && document.id.toString() === doc.id.toString()) { %>
-        <a href="<%= document.slug %>" role="button" class="dropdown-btn ml-auto active">
+        <a href="<%= doc.slug %>" role="button" class="dropdown-btn ml-auto active">
       <% } else { %>
-        <a href="<%= document.slug %>" role="button" class="dropdown-btn ml-auto">
+        <a href="<%= doc.slug %>" role="button" class="dropdown-btn ml-auto">
       <% } %>
         <div class="row">
           <div class="col-10">
@@ -28,7 +28,7 @@
           <% } else { %>
             <a href="/project/<%= project.slug %>/<%= doc.slug %>/<%= pg.get('slug') %>">
           <% } %>
-              <%= pg.hrt('title') %>
+              <%= pg.get('title') %>
             </a>
         <% }); %>
       </div>
@@ -40,7 +40,7 @@
       <% } else { %>
         <a href="/project/<%= project.slug %>/<%= doc.slug %>">
       <% } %>
-          <%= document.title %>
+          <%= doc.title %>
         </a>
     <% } %>
   <% }); %>
