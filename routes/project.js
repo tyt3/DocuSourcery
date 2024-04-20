@@ -325,9 +325,12 @@ router.get('/project/:projectSlug/:documentSlug/edit', ensureAuth, async (req, r
       return res.status(404).json({ error: 'Project not found' });
     }
 
-    const document = project.documents.find(doc => doc.slug === documentSlug);
+    const document = await Document.findOne({
+      slug: documentSlug,
+      projectId: project._id
+    })
     if (!document) {
-        return res.status(404).json({ error: 'Document not found' });
+      return res.status(404).json({ error: 'Document not found' });
     }
 
     res.render('project/documentEdit.ejs', { 
