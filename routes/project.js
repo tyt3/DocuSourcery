@@ -192,12 +192,22 @@ router.get('/project/:slug', async (req, res) => {
       return res.status(404).send('Documents not found for the project');
     }
 
-    // Retrieve document details for each document ObjectId
     const documents = [];
     for (const doc of project.documents) {
-      const document = await Document.findById(doc._id);
-      if (document) {
-        documents.push(document);
+      try {
+        const docId = doc.get('_id');
+        if (docId) {
+          const document = await Document.findById(docId);
+          if (document) {
+            documents.push(document);
+          } else {
+            console.error(`Document not found for ID: ${docId}`);
+          }
+        } else {
+          console.error('Document _id is undefined');
+        }
+      } catch (error) {
+        console.error(`Error fetching document: ${error}`);
       }
     }
 
