@@ -151,4 +151,43 @@ for (i = 0; i < dropdown.length; i++) {
   });
 }
 
+//Add a JavaScript event listener to detect when the user types in the text field. 
+document.getElementById("search-field").addEventListener("input", function () {
+  const query = this.value;
+  if (query.length > 2) { // Trigger when the user types at least 3 characters
+      fetchSuggestions(query);
+  }
+});
+
+// fetchSuggestions function
+function fetchSuggestions(query) {
+  // This is a simulated list of suggestions. In practice, you would get this from a backend service.
+  const allUsers = ["alice@example.com", "bob@example.com", "charlie@example.com", "david@example.com"];
+  
+  const filteredSuggestions = allUsers.filter(user => user.includes(query));
+
+  const dropdown = document.getElementById("suggestions");
+  dropdown.innerHTML = ""; // Clear existing suggestions
+  
+  filteredSuggestions.forEach(suggestion => {
+      const option = document.createElement("option");
+      option.value = suggestion;
+      option.textContent = suggestion;
+      dropdown.appendChild(option);
+  });
+}
+
+// set API endpoint that returns matching users based on the query string.
+app.get('/users', (req, res) => {
+  const query = req.query.q || '';
+  const filteredUsers = userList.filter(user =>
+    user.name.toLowerCase().includes(query.toLowerCase()) ||
+    user.email.toLowerCase().includes(query.toLowerCase())
+  );
+  res.json(filteredUsers);
+});
+
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
+});
 
