@@ -57,7 +57,8 @@
               <div class="tab-pane fade show active" id="properties-pane" 
                 role="tabpanel" aria-labelledby="properties-pane">
                 <div class="form-group row">
-                  <label for="title" class="col-sm-2 col-form-label bold">Title</label>
+                  <label for="title" class="col-sm-2 col-form-label bold">
+                    Title <span class="required">*</span></label>
                   <div class="col-sm-10">
                     <input type="text" class="form-control" name="title" id="title" 
                     <% if (project)  { %>
@@ -77,7 +78,8 @@
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="slug" class="col-sm-2 col-form-label bold">Slug</label>
+                  <label for="slug" class="col-sm-2 col-form-label bold">
+                    Slug <span class="required">*</span></label>
                   <div class="col-sm-10">
                     <input type="text" class="form-control" name="slug" id="slug" 
                     <% if (project)  { %>
@@ -107,7 +109,7 @@
                       value="<% var tagTitles = project.tags.map(function(tag) { return tag.get('title'); }).join(','); %><%= tagTitles %>"
                     <% }; %>
                     placeholder="Enter tags">
-                  <small class="bold">Separate tags with commas and no spaces.</small>
+                  <small class="bold">* Separate tags with commas and no spaces.</small>
                   </div>
                 </div>                
                 <div class="form-group row mb-0">
