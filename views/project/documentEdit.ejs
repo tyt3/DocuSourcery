@@ -108,7 +108,28 @@
                   <ul class="list-group">
                     <% document.pages.forEach(function(page) { %>
                       <!-- Page Cards -->
-                      <%- include('../snippets/page-list-item.ejs') -%>
+                      <li class="mb-2">
+                        <div class="card">
+                          <div class="card-body py-1">
+                            <!-- Drag Icon -->
+                            <div class="row gy-2">
+                              <div class="col-1">
+                                <span class="material-symbols-outlined">
+                                  drag_handle
+                                </span>
+                              </div>
+                              <!-- Page Title -->
+                              <div class="col-11 d-flex align-items-center">
+                                <span  data-bs-toggle="tooltip" data-bs-title="Page" 
+                                  data-bs-custom-class="ds-tooltip" class="material-symbols-outlined me-2">
+                                  description
+                                </span>
+                                <a href="/page/edit/<%= page.get('slug') %>"><%= page.get('title') %></a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </li>
                     <% }); %>  
                   </ul> 
                 <% } else { %>
