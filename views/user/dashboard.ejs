@@ -45,61 +45,62 @@
             <div class="tab-pane fade show active" id="my-projects-pane" role="tabpanel"
               aria-labelledby="my-projects-pane">
               <% if (projects && projects.length > 0) { %>
+                <% projects.forEach(function(project) { %>
                 <ul class="list-group">
-                  <!-- Loop through projects -->
                   <li class="list-group-item">
                     <div class="row">
                       <div class="col-md-3 col-xxl-2 d-none d-md-block">
-                        <span class="material-symbols-outlined">keep</span>
-                        <span class="material-symbols-outlined">tag</span>
-                        <span class="material-symbols-outlined">edit</span>
-                        <span class="material-symbols-outlined">delete</span>
+                        <a href="/project/pin/<%= project.id %>">
+                          <span class="material-symbols-outlined">keep</span>
+                        </a>
+                        <a href="/project/<%= project.slug %>/edit">
+                          <span class="material-symbols-outlined">edit</span>
+                        </a>
                       </div>
                       <div class="col-12 col-md-9 col-xxl-10">
-                        <a href="#">Project Title</a>
+                        <a href="/project/<%= project.slug %>">
+                          <%= project.title %>
+                        </a>
                       </div>
                     </div>
                   </li>
-                  <!-- End of Loop-->
                 </ul>
-                <% } else { %>
+                <% }); %>
+              <% } else { %>
                 <p class="text-center">
                   <em>You don't have any projects yet.</em>
                 </p>
-                <div class="d-grid gap-2 d-md-flex justify-content-center">
+                <% } %>
+                <div class="d-grid gap-2 d-md-flex mt-3 justify-content-center">
                   <a class="btn btn-12 btn-ds-primary" role="button" href="/project/create">Create
                     a Project</a>
                 </div>
-                <% } %>
             </div>
             <!-- Pinned Projects Pane -->
             <div class="tab-pane fade" id="pinned-projects-pane" role="tabpanel" 
               aria-labelledby="pinned-projects-pane">
-              <% if (true) { %>
+              <% if (pins && pins.length > 0) { %>
+                <% pins.forEach(function(project) { %>
                 <ul class="list-group">
-                  <!-- Loop through pinned projects -->
                   <li class="list-group-item">
                     <div class="row">
                       <div class="col-3 col-md-2 d-none d-md-block">
-                        <span class="material-symbols-outlined">keep</span>
-                        <span class="material-symbols-outlined">edit</span>
-                        <span class="material-symbols-outlined">delete</span>
+                        <a href="/project/pin/<%= project.id %>"><span class="material-symbols-outlined">keep</span></a>
                       </div>
-                      <div class="col-12 col-md-9 col-xxl-10">
-                        <a href="#">Project Title</a>
+                      <div class="col-12 col-md-9 col-xxl-10"><a href="/project/<%= project.slug %>"><%= project.title %></a>
                       </div>
                     </div>
                   </li>
-                  <!-- End Loop -->
                 </ul>
+                <% }); %>
                 <% } else { %>
                 <p class="text-center"><em>You don't have any pinned projects yet.</em></p>
-                <div class="d-grid gap-2 d-md-flex justify-content-center">
+                <% } %>
+                <div class="d-grid gap-2 d-md-flex mt-3 justify-content-center">
                   <a class="btn btn-12 btn-ds-primary" role="button" href="#">
                     Browse Projects
                   </a>
                 </div>
-                <% } %>
             </div>
           </div>
           <!-- Archived Projects Pane -->
@@ -122,10 +123,10 @@
                       <% if (project.deleted) { %>
                         <tr>
                           <td><%= project.title %></td>
-                          <td><%= project.deleted_at %></td>
-                          <td><%= project.deleted_by %></td>
-                          <td><%= project.created_at %></td>
-                          <td><%= project.created_by %></td>
+                          <td><%= project.deletedDate %></td>
+                          <td><%= project.deletedBy %></td>
+                          <td><%= project.createdDate %></td>
+                          <td><%= project.createdBy %></td>
                         </tr>
                       <% } %>
                     <% }); %>

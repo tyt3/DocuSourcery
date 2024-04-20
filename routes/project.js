@@ -1,9 +1,10 @@
 // Route handlers
 const express = require('express');
 const router = express.Router();
+const mongoose = require('mongoose');
 
 // Import middleware
-const { ensureAuth } = require('./middleware');
+const { ensureAuth, validateTitles, validateSlug } = require('./middleware');
 
 // Import data models
 const User = require('../models/user');
@@ -31,15 +32,9 @@ router.get('/project/create', ensureAuth, async (req, res) => {
 });
 
 // Create Project
-router.post('/project/create', ensureAuth, async (req, res) => {
+router.post('/project/create', ensureAuth, validateTitles, validateSlug, async (req, res) => {
   const { title, subtitle, slug, description, tags, noLogin, canDuplicate, isPublic } = req.body;
 
-  // TODO: Write and apply middleware to validate form fields
-    // Title length is less than or equal to 255 characters 
-    // Subtitle length is less than or equal to 255 characters 
-    // Slug is unique
-    // Slug length is less than 25 characters
-    // Slug contains only letters, numbers, and dashes
   // TODO: Convert description field Markdown to HTML with markdown.js
   let linkedTags = [];
   try {
@@ -101,7 +96,6 @@ router.post('/project/create', ensureAuth, async (req, res) => {
     // Render the new project
     res.render('project/projectEdit.ejs', { 
       user: req.user, 
-      users: [],
       project: newProject,
       document: null, // Don't replace
       page: null // Don't replace
@@ -117,7 +111,7 @@ router.get('/project/:projectSlug/edit/', ensureAuth, async (req, res) => {
   const projectSlug = req.params.projectSlug;
 
   // TODO: Get project to send to frontend
-  // TODO: Populate all documents and pages in project
+  // TODO: Populate all users
   // TODO: Convert description field HTML to Markdown with turndown.js
 
   try {
@@ -157,7 +151,7 @@ router.delete('/project/:id', ensureAuth, async (req, res) => {
     // Redirect to Dashboard
     // If project.deleted=false:
     // - set to deleted=true
-    // - set deletedAt=now
+    // - set deletedDate=now
     // - set deletedBy=authenticatedUserID
     // if project.deleted=true: 
     // - delete object
@@ -185,11 +179,43 @@ router.get('/project/:slug', async (req, res) => {
   // TODO: Populate all documents and pages in project
 
   try {
-    const project = await Project.findOne({ slug: projectSlug });
+    // Find the project by its slug and populate its 'documents' field
+    const project = await Project.findOne({ slug: projectSlug }).populate('documents');
+
+    // Check if project is found
+    if (!project) {
+      return res.status(404).send('Project not found');
+    }
+
+    // Check if documents are populated
+    if (!project.documents || !Array.isArray(project.documents)) {
+      return res.status(404).send('Documents not found for the project');
+    }
+
+    const documents = [];
+    for (const doc of project.documents) {
+      try {
+        const docId = doc.get('_id');
+        if (docId) {
+          const document = await Document.findById(docId);
+          if (document) {
+            documents.push(document);
+          } else {
+            console.error(`Document not found for ID: ${docId}`);
+          }
+        } else {
+          console.error('Document _id is undefined');
+        }
+      } catch (error) {
+        console.error(`Error fetching document: ${error}`);
+      }
+    }
+
     if ((project.permissions.loginRequired && req.user) || !project.permissions.loginRequired) {
       res.render('project/project.ejs', { 
         user: req.user,
         project: project,
+        documents: documents,
         document: null, // Don't replace
         page: null, // Don't replace
         viewType: "project"
@@ -251,22 +277,63 @@ router.get('/project/:projectSlug/document/create', ensureAuth, async (req, res)
 
 // Create Document
 router.post('/document/create/:projectId', ensureAuth, async (req, res) => {
+  console.log('Received form data:', req.body); // This will show all data received from the form
+  const { title, description, slug, landingPage } = req.body;
   const projectId = req.params.projectId;
-  const { title } = req.body; // TODO: Add remaining fields
 
-  // TODO: Apply middleware to validate form fields
-  // TODO: Convert description field Markdown to HTML with markdown.js
+  console.log('Received projectId:', projectId);
+  console.log('Received data:', { title, description, slug, landingPage });
+
+  if (!mongoose.Types.ObjectId.isValid(projectId)) {
+    console.log('Invalid project ID:', projectId);
+    return res.status(400).send('Invalid project ID.');
+  }
+
+  // Ensure required fields are present
+  if (!title || !slug) {
+    console.log('Validation error: Missing required fields.');
+    return res.status(400).send('Missing required fields: title or slug.');
+  }
 
   try {
-    const document = new Document({
-      title: title,
+    // Find the project to ensure it exists
+    console.log('Looking up project:', projectId);
+    const project = await Project.findById(projectId);
+    if (!project) {
+      console.log('No project found with ID:', projectId);
+      return res.status(404).send('Project not found.');
+    }
+
+    // Create a new document
+    const newDocument = new Document({
+      title,
+      description,
+      slug,
+      createdBy: req.user._id,
+      projectId,
+      landingPage
     });
 
-    const newDocument = await document.save();
-    await newDocument.save();
+    console.log('Document prepared for saving:', newDocument);
 
+    // Save the document
+    await newDocument.save();
+    console.log('Document saved successfully:', newDocument);
+
+    // Update the project to include this new document
+    project.documents.push({
+      _id: newDocument._id,
+      title: newDocument.title,
+      slug: newDocument.slug
+    });
+    await project.save();
+    console.log('Project updated with new document:', project);
+    
+    res.redirect(`/project/${project.slug}/${newDocument.slug}`);
+    
   } catch (err) {
-    throw err;
+    console.error('Error creating document:', err);
+    res.status(500).send('Server error while creating document.');
   }
 });
 
@@ -276,12 +343,26 @@ router.get('/project/:projectSlug/:documentSlug/edit', ensureAuth, async (req, r
   try {
     // TODO: Get project and document objects and send to frontend
     // TODO: Confirm that document is in project
-    // TODO: Convert description field HTML to Markdown with turndown.js
+    // TODO: Convert description field HTML to Markdown with turndown.j
+
+    // TODO: add graceful error handling
+    const project = await Project.findOne({ slug: projectSlug });
+    if (!project) {
+      return res.status(404).json({ error: 'Project not found' });
+    }
+
+    const document = await Document.findOne({
+      slug: documentSlug,
+      projectId: project._id
+    })
+    if (!document) {
+      return res.status(404).json({ error: 'Document not found' });
+    }
 
     res.render('project/documentEdit.ejs', { 
       user: req.user,
-      project: null, // TODO: Replace
-      document: null, // TODO: Replace
+      project: project,
+      document: document,
       page: null, // Don't replace 
     });
   } catch (err) {
@@ -304,6 +385,12 @@ router.delete('/document/:id', ensureAuth, async (req, res) => {
   const documentId = req.params.id;
   try {
     // TODO: Implement
+    // If project.deleted=false:
+    // - set to deleted=true
+    // - set deletedDate=now
+    // - set deletedBy=authenticatedUserID
+    // if project.deleted=true: 
+    // - delete object
   } catch (err) {
     throw err;
   }
@@ -327,26 +414,44 @@ router.get('/project/:projectSlug/:documentSlug/', async (req, res) => {
     // TODO: Confirm that document is in project
     // TODO: Populate all pages in document
     
+    // Find the project by its slug
+    const project = await Project.findOne({ slug: projectSlug });
+    if (!project) {
+      return res.status(404).send('Project not found');
+    }
+
+    // Find the document within this project using the document slug and ensure it belongs to the project
+    const document = await Document.findOne({
+      slug: documentSlug,
+      projectId: project._id
+    }).populate('pages'); // Assuming 'pages' is a field to populate
+
+    if (!document) {
+      return res.status(404).send('Document not found in the specified project');
+    }
+
     var viewType;
     var page = null;
 
     // Determine if the document or its first page should be rendered
-    if (document.landingPage || document.pages.length === 0) {
-        viewType = "document";
+    if (document.landingPage || (document.pages && document.pages.length === 0)) {
+      viewType = "document";
     } else {
-        viewType = "page";
-        page = document.pages.find(page => page.order === 0);
+      viewType = "page";
+      page = document.pages.find(page => page.order === 0);
     }
+
 
     res.render('project/project.ejs', { 
       user: req.user,
-      project: null, // TODO: Replace with project
-      document: null, // TODO: Replace with document
+      project: project, // TODO: Replace with project
+      document: document, // TODO: Replace with document
       page: page,
       viewType: viewType
     });
   } catch (err) {
-    throw err;
+    console.error('Error retrieving document:', err);
+    res.status(500).send('Internal server error');
   }
 });
 
@@ -437,6 +542,12 @@ router.delete('/page/:id', ensureAuth, async (req, res) => {
   const pageId = req.params.id;
   try {
     // TODO: Implement
+    // If project.deleted=false:
+    // - set to deleted=true
+    // - set deletedDate=now
+    // - set deletedBy=authenticatedUserID
+    // if project.deleted=true: 
+    // - delete object
   } catch (err) {
     throw err;
   }

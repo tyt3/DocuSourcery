@@ -1,4 +1,5 @@
 <div class="row">
+  <!-- Title -->
   <div class="col">
     <h1 class="text-start light mb-2">
       <%= project.title %>
@@ -9,19 +10,25 @@
     </h2>
     <% } %>
   </div>
+  <!-- Edit Button -->
   <% if (user && user.id ) { %>
     <% const minRole = 1; %>
-    <% const userFound = project.users.some(user => user.get('id') === user.id && user.get('role') >= minRole); %>
+    <% console.log('User ID:', user.id); %>
+    <% console.log('Project Users:', project.users); %>
+    <% const userFound = project.users.some(userObj => {
+        return userObj.get('id').toString() === user.id.toString() && userObj.get('role') >= minRole;
+    }); %>
+    <% console.log('User Found:', userFound); %>
     <% if (userFound) { %>
     <div class="col-auto">
-      <a href="/project/<%= project.title %>/edit" class="text-decoration-none">
+      <a href="/project/<%= project.slug %>/edit" class="text-decoration-none">
         <span class="material-symbols-outlined">
           edit
         </span>
       </a>
     </div>
     <% } %>
-  <% } %>
+<% } %>
 </div>
 <div class="mt-4">
   <%= project.description %>

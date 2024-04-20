@@ -229,9 +229,7 @@ router.get('/dashboard', ensureAuth, async (req, res) => {
     // Ensure the user is part of the project users and project is neither deleted nor trashed
     const projects = await Project.find({
       'users.id': req.user._id,
-      deleted: false,
-      trash: false,
-      public: true // Assuming you want to display only public projects on the dashboard
+      deleted: false
     }).populate({
       path: 'createdBy',
       select: 'username email' // Only fetch the username and email of the creator
@@ -246,7 +244,9 @@ router.get('/dashboard', ensureAuth, async (req, res) => {
         ...project.toObject(),
         canEdit: project.users.some(u => u.id === req.user._id && u.role > 1),
         isCreator: project.createdBy._id === req.user._id
-      }))
+      })),
+      pins: null, // TODO: Implement
+      trash: null, // TODO: Implement
     });
   } catch (err) {
     console.error('Error fetching dashboard data:', err);

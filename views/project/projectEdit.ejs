@@ -48,7 +48,7 @@
         </li>
         <% } %> 
       </ul>
-      <form id="projectForm">
+      <form id="projectForm" method="POST" action="/project/create">
         <div class="row gy-4">
           <!-- Tab Panels -->
           <div class="col-12 col-md-8 col-xxl-9">
@@ -57,46 +57,80 @@
               <div class="tab-pane fade show active" id="properties-pane" 
                 role="tabpanel" aria-labelledby="properties-pane">
                 <div class="form-group row">
-                  <label for="title" class="col-sm-2 col-form-label bold">Title</label>
+                  <label for="title" class="col-sm-2 col-form-label bold">
+                    Title<span class="required">*</span></label>
                   <div class="col-sm-10">
-                    <input type="text" class="form-control" name="title" id="title" placeholder="Enter title">
+                    <input type="text" class="form-control" name="title" id="title" 
+                    <% if (project)  { %>
+                      value="<%= project.title %>"
+                    <% }; %>
+                    placeholder="Enter title">
                   </div>
                 </div>
                 <div class="form-group row">
                   <label for="subtitle" class="col-sm-2 col-form-label bold">Subtitle</label>
                   <div class="col-sm-10">
-                    <input type="text" class="form-control" name="subtitle" id="subtitle" placeholder="Enter subtitle">
+                    <input type="text" class="form-control" name="subtitle" id="subtitle" 
+                    <% if (project)  { %>
+                      value="<%= project.subtitle %>"
+                    <% }; %>
+                    placeholder="Enter subtitle">
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="slug" class="col-sm-2 col-form-label bold">Slug</label>
+                  <label for="slug" class="col-sm-2 col-form-label bold">
+                    Slug<span class="required">*</span></label>
                   <div class="col-sm-10">
-                    <input type="text" class="form-control" name="slug" id="slug" placeholder="Enter slug">
+                    <input type="text" class="form-control" name="slug" id="slug" 
+                    <% if (project)  { %>
+                      value="<%= project.slug %>"
+                    <% }; %>
+                    placeholder="Enter slug">
                   </div>
                 </div>
                 <div class="form-group row">
                   <label for="description" class="col-sm-2 col-form-label bold">Description</label>
                   <div class="col-sm-10">
-                    <textarea class="form-control" name="description" id="description" rows="3"
-                      placeholder="Enter description"></textarea>
+                    <textarea class="form-control" name="description" id="description" 
+                      rows="3" placeholder="Enter description"
+                      <% if (project)  { %>
+                        ><%= project.description %></textarea>
+                      <% } else { %>
+                        ></textarea>
+                      <% }; %>
                   <small class="bold">* Markdown-enabled field</small>
                   </div>
                 </div>
                 <div class="form-group row">
                   <label class="col-sm-2 col-form-label bold">Tags</label>
                   <div class="col-sm-10">
-                    <input type="text" name="tags" id="tags" class="form-control" placeholder="Enter tags">
+                    <input type="text" name="tags" id="tags" class="form-control" 
+                    <% if (project && project.tags && Array.isArray(project.tags) && project.tags.length > 0) { %>
+                      value="<% var tagTitles = project.tags.map(function(tag) { return tag.get('title'); }).join(','); %><%= tagTitles %>"
+                    <% }; %>
+                    placeholder="Enter tags">
+                  <small class="bold">* Separate tags with commas and no spaces.</small>
                   </div>
-                </div>
+                </div>                
                 <div class="form-group row mb-0">
                   <label class="col-sm-2 col-form-label bold">Permissions</label>
                   <div class="col-sm-10">
                     <div class="form-check">
-                      <input class="form-check-input" type="checkbox" name="noLogin" id="noLogin" value="noLogin">
+                      <input class="form-check-input" type="checkbox" name="noLogin" 
+                      id="noLogin"
+                      <% if (project && project.noLogin) { %>
+                        checked
+                      <% } %>
+                      >
                       <label class="form-check-label" for="noLogin">No login required</label>
                     </div>
                     <div class="form-check">
-                      <input class="form-check-input" type="checkbox" name="canDuplicate" id="canDuplicate" value="canDuplicate">
+                      <input class="form-check-input" type="checkbox" name="canDuplicate" 
+                      id="canDuplicate"
+                      <% if (project && project.duplicatable) { %>
+                        checked
+                      <% } %>
+                      >
                       <label class="form-check-label" for="canDuplicate">Can be duplicated by you and others</label>
                     </div>
                   </div>
@@ -127,7 +161,7 @@
                                   class="material-symbols-outlined me-2">
                                   folder_open
                                 </span>
-                                <a href="project/<%= project.slug %>/<%= document.get('slug') %>/edit"><%= document.get('title') %></a>
+                                <a href="/project/<%= project.slug %>/<%= document.get('slug') %>/edit"><%= document.get('title') %></a>
                               </div>
                             </div>
                             <!-- Pages List -->
@@ -154,7 +188,7 @@
                                               data-bs-custom-class="ds-tooltip" class="material-symbols-outlined me-2">
                                               description
                                             </span>
-                                            <a href="/page/edit/<%= page.get('slug') %>"><%= page.get('title') %></a>
+                                            <a href="/project/<%= project.get('slug') %>/<%= document.get('slug') %>/<%= page.get('slug') %>/edit"><%= page.get('title') %></a>
                                           </div>
                                         </div>
                                       </div>
@@ -198,10 +232,10 @@
                           <% if (document.deleted) { %>
                             <tr>
                               <td><%= document.title %></td>
-                              <td><%= document.deleted_at %></td>
-                              <td><%= document.deleted_by %></td>
-                              <td><%= document.created_at %></td>
-                              <td><%= document.created_by %></td>
+                              <td><%= document.deletedDate %></td>
+                              <td><%= document.deletedBy %></td>
+                              <td><%= document.createdDate %></td>
+                              <td><%= document.createdBy %></td>
                             </tr>
                           <% } %>
                         <% }); %>
@@ -224,18 +258,18 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <% if (users && users.length > 0) { %>
-                        <% users.forEach(function(usr) { %>
+                      <% if (project && project.users && Array.isArray(project.users) && project.users.length > 0) { %>
+                        <% project.users.forEach(function(usr) { %>
                           <tr>
-                            <td><%= usr.username %></td>
-                            <td><%= usr.first_name %> <%= usr.last_name %></td>
-                            <td><%= usr.email %></td>
+                            <td><%= usr.get('username') %></td>
+                            <td><%= usr.get('firstName') %> <%= usr.get('lastName') %></td>
+                            <td><%= usr.get('email') %></td>
                             <td>
                               <select class="form-select" name="role" id="role">
-                                <option value="0" <%= usr.role === 0 ? 'selected' : '' %>>Viewer</option>
-                                <option value="1" <%= usr.role === 1 ? 'selected' : '' %>>Editor</option>
-                                <option value="2" <%= usr.role === 2 ? 'selected' : '' %>>Admin</option>
-                                <option value="3" <%= usr.role === 3 ? 'selected' : '' %>>Owner</option>
+                                <option value="0" <%= usr.get('role') === 0 ? 'selected' : '' %>>Viewer</option>
+                                <option value="1" <%= usr.get('role') === 1 ? 'selected' : '' %>>Editor</option>
+                                <option value="2" <%= usr.get('role') === 2 ? 'selected' : '' %>>Admin</option>
+                                <option value="3" <%= usr.get('role') === 3 ? 'selected' : '' %>>Owner</option>
                               </select>
                             </td>
                             <td>
@@ -254,12 +288,18 @@
             <div class="card mt-3" id="action-buttons">
               <div class="card-body">
                 <div class="d-grid gap-2 col-12 mx-auto">
-                  <button type="submit" id="saveProjectBtn" class="btn btn-block btn-outline-success">Save Project</button>
+                  <button type="submit" id="saveProjectBtn" class="btn btn-block btn-outline-success">
+                    Save Project
+                  </button>
                   <% if (project) { %>
                   <button type="button" id="deleteProjectBtn" class="btn btn-block btn-outline-danger"
-                    data-bs-toggle="modal" data-bs-target="#deleteProjectModal">Delete Project</button>
+                    data-bs-toggle="modal" data-bs-target="#deleteProjectModal">
+                    Delete Project
+                  </button>
                   <a href="/project/<%= project.slug %>"
-                    role="button" class="btn btn-block btn-outline-secondary">View Project</a>
+                    role="button" class="btn btn-block btn-outline-secondary">
+                    View Project
+                  </a>
                   <% } %>
                 </div>
                 <div class="form-check form-switch mt-2">
@@ -271,19 +311,6 @@
           </div>
         </div>
       </form>
-      <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const projectForm = document.getElementById('projectForm');
-            const saveProjectBtn = document.getElementById('saveProjectBtn');
-    
-            // Add click event listener to Save Project button
-            saveProjectBtn.addEventListener('click', function () {
-                projectForm.action = '/project/create';
-                projectForm.method = 'POST';
-                projectForm.submit();
-            });
-        });
-    </script>
     </div>
   </div>
 </div>
