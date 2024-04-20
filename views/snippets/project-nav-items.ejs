@@ -1,29 +1,47 @@
 <h1 class="fs-6 text-start mb-2">
-  Documentation Overview
+  <%= project.title %>
 </h1>
-<a href="#">Principles and Objectives</a>
-<a href="#">Getting Started</a>
-<a href="#">Using the Data Layers Repository</a>
-<a href="#" role="button" class="dropdown-btn ml-auto active">
-  <div class="row">
-    <div class="col-10">
-      Data Dictionary
-    </div>
-    <div class="col-2 d-flex justify-content-end">
-      <i class="fa fa-caret-down align-top"></i>
-    </div>
-  </div>
-</a>
-<div class="dropdown-container">
-  <a href="#">Introduction</a>
-  <a href="#">Data Standards/Schemas, Controlled Vocabularies & Encoding Schemes</a>
-  <a href="#">Archival Collection Metadata Element Set</a>
-  <a href="#">Serial Collection Metadata Element Set</a>
-  <a href="#">Monograph Collection Metadata Element Set</a>
-  <a href="#">Mixed Collection Metadata Element Set</a>
-</div>
-<a href="#">Application Profiles</a>
-<a href="#">Metadata Element Set Chart</a>
-<a href="#">Data Extraction and Transformation Workflow</a>
-<a href="#">Best Practices for Creating Extension Layers</a>
-<a href="#">Publishing an Extension Layer</a>
+<!-- Check there are documents -->
+<% if (project && documents && documents.length > 0) { %>
+  <% documents.forEach(function(doc) { %>
+    <!-- Check that document has more than one page -->
+    <% if (doc.pages && doc.pages.length > 0) { %>
+      <!-- Check that document is active -->
+      <% if (document && document.id.toString() === doc.id.toString()) { %>
+        <a href="<%= document.slug %>" role="button" class="dropdown-btn ml-auto active">
+      <% } else { %>
+        <a href="<%= document.slug %>" role="button" class="dropdown-btn ml-auto">
+      <% } %>
+        <div class="row">
+          <div class="col-10">
+            <%= doc.title %>
+          </div>
+          <div class="col-2 d-flex justify-content-end">
+            <i class="fa fa-caret-down align-top"></i>
+          </div>
+        </div>
+      </a>
+      <div class="dropdown-container">
+        <% doc.pages.forEach(function(pg) { %>
+          <% if (page && page.id.toString() === pg.id.toString()) { %>
+            <a href="/project/<%= project.slug %>/<%= doc.slug %>/<%= pg.get('slug') %>" active>
+          <% } else { %>
+            <a href="/project/<%= project.slug %>/<%= doc.slug %>/<%= pg.get('slug') %>">
+          <% } %>
+              <%= pg.hrt('title') %>
+            </a>
+        <% }); %>
+      </div>
+    <% } else { %>
+      <!-- Single-page document -->
+      <!-- Check that document is active -->
+      <% if (document && document.id.toString() === doc.id.toString()) { %>
+        <a href="/project/<%= project.slug %>/<%= doc.slug %>" active>
+      <% } else { %>
+        <a href="/project/<%= project.slug %>/<%= doc.slug %>">
+      <% } %>
+          <%= document.title %>
+        </a>
+    <% } %>
+  <% }); %>
+<% } %>
