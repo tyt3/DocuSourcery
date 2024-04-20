@@ -144,7 +144,7 @@
                   <ul class="list-group">
                     <% project.documents.forEach(function(document) { %>
                       <!-- Document Cards -->
-                      <li class="card-list mb-3">
+                      <li class="card-list document-card-item mb-3">
                         <div class="card">
                           <div class="card-body py-1">
                             <div class="row gy-2 d-flex align-items-center">
@@ -169,7 +169,7 @@
                               <!-- Page Cards -->
                               <% if (document && document.pages && Array.isArray(document.pages) && document.pages.length > 0) { %>
                                 <% document.pages.forEach(function(page) { %>
-                                  <li class="mb-2">
+                                  <li class="mb-2 page-card-item">
                                     <div class="card">
                                       <div class="card-body py-1">
                                         <!-- Drag Icon -->
@@ -303,7 +303,11 @@
                   <% } %>
                 </div>
                 <div class="form-check form-switch mt-2">
-                  <input class="form-check-input" type="checkbox" role="switch" name="isPublic" id="isPublic">
+                  <input class="form-check-input" type="checkbox" role="switch" name="isPublic" id="isPublic"
+                    <% if (project && project.public) { %>
+                      checked
+                    <% } %>
+                    >
                   <label class="form-check-label bold" for="public">Make project public</label>
                 </div>
               </div>
