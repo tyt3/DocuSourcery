@@ -639,7 +639,19 @@ router.post('/page/create/:projectId/:docId', ensureAuth, async (req, res) => {
   const { projectId, docId } = req.params;
   const { title, slug, body, isPublic } = req.body;
 
-  // TODO: Get project and document, error if not found
+   // Get project and document, error if not found 
+   const project = await Project.findById(projectId);
+    if (!project) {
+      console.log('No project found with ID:', projectId);
+      return res.status(404).send('Project not found.');
+    }
+    // Confirm that document is in project
+    const document = await Document.findOne({ _id: docId, projectId: project._id });
+    if (!document) {
+      console.log('No document found with ID:', docId);
+      return res.status(404).send("Document not found or does not belong to the specified project.");
+    }
+
   // TODO: Validate form fields
   
   // Convert description field Markdown to HTML
