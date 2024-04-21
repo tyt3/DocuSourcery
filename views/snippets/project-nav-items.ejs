@@ -2,8 +2,8 @@
   <%= project.title %>
 </h1>
 <!-- Check there are documents -->
-<% if (project && documents && documents.length > 0) { %>
-  <% documents.forEach(function(doc) { %>
+<% if (project && project.documents && project.documents.length > 0) { %>
+  <% project.documents.forEach(function(doc) { %>
     <!-- Check that document has more than one page -->
     <% if (doc.pages && doc.pages.length > 0) { %>
       <!-- Check that document is active -->
