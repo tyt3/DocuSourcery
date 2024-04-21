@@ -72,12 +72,13 @@ router.post('/project/create', ensureAuth, validateTitles, validateSlug, async (
     if (isPublic === "on") {
       publicChoice = true;
     }
+    const markdown = turndownService.turndown(description);
 
     const project = new Project({
       slug: slug,
       title: title,
       subtitle: subtitle,
-      description: description,
+      description: markdown,
       createdBy: req.user._id,
       public: publicChoice,
       tags: linkedTags,
@@ -138,7 +139,7 @@ router.get('/project/:projectSlug/edit/', ensureAuth, async (req, res) => {
 
 
 // Edit Project
-router.put('/project/:id', ensureAuth, async (req, res) => {
+router.put('/project/:id', ensureAuth, validateTitles, validateSlug, async (req, res) => {
   const projectId = req.params.id;
 
     // TODO: Implement 
