@@ -69,7 +69,7 @@
                 Title<span class="required">*</span></label>
               <input type="text" class="form-control" id="title" name="title" 
               <% if (page)  { %>
-                value="<%= tage.title %>"
+                value="<%= page.title %>"
               <% }; %>
               placeholder="Enter title">
             </div>
@@ -78,7 +78,7 @@
                 Slug<span class="required">*</span></label>
               <input type="text" class="form-control" id="slug" name="slug" 
               <% if (page)  { %>
-                value="<%= tage.slug %>"
+                value="<%= page.slug %>"
               <% }; %>
               placeholder="Enter slug">
             </div>
@@ -104,6 +104,7 @@
                     data-bs-toggle="modal" data-bs-target="#deletePageModal">Delete Page</button>
                   <a href="/project/<%= project.slug %>/<%= document.slug %>/<%= page.slug %>"
                     role="button" class="btn btn-block btn-outline-secondary">View Page</button>
+                  </a>
                   <% } %>
                 </div>
                 <div class="form-check form-switch mt-2">
