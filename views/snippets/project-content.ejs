@@ -38,7 +38,7 @@
   <% if (project && project.users && project.users.length > 0) { %>
     <% let userIndex = 0; %>
 
-    <% project.users.forEach(function(user, userIndex) { %>
+    <% project.users.forEach(function(usr, userIndex) { %>
       <% if (userIndex !== project.users.length - 1) { %>
         <a href="/profile/<%= usr.user?.username %>"><%= usr.user?.firstName %> <%= usr.user?.lastName %></a>,
       <% } else { %>
@@ -75,7 +75,7 @@
             <% document.pages.forEach(function(page) { %>
               <li>
                 <a href="/project/<%= project.slug %>/<%= document.slug %>/<%= page.slug %>">
-                  <%= page.title %>/
+                  <%= page.title %>
                 </a>
               </li>
             <% }); %>
