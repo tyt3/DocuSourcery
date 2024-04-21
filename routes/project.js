@@ -445,8 +445,6 @@ router.put('/document/:id', ensureAuth, async (req, res) => {
 
 // Delete Document
 router.delete('/document/:id', ensureAuth, async (req, res) => {
-  const documentId = req.params.id;
-  try {
     // TODO: Implement
     // If document.deleted=false:
     // - set to deleted=true
@@ -454,8 +452,30 @@ router.delete('/document/:id', ensureAuth, async (req, res) => {
     // - set deletedBy=authenticatedUserID
     // if document.deleted=true: 
     // - delete object
+  const documentId = req.params.id;
+  const userId = req.user._id; // Assuming req.user._id holds the authenticated user's ID
+
+  try {
+    const document = await Document.findById(documentId);
+    if (!document) {
+      return res.status(404).send('Document not found.');
+    }
+
+    if (!document.deleted) {
+      // Perform a soft delete
+      document.deleted = true;
+      document.deletedDate = new Date(); // Record the deletion date
+      document.deletedBy = userId; // Record the user who deleted the document
+      await document.save();
+      return res.send({ message: 'Document marked as deleted successfully' });
+    } else {
+      // Perform a permanent delete
+      await Document.deleteOne({ _id: documentId });
+      return res.send({ message: 'Document permanently deleted successfully' });
+    }
   } catch (err) {
-    throw err;
+    console.error('Error deleting document:', err);
+    res.status(500).send('Server error while deleting document.');
   }
 });
 
