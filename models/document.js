@@ -13,6 +13,7 @@ const DocumentSchema = new Schema({
   deletedDate: { type: Date },
   deletedBy: { type: Schema.Types.ObjectId, ref: "user" },
   landingPage: { type: Boolean, default: false },
+  order: { type: Number },
   projectId: { type: Schema.Types.ObjectId, ref: "project", required: true },
   pages: [
     { type: Schema.Types.ObjectId, ref: "page" }
