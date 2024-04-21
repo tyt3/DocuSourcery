@@ -41,7 +41,13 @@
         </li>
         <% } %>
       </ul>
-      <form>
+      <% if (document) { %>
+        <form id="documentForm" method="PUT" 
+        action="/project/<%= project.id %>/<%= document.id %>">
+      <% } else { %>
+        <form id="documentForm" method="POST" 
+        action="/project/<%= project.id %>/document/create">
+      <% } %>
         <div class="row gy-4">
           <!-- Tab Panels -->
           <div class="col-12 col-md-8 col-xxl-9">
