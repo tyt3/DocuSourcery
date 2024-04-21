@@ -228,7 +228,7 @@ router.get('/dashboard', ensureAuth, async (req, res) => {
 
     // Ensure the user is part of the project users and project is neither deleted nor trashed
     const projects = await Project.find({
-      'users.id': req.user._id,
+      'users.user': req.user._id,
       deleted: false
     }).populate({
       path: 'createdBy',
@@ -242,8 +242,8 @@ router.get('/dashboard', ensureAuth, async (req, res) => {
       user: req.user,
       projects: projects.map(project => ({
         ...project.toObject(),
-        canEdit: project.users.some(u => u.id === req.user._id && u.role > 1),
-        isCreator: project.createdBy._id === req.user._id
+        canEdit: project.users.some(u => u.user === req.user._id && u.role > 1),
+        isCreator: project.createdBy === req.user._id
       })),
       pins: null, // TODO: Implement
       trash: null, // TODO: Implement
