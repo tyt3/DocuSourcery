@@ -24,11 +24,11 @@
       <div class="dropdown-container">
         <% doc.pages.forEach(function(pg) { %>
           <% if (page && page.id.toString() === pg.id.toString()) { %>
-            <a href="/project/<%= project.slug %>/<%= doc.slug %>/<%= pg.get('slug') %>" active>
+            <a href="/project/<%= project.slug %>/<%= doc.slug %>/<%= pg.slug %>" active>
           <% } else { %>
-            <a href="/project/<%= project.slug %>/<%= doc.slug %>/<%= pg.get('slug') %>">
+            <a href="/project/<%= project.slug %>/<%= doc.slug %>/<%= pg.slug %>">
           <% } %>
-              <%= pg.get('title') %>
+              <%= pg.title %>
             </a>
         <% }); %>
       </div>

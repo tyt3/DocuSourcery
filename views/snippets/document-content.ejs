@@ -9,12 +9,10 @@
   <!-- Edit Button -->
   <% if (user && user.id ) { %>
     <% const minRole = 1; %>
-    <% console.log('User ID:', user.id); %>
-    <% console.log('Project Users:', project.users); %>
     <% const userFound = project.users.some(userObj => {
-        return userObj.get('id').toString() === user.id.toString() && userObj.get('role') >= minRole;
+      return userObj.user.toString() === user.id.toString() && userObj.role >= minRole;
     }); %>
-    <% console.log('User Found:', userFound); %>
+  
     <% if (userFound) { %>
     <div class="col-auto">
       <a href="/project/<%= project.slug %>/<%= document.slug %>/edit" class="text-decoration-none">
@@ -37,8 +35,8 @@
 <ul>
   <% document.pages.forEach(function(page) { %>
   <li>
-    <a href="/project/<%= project.slug %>/<%= document.slug %>/<%= page.get('slug') %>">
-      <%= page.get('title') %>
+    <a href="/project/<%= project.slug %>/<%= document.slug %>/<%= page.slug %>">
+      <%= page.title %>
     </a>
   </li>
   <% }); %>

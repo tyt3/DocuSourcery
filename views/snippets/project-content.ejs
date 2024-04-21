@@ -16,7 +16,7 @@
     <% console.log('User ID:', user.id); %>
     <% console.log('Project Users:', project.users); %>
     <% const userFound = project.users.some(userObj => {
-        return userObj.get('id').toString() === user.id.toString() && userObj.get('role') >= minRole;
+        return userObj.user.toString() === user.id.toString() && userObj.role >= minRole;
     }); %>
     <% console.log('User Found:', userFound); %>
     <% if (userFound) { %>
@@ -40,9 +40,9 @@
 
     <% project.users.forEach(function(user, userIndex) { %>
       <% if (userIndex !== project.users.length - 1) { %>
-        <a href="/profile/<%= user.get('username') %>"><%= user.get('firstName') %> <%= user.get('lastName') %></a>,
+        <a href="/profile/<%= usr.user?.username %>"><%= usr.user?.firstName %> <%= usr.user?.lastName %></a>,
       <% } else { %>
-        <a href="/profile/<%= user.get('username') %>"><%= user.get('firstName') %> <%= user.get('lastName') %></a>
+        <a href="/profile/<%= usr.user?.username %>"><%= usr.user?.firstName %> <%= usr.user?.lastName %></a>
       <% } %>
       <% userIndex++; %>
     <% }); %>
@@ -51,9 +51,9 @@
 <div class="mt-4">
   <% if (project && project.tags && project.tags.length > 0) { %>
     <% project.tags.forEach(function(tag) { %>
-      <a href="/tag/<%= tag.get('slug') %>" 
+      <a href="/tag/<%= tag.slug %>" 
         class="badge badge-tag bg-ds-primary me-1">
-        <%= tag.get('title') %>
+        <%= tag.title %>
       </a>
     <% }); %>
   <% } %>
@@ -67,15 +67,15 @@
   <ol>
     <% project.documents.forEach(function(document) { %>
       <li>
-        <a href="/project/<%= project.slug %>/<%= document.get('slug') %>">
-          <%= document.get('title') %>
+        <a href="/project/<%= project.slug %>/<%= document.slug %>">
+          <%= document.title %>
         </a>
         <% if (document && Array.isArray(document.pages) && document.pages.length > 0) { %>
           <ul>
             <% document.pages.forEach(function(page) { %>
               <li>
                 <a href="/project/<%= project.slug %>/<%= document.slug %>/<%= page.slug %>">
-                  <%= page.get('title') %>/
+                  <%= page.title %>/
                 </a>
               </li>
             <% }); %>
