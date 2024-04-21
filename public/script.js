@@ -3,7 +3,7 @@
 ///////////////////
 
 function fetchUsers() {
-  return fetch('/users')
+  return fetch('/api/users')
     .then(response => {
       if (!response.ok) {
         throw new Error('Network response was not ok');
@@ -34,13 +34,17 @@ fetchUsers()
   });
 
 
-//Add a JavaScript event listener to detect when the user types in the text field. 
-document.getElementById("search-field").addEventListener("input", function () {
+//Add a JavaScript event listener to detect when the user types in the text field
+const userSearchField = document.getElementById("search-field")
+
+if (userSearchField) {
+  userSearchField.addEventListener("input", function () {
   const query = this.value;
-  if (query.length > 2) { // Trigger when the user types at least 3 characters
-      fetchSuggestions(query);
-  }
-});
+    if (query.length > 2) { // Trigger when the user types at least 3 characters
+        fetchSuggestions(query);
+    }
+  });
+}
 
 // fetchSuggestions function
 function fetchSuggestions(query) {
