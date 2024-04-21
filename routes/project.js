@@ -84,11 +84,8 @@ router.post('/project/create', ensureAuth, validateTitles, validateSlug, async (
       permissions: {noLogin: noLogin, duplicatable: canDuplicate},
       users: [
         {
-          id: req.user._id,
-          firstName: req.user.firstName,
-          lastName: req.user.lastName,
-          role: 3,
-          username: req.user.username
+          user: req.user._id,
+          role: 3
         }
       ]
     });
