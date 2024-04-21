@@ -311,7 +311,7 @@ router.get('/project/:projectSlug/document/create', ensureAuth, async (req, res)
 // Create Document
 router.post('/document/create/:projectId', ensureAuth, async (req, res) => {
   console.log('Received form data:', req.body); // This will show all data received from the form
-  const { title, description, slug, landingPage } = req.body;
+  const { title, description, slug, landingPage, isPublic } = req.body;
   const projectId = req.params.projectId;
 
   console.log('Received projectId:', projectId);
@@ -337,13 +337,21 @@ router.post('/document/create/:projectId', ensureAuth, async (req, res) => {
       return res.status(404).send('Project not found.');
     }
 
+    // Convert description Markdown to HTML
     const descriptionHTML = marked.parse(description);
+
+    // Get public value
+    let publicChoice = false;
+    if (isPublic === "on") {
+      publicChoice = true;
+    }
 
     // Create a new document
     const newDocument = new Document({
       title: title,
       description: descriptionHTML,
       slug: slug,
+      public: publicChoice,
       createdBy: req.user._id,
       projectId: projectId,
       landingPage: landingPage
@@ -629,7 +637,7 @@ router.get('/project/:projectSlug/:documentSlug/page/create', ensureAuth, async 
 // Create Page
 router.post('/page/create/:projectId/:docId', ensureAuth, async (req, res) => {
   const { projectId, docId } = req.params;
-  const { title, slug, body, public } = req.body;
+  const { title, slug, body, isPublic } = req.body;
 
   // TODO: Get project and document, error if not found
   // TODO: Validate form fields
@@ -640,13 +648,19 @@ router.post('/page/create/:projectId/:docId', ensureAuth, async (req, res) => {
   // Get order for page
   const order = document.pages.length + 1;
 
+  // Get public value
+  let publicChoice = false;
+  if (isPublic === "on") {
+    publicChoice = true;
+  }
+
   try {
     // Assuming you have a Page schema with projectId and docId as references
     const page = new Page({
       title: title,
       slug: slug,
       body: bodyHTML,
-      public: public,
+      public: publicChoice,
       order: order,
       createdBy: req.user._id,
       projectId: projectId,

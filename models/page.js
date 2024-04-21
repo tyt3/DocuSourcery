@@ -9,6 +9,7 @@ const PageSchema = new Schema({
   slug: { type: String, required: true, maxLength: 50 },
   body: { type: String },
   order: { type: Number },
+  public: { type: Boolean, default: false },
   createdBy: { type: Schema.Types.ObjectId, ref: "user", required: true },
   createdDate: { type: Date, default: Date.now },
   createdBy: { type: Schema.Types.ObjectId, ref: "user", required: true },

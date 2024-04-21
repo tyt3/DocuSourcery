@@ -6,6 +6,7 @@ const DocumentSchema = new Schema({
   slug: { type: String, required: true, maxLength: 50 },
   title: { type: String, required: true, maxLength: 255 },
   description: { type: String },
+  public: { type: Boolean, default: false },
   createdDate: { type: Date, default: Date.now },
   createdBy: { type: Schema.Types.ObjectId, ref: "user", required: true },
   modifiedDate: { type: Date, default: Date.now },
