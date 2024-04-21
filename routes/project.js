@@ -113,14 +113,16 @@ router.get('/project/:projectSlug/edit/', ensureAuth, async (req, res) => {
   try {
     // Get project by its slug and populate users, documents, and pages
     const project = await Project.findOne({ slug: projectSlug })
-      .populate({
-        path: 'users.user documents', // Populate the users field and the documents field
-        populate: {
-          path: 'pages', // Populate pages within documents
-          model: 'page' // Specify the model of the pages
-        }
-      })
-      .exec();
+    .populate({
+      path: 'users.user', 
+    })
+    .populate({
+      path: 'documents',
+      populate: {
+        path: 'pages',
+        model: 'Page'
+      }
+    })
 
     // Convert description field HTML to Markdown using turndown.js
     project.description = turndownService.turndown(project.description);
