@@ -504,22 +504,29 @@ router.get('/project/:projectSlug/:documentSlug/', async (req, res) => {
 router.get('/project/:projectSlug/:documentSlug/page/create', ensureAuth, async (req, res) => {
   const { projectSlug, documentSlug } = req.params;
   
-  // TODO: Get project and document, error if not found 
-
+  //console.log(`Attempting to fetch project with slug: ${projectSlug} and document with slug: ${documentSlug}`);
+  
+  // Get project and document, error if not found 
   try {
     const project = await Project.findOne({ slug: projectSlug });
-    const document = await Document.findOne({ slug: documentSlug });
-
-    // TODO: Confirm that document is in project
+    if (!project) {
+      return res.status(404).send("Project not found.");
+    }
+    // Confirm that document is in project
+    const document = await Document.findOne({ slug: documentSlug, projectId: project._id });
+    if (!document) {
+      return res.status(404).send("Document not found or does not belong to the specified project.");
+    }
 
     res.render('project/pageEdit.ejs', { 
       user: req.user,
       project: project,
-      document: project,
+      document: document,
       page: null // Don't replace
     });
   } catch (err) {
-    throw err;
+    console.error("Failed to load the page creation view:", err);
+    res.status(500).send("Server error occurred while trying to load the page creation form.");
   }
 });
 
