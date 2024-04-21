@@ -261,9 +261,9 @@
                       <% if (project && project.users && Array.isArray(project.users) && project.users.length > 0) { %>
                         <% project.users.forEach(function(usr) { %>
                           <tr>
-                            <td><%= usr.username %></td>
-                            <td><%= usr.firstName %> <%= usr.lastName %></td>
-                            <td><%= usr.email %></td>
+                            <td><%= usr.user.username %></td>
+                            <td><%= usr.user.firstName %> <%= usr.user.lastName %></td>
+                            <td><%= usr.user.email %></td>
                             <td>
                               <select class="form-select" name="role" id="role">
                                 <option value="0" <%= usr.role === 0 ? 'selected' : '' %>>Viewer</option>

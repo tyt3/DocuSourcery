@@ -112,14 +112,14 @@ router.get('/project/:projectSlug/edit/', ensureAuth, async (req, res) => {
   try {
     // Get project by its slug and populate users, documents, and pages
     const project = await Project.findOne({ slug: projectSlug })
-    .populate({
-      path: 'users documents', // Populate both users and documents
-      populate: {
-        path: 'pages', // Populate pages within documents
-        model: 'page' // Specify the model of the pages
-      }
-    })
-    .exec();
+      .populate({
+        path: 'users.user documents', // Populate the users field and the documents field
+        populate: {
+          path: 'pages', // Populate pages within documents
+          model: 'page' // Specify the model of the pages
+        }
+      })
+      .exec();
 
     // Convert description field HTML to Markdown using turndown.js
     project.description = turndownService.turndown(project.description);
@@ -135,6 +135,7 @@ router.get('/project/:projectSlug/edit/', ensureAuth, async (req, res) => {
     throw err; // Re-throw the error to propagate it to the caller
   }
 });
+
 
 // Edit Project
 router.put('/project/:id', ensureAuth, async (req, res) => {
