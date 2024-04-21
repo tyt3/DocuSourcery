@@ -2,8 +2,10 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
+const marked = require('marked');
 const turndown = require('turndown');
 const turndownService = new turndown();
+
 
 // Import middleware
 const { ensureAuth, validateTitles, validateSlug } = require('./middleware');
@@ -37,7 +39,7 @@ router.get('/project/create', ensureAuth, async (req, res) => {
 router.post('/project/create', ensureAuth, validateTitles, validateSlug, async (req, res) => {
   const { title, subtitle, slug, description, tags, noLogin, canDuplicate, isPublic } = req.body;
 
-  // TODO: Convert description field Markdown to HTML with markdown.js
+  // TODO: Convert description field Markdown to HTML
   let linkedTags = [];
   try {
     if (tags) {
@@ -68,13 +70,15 @@ router.post('/project/create', ensureAuth, validateTitles, validateSlug, async (
     if (isPublic === "on") {
       publicChoice = true;
     }
-    const markdown = turndownService.turndown(description);
+
+    // Convert description markdown to HTML 
+    const descriptionHTML = marked(description);
 
     const project = new Project({
       slug: slug,
       title: title,
       subtitle: subtitle,
-      description: markdown,
+      description: descriptionHTML,
       createdBy: req.user._id,
       public: publicChoice,
       tags: linkedTags,
@@ -145,7 +149,7 @@ router.put('/project/:id', ensureAuth, validateTitles, validateSlug, async (req,
 
     // TODO: Implement 
     // Apply same middleware as in project/create to validate form fields
-    // Convert description field Markdown to HTML with markdown.js
+    // Convert description field Markdown to HTML
     // Get form fields from request
     // Validate input, flash error message and reload if any errors
     // Update object with new data
@@ -333,14 +337,16 @@ router.post('/document/create/:projectId', ensureAuth, async (req, res) => {
       return res.status(404).send('Project not found.');
     }
 
+    const descriptionHTML = marked(description);
+
     // Create a new document
     const newDocument = new Document({
-      title,
-      description,
-      slug,
+      title: title,
+      description: descriptionHTML,
+      slug: slug,
       createdBy: req.user._id,
-      projectId,
-      landingPage
+      projectId: projectId,
+      landingPage: landingPage
     });
 
     console.log('Document prepared for saving:', newDocument);
@@ -412,7 +418,7 @@ router.get('/project/:projectSlug/:documentSlug/edit', ensureAuth, async (req, r
 router.put('/document/:id', ensureAuth, async (req, res) => {
     // TODO: Implement 
     // Apply same middleware as in project/create to validate form fields
-    // Convert description field Markdown to HTML with markdown.js
+    // Convert description field Markdown to HTML
     // Get form fields from request
     // Validate input, flash error message and reload if any errors
     // Update object with new data
@@ -623,19 +629,28 @@ router.get('/project/:projectSlug/:documentSlug/page/create', ensureAuth, async 
 // Create Page
 router.post('/page/create/:projectId/:docId', ensureAuth, async (req, res) => {
   const { projectId, docId } = req.params;
-  const { title } = req.body;
+  const { title, slug, body, public } = req.body;
 
   // TODO: Get project and document, error if not found
   // TODO: Validate form fields
-  // TODO: Convert description field Markdown to HTML with markdown.js
+  
+  // Convert description field Markdown to HTML
+  const bodyHTML = marked(body);
+  
+  // Get order for page
+  const order = document.pages.length + 1;
 
   try {
     // Assuming you have a Page schema with projectId and docId as references
     const page = new Page({
       title: title,
+      slug: slug,
+      body: bodyHTML,
+      public: public,
+      order: order,
+      createdBy: req.user._id,
       projectId: projectId,
       docId: docId
-      // Add remaining fields as needed
     });
 
     const newPage = await page.save();
@@ -697,7 +712,7 @@ router.put('/page/:id', ensureAuth, async (req, res) => {
   try {
     // TODO: Implement 
     // Apply same middleware as in project/create to validate form fields
-    // Convert body field Markdown to HTML with markdown.js
+    // Convert body field Markdown to HTML
     // Get form fields from request
     // Validate input, flash error message and reload if any errors
     // Update object with new data
