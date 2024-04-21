@@ -144,7 +144,7 @@ router.get('/project/:projectSlug/edit/', ensureAuth, async (req, res) => {
 
 
 // Edit Project
-router.put('/project/:id', ensureAuth, validateTitles, validateSlug, async (req, res) => {
+router.post('/project/edit/:id', ensureAuth, validateTitles, validateSlug, async (req, res) => {
   const projectId = req.params.id;
 
     // TODO: Implement 
@@ -180,7 +180,7 @@ router.delete('/project/:id', ensureAuth, async (req, res) => {
 });
 
 // Restore Project
-router.put('/project/restore/:id', ensureAuth, async (req, res) => {
+router.post('/project/restore/:id', ensureAuth, async (req, res) => {
   const projectId = req.params.id;
   try {
     // TODO: Implement
@@ -423,7 +423,7 @@ router.get('/project/:projectSlug/:documentSlug/edit', ensureAuth, async (req, r
 
 
 // Edit Document
-router.put('/document/:id', ensureAuth, async (req, res) => {
+router.post('/document/edit/:id', ensureAuth, async (req, res) => {
     // TODO: Implement 
     // Apply same middleware as in project/create to validate form fields
     // Convert description field Markdown to HTML
@@ -505,7 +505,7 @@ router.delete('/document/:id', ensureAuth, async (req, res) => {
 });
 
 // Restore Document
-router.put('/document/restore/:id', ensureAuth, async (req, res) => {
+router.post('/document/restore/:id', ensureAuth, async (req, res) => {
     // TODO: Implement
     // Get document by ID
     // Set deleted to false
@@ -744,7 +744,7 @@ router.get('/project/:projectSlug/:documentSlug/:pageSlug/edit', ensureAuth, asy
 
 
 // Edit Page
-router.put('/page/:id', ensureAuth, async (req, res) => {
+router.post('/page/edit/:id', ensureAuth, async (req, res) => {
   const pageId = req.params.id;
   try {
     // TODO: Implement 
@@ -775,7 +775,7 @@ router.delete('/page/:id', ensureAuth, async (req, res) => {
 });
 
 // Restore Page
-router.put('/page/restore/:id', ensureAuth, async (req, res) => {
+router.post('/page/restore/:id', ensureAuth, async (req, res) => {
   const pageId = req.params.id;
   try {
     // TODO: Implement

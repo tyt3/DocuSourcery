@@ -33,7 +33,7 @@
         </li>
       </ul> -->
       <% if (page) { %>
-        <form id="pageForm" method="PUT" action="/page/<%= page.id %>">
+        <form id="pageForm" method="POST" action="/page/edit/<%= page.id %>">
       <% } else { %>
         <form id="pageForm" method="POST" 
         action="/page/create/<%= project.id %>/<%= document.id %>">
