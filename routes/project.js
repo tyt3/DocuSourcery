@@ -432,7 +432,8 @@ router.put('/document/:id', ensureAuth, async (req, res) => {
     // Update object with new data
   const documentId = req.params.id;
   const { title, description, slug, landingPage, isPublic } = req.body;
-
+  
+  console.log(title, description, slug, landingPage, isPublic)
   try {
     // Fetch the existing document
     const document = await Document.findById(documentId);
@@ -451,13 +452,13 @@ router.put('/document/:id', ensureAuth, async (req, res) => {
     document.description = description || document.description;
     document.slug = slug || document.slug;
     document.landingPage = landingPage !== undefined ? landingPage : document.landingPage;
-    document.public = publicChoice || document.public;
+    document.public = publicChoice !== undefined ? isPublic : document.public;
 
     // Save the updated document
     await document.save();
 
     // Get project
-    const project = await Document.findById(document.projectId);
+    const project = await Project.findById(document.projectId);
 
     // Redirect to edit page view
     res.redirect(`/project/${project.slug}/${document.slug}/edit`);
