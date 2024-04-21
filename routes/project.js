@@ -431,7 +431,7 @@ router.put('/document/:id', ensureAuth, async (req, res) => {
     // Validate input, flash error message and reload if any errors
     // Update object with new data
   const documentId = req.params.id;
-  const { title, description, slug, landingPage } = req.body;
+  const { title, description, slug, landingPage, isPublic } = req.body;
 
   try {
     // Fetch the existing document
@@ -440,11 +440,18 @@ router.put('/document/:id', ensureAuth, async (req, res) => {
       return res.status(404).send('Document not found.');
     }
 
+    // Get public value
+    let publicChoice = false;
+    if (isPublic === "on") {
+      publicChoice = true;
+    }
+
     // Update the document fields
     document.title = title || document.title;
     document.description = description || document.description;
     document.slug = slug || document.slug;
     document.landingPage = landingPage !== undefined ? landingPage : document.landingPage;
+    document.public = publicChoice || document.public;
 
     // Save the updated document
     await document.save();
@@ -656,7 +663,7 @@ router.post('/page/create/:projectId/:docId', ensureAuth, async (req, res) => {
   
   // Convert description field Markdown to HTML
   const bodyHTML = marked.parse(body);  
-  
+
   // Get order for page
   const order = document.pages.length + 1;
 

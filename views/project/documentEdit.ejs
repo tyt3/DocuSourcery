@@ -42,8 +42,7 @@
         <% } %>
       </ul>
       <% if (document) { %>
-        <form id="documentForm" method="PUT" 
-        action="/project/<%= project.id %>/<%= document.id %>">
+        <form id="documentForm" method="PUT" action="/document/<%= document.id %>">
       <% } else { %>
         <form id="documentForm" method="POST" 
         action="/document/create/<%= project.id %>">
