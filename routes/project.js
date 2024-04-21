@@ -73,8 +73,7 @@ router.post('/project/create', ensureAuth, validateTitles, validateSlug, async (
     }
 
     // Convert description markdown to HTML 
-    const descriptionHTML = DOMPurify.sanitize(marked.parse(description));
-
+    const descriptionHTML = marked.parse(description);
     const project = new Project({
       slug: slug,
       title: title,
@@ -339,7 +338,7 @@ router.post('/document/create/:projectId', ensureAuth, async (req, res) => {
     }
 
     // Convert description Markdown to HTML
-    const descriptionHTML = DOMPurify.sanitize(marked.parse(description));
+    const descriptionHTML = marked.parse(description);
 
     // Get public value
     let publicChoice = false;
@@ -656,7 +655,7 @@ router.post('/page/create/:projectId/:docId', ensureAuth, async (req, res) => {
   // TODO: Validate form fields
   
   // Convert description field Markdown to HTML
-  const bodyHTML = DOMPurify.sanitize(marked.parse(body));
+  const bodyHTML = marked.parse(body);  
   
   // Get order for page
   const order = document.pages.length + 1;
