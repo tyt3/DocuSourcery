@@ -6,12 +6,25 @@
 // const { checkApiKey } = require('./middleware');
 
 // // Import data models
-// const User = require('../models/user');
-// const Project = require('../models/project');
-// const Document = require('../models/document');
-// const Page = require('../models/page');
-// const Tag = require('../models/tag');
+const User = require('../models/user');
+const Project = require('../models/project');
+const Document = require('../models/document');
+const Page = require('../models/page');
+const Tag = require('../models/tag');
 
+
+// USERS
+
+// Get all users 
+router.get("/users", async function(req, res){
+    await User.find({})
+       .then(users => {
+         res.json(users);
+       })
+       .catch(err => {
+         res.status(500).send(err);
+       });
+   });
 
 // // PROJECT
 

@@ -53,7 +53,7 @@ const projectRouter = require("./routes/project");
 app.use("/", staticRouter);
 app.use("/", userRouter);
 app.use("/", projectRouter);
-// app.use("/api", apiRouter); // TODO: Update this
+app.use("/api", apiRouter);
 
 // listen for requests :)
 const listener = app.listen(process.env.PORT, function() {
