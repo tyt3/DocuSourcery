@@ -292,8 +292,8 @@
                     Save Project
                   </button>
                   <% if (project) { %>
-                  <button type="button" id="deleteProjectBtn" class="btn btn-block btn-outline-danger"
-                    data-bs-toggle="modal" data-bs-target="#deleteProjectModal">
+                  <button type="button" id="addUserBtn" class="btn btn-block btn-outline-danger"
+                    data-bs-toggle="modal" data-bs-target="#addUserModal">
                     Delete Project
                   </button>
                   <a href="/project/<%= project.slug %>"
@@ -315,6 +315,38 @@
           </div>
         </div>
       </form>
+    </div>
+  </div>
+</div>
+
+<!-- Add User Modal -->
+<div class="modal fade" id="addUserModal" name="addUserModal" 
+  tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5"
+          id="addUserModal">Add a Collaborator</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" 
+          aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <input 
+            type="user" 
+            class="form-control" 
+            id="user" 
+            name="user" 
+            placeholder="Search by username, full name, or email address"
+            required>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <form method="POST" target="_parent"
+          action="/project/add/">
+          <button type="submit" class="btn btn-ds-primary">Add User to Project</button>
+        </form>
+      </div>
     </div>
   </div>
 </div>

@@ -2,6 +2,8 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
+const turndown = require('turndown');
+const turndownService = new turndown();
 
 // Import middleware
 const { ensureAuth, validateTitles, validateSlug } = require('./middleware');
@@ -110,21 +112,30 @@ router.post('/project/create', ensureAuth, validateTitles, validateSlug, async (
 router.get('/project/:projectSlug/edit/', ensureAuth, async (req, res) => {
   const projectSlug = req.params.projectSlug;
 
-  // TODO: Get project to send to frontend
-  // TODO: Populate all users
-  // TODO: Convert description field HTML to Markdown with turndown.js
-
   try {
-    const project = await Project.findOne({ slug: projectSlug });
+    // Get project by its slug and populate users, documents, and pages
+    const project = await Project.findOne({ slug: projectSlug })
+    .populate({
+      path: 'users documents', // Populate both users and documents
+      populate: {
+        path: 'pages', // Populate pages within documents
+        model: 'Page' // Specify the model of the pages
+      }
+    })
+    .exec();
+
+    // Convert description field HTML to Markdown using turndown.js
+    project.description = turndownService.turndown(project.description);
+
     res.render('project/projectEdit.ejs', { 
       user: req.user, 
-      users: [],
       project: project,
       document: null, // Don't replace
       page: null // Don't replace
     });
   } catch (err) {
-    throw err;
+    console.error('Error:', err.message);
+    throw err; // Re-throw the error to propagate it to the caller
   }
 });
 
