@@ -72,7 +72,7 @@ router.post('/project/create', ensureAuth, validateTitles, validateSlug, async (
     }
 
     // Convert description markdown to HTML 
-    const descriptionHTML = marked(description);
+    const descriptionHTML = marked.parse(description);
 
     const project = new Project({
       slug: slug,
@@ -337,7 +337,7 @@ router.post('/document/create/:projectId', ensureAuth, async (req, res) => {
       return res.status(404).send('Project not found.');
     }
 
-    const descriptionHTML = marked(description);
+    const descriptionHTML = marked.parse(description);
 
     // Create a new document
     const newDocument = new Document({
@@ -635,7 +635,7 @@ router.post('/page/create/:projectId/:docId', ensureAuth, async (req, res) => {
   // TODO: Validate form fields
   
   // Convert description field Markdown to HTML
-  const bodyHTML = marked(body);
+  const bodyHTML = marked.parse(body);
   
   // Get order for page
   const order = document.pages.length + 1;
