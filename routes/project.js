@@ -211,7 +211,6 @@ router.get('/project/:slug', async (req, res) => {
       res.render('project/project.ejs', { 
         user: req.user,
         project: project,
-        documents: documents,
         document: null, // Don't replace
         page: null, // Don't replace
         viewType: "project"
