@@ -120,7 +120,7 @@ router.get('/project/:projectSlug/edit/', ensureAuth, async (req, res) => {
       path: 'documents',
       populate: {
         path: 'pages',
-        model: 'Page'
+        model: 'page'
       }
     })
 
