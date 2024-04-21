@@ -1,9 +1,9 @@
 // // Route handlers
-// const express = require('express');
-// const router = express.Router();
+const express = require('express');
+const router = express.Router();
 
 // // Import middleware
-// const { checkApiKey } = require('./middleware');
+const { checkApiKey } = require('./middleware');
 
 // // Import data models
 const User = require('../models/user');
@@ -497,4 +497,4 @@ router.get("/users", async function(req, res){
 // });
 
 // // Export router
-// module.exports = router;
+module.exports = router;
