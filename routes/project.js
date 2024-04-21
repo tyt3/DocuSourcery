@@ -55,11 +55,7 @@ router.post('/project/create', ensureAuth, validateTitles, validateSlug, async (
           });
           await tag.save();
         }
-        linkedTags.push({
-          title: tag.title,
-          slug: tag.slug,
-          id: tag._id // ObjectId of the tag record
-        });
+        linkedTags.push(tag._id);
       }
     }
   } catch (err) {
