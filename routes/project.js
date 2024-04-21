@@ -447,9 +447,12 @@ router.post('/document/edit/:id', ensureAuth, async (req, res) => {
       publicChoice = true;
     }
 
+    // Convert description Markdown to HTML
+    const descriptionHTML = marked.parse(description);
+
     // Update the document fields
     document.title = title || document.title;
-    document.description = description || document.description;
+    document.description = descriptionHTML || document.description;
     document.slug = slug || document.slug;
     document.landingPage = landingPage !== undefined ? landingPage : document.landingPage;
     document.public = publicChoice !== undefined ? isPublic : document.public;
