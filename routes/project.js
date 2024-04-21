@@ -384,24 +384,31 @@ router.post('/document/create/:projectId', ensureAuth, async (req, res) => {
 router.get('/project/:projectSlug/:documentSlug/edit', ensureAuth, async (req, res) => {
   const { projectSlug, documentSlug } = req.params;
   try {
-    // TODO: Get project and document objects and send to frontend
-    // TODO: Confirm that document is in project
-    // TODO: Convert description field HTML to Markdown with turndown.j
 
-    // TODO: add graceful error handling
+    // Try to get project by slug
     const project = await Project.findOne({ slug: projectSlug });
     if (!project) {
       return res.status(404).json({ error: 'Project not found' });
     }
 
+    // Get document with project ID
     const document = await Document.findOne({
       slug: documentSlug,
       projectId: project._id
     })
+    .populate({
+      path: 'pages',
+      model: 'page' 
+    })
+    .exec();
     if (!document) {
       return res.status(404).json({ error: 'Document not found' });
     }
 
+    // Convert description field HTML to Markdown using turndown.js
+    document.description = turndownService.turndown(document.description);
+
+    // Send response
     res.render('project/documentEdit.ejs', { 
       user: req.user,
       project: project,
@@ -409,9 +416,11 @@ router.get('/project/:projectSlug/:documentSlug/edit', ensureAuth, async (req, r
       page: null, // Don't replace 
     });
   } catch (err) {
-    throw err;
+    console.error('Error:', err.message);
+    throw err; // Re-throw the error to propagate it to the caller
   }
 });
+
 
 // Edit Document
 router.put('/document/:id', ensureAuth, async (req, res) => {
