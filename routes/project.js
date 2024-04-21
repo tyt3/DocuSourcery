@@ -460,17 +460,29 @@ router.get('/project/:projectSlug/:documentSlug/', async (req, res) => {
     // TODO: Populate all pages in document
     // TODO: Increment project views
     
-    // Find the project by its slug
-    const project = await Project.findOne({ slug: projectSlug });
-    if (!project) {
-      return res.status(404).send('Project not found');
-    }
+    // Get project by its slug and populate users, documents, and pages
+    const project = await Project.findOne({ slug: projectSlug })
+    .populate({
+      path: 'users.user', 
+    })
+    .populate({
+      path: 'documents',
+      populate: {
+        path: 'pages',
+        model: 'page'
+      }
+    }).populate({
+      path: 'tags', 
+      model: 'tag'
+    })
 
     // Find the document within this project using the document slug and ensure it belongs to the project
     const document = await Document.findOne({
       slug: documentSlug,
       projectId: project._id
-    }).populate('pages'); // Assuming 'pages' is a field to populate
+    }).populate({
+      path: 'pages', 
+      model: 'page'}); 
 
     if (!document) {
       return res.status(404).send('Document not found in the specified project');
@@ -484,20 +496,28 @@ router.get('/project/:projectSlug/:documentSlug/', async (req, res) => {
       viewType = "document";
     } else {
       viewType = "page";
-      page = document.pages.find(page => page.order === 0);
+      page = document.pages.find(page => page.order === 1);
     }
 
+    if ((project.permissions.loginRequired && req.user) || !project.permissions.loginRequired) {
+      // Increment project views
+      project.views += 1;
+      await project.save();
 
-    res.render('project/project.ejs', { 
-      user: req.user,
-      project: project, // TODO: Replace with project
-      document: document, // TODO: Replace with document
-      page: page,
-      viewType: viewType
-    });
+      res.render('project/project.ejs', { 
+        user: req.user,
+        project: project,
+        document: document,
+        page: page,
+        viewType: viewType
+      });
+    }
+    else {
+      req.session.returnTo = req.url;
+      res.redirect('/login');
+    }
   } catch (err) {
-    console.error('Error retrieving document:', err);
-    res.status(500).send('Internal server error');
+    throw err;
   }
 });
 
@@ -650,19 +670,57 @@ router.put('/page/restore/:id', ensureAuth, async (req, res) => {
 // View Page
 router.get('/project/:projectSlug/:documentSlug/:pageSlug', async (req, res) => {
   const { projectSlug, documentSlug, pageSlug } = req.params;
-  try {
-    // TODO: Implement
-    // Get project, document, and page objects and send to frontend
-    // Confirm that document is in project and page is in document
-    // Increment project views
+  try {   
+    // Get project by its slug and populate users, documents, and pages
+    const project = await Project.findOne({ slug: projectSlug })
+    .populate({
+      path: 'users.user', 
+    })
+    .populate({
+      path: 'documents',
+      populate: {
+        path: 'pages',
+        model: 'page'
+      }
+    })
 
-    res.render('project/project.ejs', { 
-      user: req.user,
-      project: null, // TODO: Replace with project
-      document: null, // TODO: Replace with document
-      page: null, // TODO: Replace with page
-      viewType: "page"
-    });
+    // Find the document within this project using the document slug and ensure it belongs to the project
+    const document = await Document.findOne({
+      slug: documentSlug,
+      projectId: project._id
+    })
+
+    if (!document) {
+      return res.status(404).send('Document not found in the specified project');
+    }
+
+    // Find the page within document using the page slug and ensure it belongs to the document
+    const page = await Page.findOne({
+      slug: pageSlug,
+      documentId: document._id
+    })
+
+    if (!page) {
+      return res.status(404).send('Page not found in the specified document');
+    }
+
+    if ((project.permissions.loginRequired && req.user) || !project.permissions.loginRequired) {
+      // Increment project views
+      project.views += 1;
+      await project.save();
+
+      res.render('project/project.ejs', { 
+        user: req.user,
+        project: project,
+        document: document,
+        page: page,
+        viewType: "page"
+      });
+    }
+    else {
+      req.session.returnTo = req.url;
+      res.redirect('/login');
+    }
   } catch (err) {
     throw err;
   }
