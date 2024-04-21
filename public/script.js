@@ -1,75 +1,64 @@
  ////////////////////
 //  AJAX requests //
 ///////////////////
-//  Implement AJAX requests to server-side
 
-// Create an XMLHttpRequest Object
-var xhr = new XMLHttpRequest();
+function fetchUsers() {
+  return fetch('/users')
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then(users => {
+      // Return the list of users
+      return users;
+    })
+    .catch(error => {
+      // Handle errors
+      console.error('There was a problem with the fetch operation:', error.message);
+      throw error; // Re-throw the error to propagate it to the caller
+    });
+}
 
-// Configure the Request
-xhr.open("GET", "The URL comes here", true);
+// Example usage:
+fetchUsers()
+  .then(users => {
+    // Use the list of users in other functions or logic
+    console.log(users); // Log the list of users
+    // Perform further operations with the users data
+  })
+  .catch(error => {
+    // Handle errors
+    console.error('Error fetching users:', error.message);
+  });
 
-//Send the Request
-xhr.send();
 
-// Handle the Response
-xhr.onload = function() {
-    if (xhr.status === 200) {
-        console.log(xhr.responseText);
-    }
-};
+//Add a JavaScript event listener to detect when the user types in the text field. 
+document.getElementById("search-field").addEventListener("input", function () {
+  const query = this.value;
+  if (query.length > 2) { // Trigger when the user types at least 3 characters
+      fetchSuggestions(query);
+  }
+});
 
-// Displaying Data
-xhr.onload = function() {
-    if (xhr.status === 200) {
-        var data = JSON.parse(xhr.responseText);
-        document.getElementById("result").innerHTML = data.message;
-    }
-};
+// fetchSuggestions function
+function fetchSuggestions(query) {
+  // This is a simulated list of suggestions. In practice, you would get this from a backend service.
+  const allUsers = ["alice@example.com", "bob@example.com", "charlie@example.com", "david@example.com"];
+  
+  const filteredSuggestions = allUsers.filter(user => user.includes(query));
 
-// Creating a POST request with AJAX
-
-// Create XMLHttpRequest
-var xhr = new XMLHttpRequest();
-
-//  Configure Request
-// xhr.open("POST", "https://api.example.com/endpoint", true);
-
-// Send Data
-var data = {
-    key1: 'value1',
-    key2: 'value2'
-};
-xhr.setRequestHeader('Content-Type', 'application/json');
-xhr.send(JSON.stringify(data));
-
-// Handle Response
-
-xhr.onload = function() {
-    if (xhr.status === 200) {
-        var response = JSON.parse(xhr.responseText);
-        // Handle the response data
-        console.log("Response data:", response);
-
-        // Example: Display a success message
-        document.getElementById("result").innerText = "Data submitted successfully!";
-
-        // Additional logic based on response
-        if (response.success) {
-            console.log("Operation was successful.");
-        } else {
-            console.error("Operation failed:", response.error);
-        }
-        } else {
-        // The request failed, handle the error
-        console.error("Request failed with status:", xhr.status);
-        }
-        };
-
-        // Handle network errors
-        xhr.onerror = function() {
-        console.error("Network error occurred during the request.");
-        };
+  const dropdown = document.getElementById("suggestions");
+  dropdown.innerHTML = ""; // Clear existing suggestions
+  
+  filteredSuggestions.forEach(suggestion => {
+      const option = document.createElement("option");
+      option.value = suggestion;
+      option.textContent = suggestion;
+      dropdown.appendChild(option);
+  });
+}
 
 // ///////////////////////////
 // VIEWPORT HEIGHT STYLING //
@@ -140,56 +129,18 @@ window.addEventListener('resize', calculateViewportHeight);
 var dropdown = document.getElementsByClassName("dropdown-btn");
 var i;
 
-for (i = 0; i < dropdown.length; i++) {
-  dropdown[i].addEventListener("click", function() {
-    var dropdownContent = this.nextElementSibling;
-    if (dropdownContent.style.display === "block") {
-      dropdownContent.style.display = "none";
-    } else {
-      dropdownContent.style.display = "block";
-    }
-  });
-}
-
-//Add a JavaScript event listener to detect when the user types in the text field. 
-document.getElementById("search-field").addEventListener("input", function () {
-  const query = this.value;
-  if (query.length > 2) { // Trigger when the user types at least 3 characters
-      fetchSuggestions(query);
+if (dropdown) {
+  for (i = 0; i < dropdown.length; i++) {
+    dropdown[i].addEventListener("click", function() {
+      var dropdownContent = this.nextElementSibling;
+      if (dropdownContent.style.display === "block") {
+        dropdownContent.style.display = "none";
+      } else {
+        dropdownContent.style.display = "block";
+      }
+    });
   }
-});
-
-// fetchSuggestions function
-function fetchSuggestions(query) {
-  // This is a simulated list of suggestions. In practice, you would get this from a backend service.
-  const allUsers = ["alice@example.com", "bob@example.com", "charlie@example.com", "david@example.com"];
-  
-  const filteredSuggestions = allUsers.filter(user => user.includes(query));
-
-  const dropdown = document.getElementById("suggestions");
-  dropdown.innerHTML = ""; // Clear existing suggestions
-  
-  filteredSuggestions.forEach(suggestion => {
-      const option = document.createElement("option");
-      option.value = suggestion;
-      option.textContent = suggestion;
-      dropdown.appendChild(option);
-  });
 }
-
-// set API endpoint that returns matching users based on the query string.
-app.get('/users', (req, res) => {
-  const query = req.query.q || '';
-  const filteredUsers = userList.filter(user =>
-    user.name.toLowerCase().includes(query.toLowerCase()) ||
-    user.email.toLowerCase().includes(query.toLowerCase())
-  );
-  res.json(filteredUsers);
-});
-
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
-});
 
 
 ///////////////////////
