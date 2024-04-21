@@ -189,44 +189,25 @@ router.put('/project/restore/:id', ensureAuth, async (req, res) => {
 router.get('/project/:slug', async (req, res) => {
   const projectSlug = req.params.slug;
 
-  // TODO: Get project to send to frontend
-  // TODO: Populate all documents and pages in project
-  // TODO: Increment project views
-
   try {
-    // Find the project by its slug and populate its 'documents' field
-    const project = await Project.findOne({ slug: projectSlug }).populate('documents');
-
-    // Check if project is found
-    if (!project) {
-      return res.status(404).send('Project not found');
-    }
-
-    // Check if documents are populated
-    if (!project.documents || !Array.isArray(project.documents)) {
-      return res.status(404).send('Documents not found for the project');
-    }
-
-    const documents = [];
-    for (const doc of project.documents) {
-      try {
-        const docId = doc.get('_id');
-        if (docId) {
-          const document = await Document.findById(docId);
-          if (document) {
-            documents.push(document);
-          } else {
-            console.error(`Document not found for ID: ${docId}`);
-          }
-        } else {
-          console.error('Document _id is undefined');
-        }
-      } catch (error) {
-        console.error(`Error fetching document: ${error}`);
+    // Get project by its slug and populate users, documents, and pages
+    const project = await Project.findOne({ slug: projectSlug })
+    .populate({
+      path: 'users.user', 
+    })
+    .populate({
+      path: 'documents',
+      populate: {
+        path: 'pages',
+        model: 'page'
       }
-    }
+    })
 
     if ((project.permissions.loginRequired && req.user) || !project.permissions.loginRequired) {
+      // Increment project views
+      project.views += 1;
+      await project.save();
+
       res.render('project/project.ejs', { 
         user: req.user,
         project: project,
