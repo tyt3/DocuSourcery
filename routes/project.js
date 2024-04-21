@@ -410,16 +410,36 @@ router.get('/project/:projectSlug/:documentSlug/edit', ensureAuth, async (req, r
 
 // Edit Document
 router.put('/document/:id', ensureAuth, async (req, res) => {
-  const documentId = req.params.id;
-  try {
     // TODO: Implement 
     // Apply same middleware as in project/create to validate form fields
     // Convert description field Markdown to HTML with markdown.js
     // Get form fields from request
     // Validate input, flash error message and reload if any errors
     // Update object with new data
+  const documentId = req.params.id;
+  const { title, description, slug, landingPage } = req.body;
+
+  try {
+    // Fetch the existing document
+    const document = await Document.findById(documentId);
+    if (!document) {
+      return res.status(404).send('Document not found.');
+    }
+
+    // Update the document fields
+    document.title = title || document.title;
+    document.description = description || document.description;
+    document.slug = slug || document.slug;
+    document.landingPage = landingPage !== undefined ? landingPage : document.landingPage;
+
+    // Save the updated document
+    await document.save();
+
+    // Send a success response
+    res.send({ message: 'Document updated successfully', document });
   } catch (err) {
-    throw err;
+    console.error('Error updating document:', err);
+    res.status(500).send('Server error while updating document.');
   }
 });
 
