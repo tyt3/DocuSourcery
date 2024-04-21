@@ -2,6 +2,7 @@
 
 // Import data models
 const User = require('../models/user');
+const Project = require('../models/project');
 
 
 // Check if the user is authenticated\
@@ -26,6 +27,33 @@ function ensureNotAuth(req, res, next) {
     // User is already authenticated, redirect to dashboard with flash message
     req.flash('error', 'You are already logged in.');
     res.redirect('/dashboard');
+  }
+};
+
+
+// Validate API key before allowing API request
+const checkApiKey = async (req, res, next) => {
+  // Extract API key from request header
+  const apiKey = req.headers['api-key'];
+
+  if (!apiKey) {
+    return res.status(401).json({ error: 'API key is missing' });
+  }
+
+  try {
+    // Query the database to find a user with the provided API key
+    const authUser = await User.findOne({ apiKey });
+
+    if (!authUser) {
+      return res.status(401).json({ error: 'Invalid API key' });
+    }
+
+    // Attach the user object to the request for later use
+    req.user = authUser;
+    next();
+  } catch (error) {
+    console.error('Error while validating API key:', error);
+    return res.status(500).json({ error: 'Internal server error' });
   }
 };
 
@@ -122,6 +150,84 @@ function validatePassword(req, res, next) {
 }
 
 
+// Validate Slug
+const validateSlug = async (req, res, next) => {
+  try {
+    const { slug } = req.body;
+    let valid = true;
+    const errors = [];
+
+    // Check if any other project uses the same slug
+    const duplicateSlug = await Project.findOne({ slug: slug });
+    if (duplicateSlug) {
+      valid = false;
+      errors.push("Slug must be unique.");
+    }
+    // Check for valid slug lengths
+    if (!slug) {
+      valid = false;
+      errors.push("Slug is required.");
+    }
+    if (slug.length < 1) {
+      valid = false;
+      errors.push("Slug must be at least one character.");
+    }
+    if (slug.length > 25) {
+      valid = false;
+      errors.push("Slug must be less than or equal to 25 characters.");
+    }
+    // Use regex to check if slug contains unaccepted character types
+    if (!/^[a-zA-Z0-9\-]+$/.test(slug)) {
+      valid = false;
+      errors.push("Slug must only contain letters, numbers, and dashes.");
+    }
+
+    // If not valid, send error messages
+    if (!valid) {
+      return res.status(400).json({ errors });
+    }
+
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json(`Error occurred during slug validation: ${err}`);
+  }
+
+  next(); // Move to the next middleware
+}
+
+
+// Validate Title and Subtitle
+function validateTitles(req, res, next) {
+  const { title, subtitle } = req.body;
+  let valid = true;
+  const errors = [];
+
+  // Check for valid title/subtitle lengths
+  if (title.length < 1) {
+    valid = false;
+    errors.push("Title must be at least one character.");
+  }
+  if (title.length > 255) {
+    valid = false;
+    errors.push("Title must be less than or equal to 255 characters.");
+  }
+  // Subtitle not mandatory, but if it is present, should be <= 255 characters
+  if (subtitle) {
+    if (subtitle.length > 255) {
+      valid = false;
+      errors.push("Subtitle must be less than or equal to 255 characters.");
+    }
+  }
+
+  // If not valid, send error messages
+  if (!valid) {
+    return res.status(400).json({ errors });
+  }
+
+  next(); // Move to the next middleware
+}
+
+
 // Populate fields with authenticated user ID
 function populateCurrentUser(req, res, next) {
   if (req.isAuthenticated()) {
@@ -147,5 +253,7 @@ module.exports = {
   validatePassword: validatePassword,
   checkUsernameAndEmail: checkUsernameAndEmail,
   checkAuthUsernameAndEmail: checkAuthUsernameAndEmail,
-  populateCurrentUser: populateCurrentUser
+  populateCurrentUser: populateCurrentUser,
+  validateTitles: validateTitles,
+  validateSlug: validateSlug
 };

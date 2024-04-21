@@ -197,7 +197,7 @@ router.get('/profile/:username', ensureAuth, async (req, res) => {
 });
 
 // Edit Profile
-router.put('/profile', ensureAuth, async (req, res) => {
+router.post('/profile', ensureAuth, async (req, res) => {
   try {
     const { pronouns, title, website, bio, profilePhotoURL } = req.body;
     const updatedProfile = await User.findOneAndUpdate(
@@ -224,13 +224,33 @@ router.put('/profile', ensureAuth, async (req, res) => {
 // View Dashbard
 router.get('/dashboard', ensureAuth, async (req, res) => {
   try {
-    res.render('user/dashboard.ejs', { 
-      user: req.user, 
-      projects: [], // TODO: Get list of projects where user role>=1
-      trash: false // TODO: Check if any of these projects have been deleted 
+    //console.log('Starting to fetch dashboard data for user:', req.user._id);
+
+    // Ensure the user is part of the project users and project is neither deleted nor trashed
+    const projects = await Project.find({
+      'users.user': req.user._id,
+      deleted: false
+    }).populate({
+      path: 'createdBy',
+      select: 'username email' // Only fetch the username and email of the creator
+    });
+
+    console.log(`Found ${projects.length} projects for user: ${req.user._id}`);
+
+    // Render the dashboard page with the list of projects
+    res.render('user/dashboard.ejs', {
+      user: req.user,
+      projects: projects.map(project => ({
+        ...project.toObject(),
+        canEdit: project.users.some(u => u.user === req.user._id && u.role > 1),
+        isCreator: project.createdBy._id === req.user._id
+      })),
+      pins: null, // TODO: Implement
+      trash: null, // TODO: Implement
     });
   } catch (err) {
-    throw err;
+    console.error('Error fetching dashboard data:', err);
+    res.status(500).send('An error occurred while fetching the dashboard data.');
   }
 });
 

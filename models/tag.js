@@ -9,12 +9,6 @@ const TagSchema = new Schema({
   projects: [
     { type: Map }
   ],
-  documents: [
-    { type: Map }
-  ],
-  pages: [
-    { type: Map }
-  ],
   createdDate: { type: Date, default: Date.now },
   createdBy: { type: Schema.Types.ObjectId, ref: "user", required: true }
 });

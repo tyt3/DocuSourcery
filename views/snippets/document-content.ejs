@@ -1,17 +1,28 @@
 
 <div class="row">
+  <!-- Title -->
   <div class="col">
     <h1 class="text-start light">
       <%= document.title %>
     </h1>
   </div>
-  <div class="col-auto">
-    <a href="/project/<%= project.title %>/edit" class="text-decoration-none">
-      <span class="material-symbols-outlined">
-        edit
-      </span>
-    </a>
-  </div>
+  <!-- Edit Button -->
+  <% if (user && user.id ) { %>
+    <% const minRole = 1; %>
+    <% const userFound = project.users.some(userObj => {
+      return userObj.user.toString() === user.id.toString() && userObj.role >= minRole;
+    }); %>
+  
+    <% if (userFound) { %>
+    <div class="col-auto">
+      <a href="/project/<%= project.slug %>/<%= document.slug %>/edit" class="text-decoration-none">
+        <span class="material-symbols-outlined">
+          edit
+        </span>
+      </a>
+    </div>
+    <% } %>
+<% } %>
 </div>
 <div>
   <%= document.description %>
@@ -20,12 +31,12 @@
 <h2 class="fs-6 text-uppercase light">
   Table of Contents
 </h2>
-<% if (document && Array.isArray(document.pages) && documents.pages.length > 0) { %>
+<% if (document && Array.isArray(document.pages) && document.pages.length > 0) { %>
 <ul>
   <% document.pages.forEach(function(page) { %>
   <li>
-    <a href="/project/<%= project.slug %>/<%= document.slug %>/<%= page.get('slug') %>">
-      <%= page.get('title') %>/
+    <a href="/project/<%= project.slug %>/<%= document.slug %>/<%= page.slug %>">
+      <%= page.title %>
     </a>
   </li>
   <% }); %>

@@ -17,11 +17,11 @@ const UserSchema = new Schema({
   bio: { type: String },
   profilePhotoUrl: { type: String },
   profilePublic: { type: Boolean, default: false },
-  following: [
-    { type: Schema.Types.ObjectId, ref: "profile" }
+  projects: [
+    { type: Schema.Types.ObjectId, ref: "project" }
   ],
-  followers: [
-    { type: Schema.Types.ObjectId, ref: "profile" }
+  pinnedProjects: [
+    { type: Schema.Types.ObjectId, ref: "project" }
   ],
   apiKey: { type: String, minLength: 20, maxLength: 128, unique: true }
 });

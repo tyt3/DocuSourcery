@@ -2,7 +2,67 @@
 //  AJAX requests //
 ///////////////////
 
+function fetchUsers() {
+  return fetch('/api/users')
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then(users => {
+      // Return the list of users
+      return users;
+    })
+    .catch(error => {
+      // Handle errors
+      console.error('There was a problem with the fetch operation:', error.message);
+      throw error; // Re-throw the error to propagate it to the caller
+    });
+}
 
+// Example usage:
+fetchUsers()
+  .then(users => {
+    // Use the list of users in other functions or logic
+    console.log(users); // Log the list of users
+    // Perform further operations with the users data
+  })
+  .catch(error => {
+    // Handle errors
+    console.error('Error fetching users:', error.message);
+  });
+
+
+//Add a JavaScript event listener to detect when the user types in the text field
+const userSearchField = document.getElementById("search-field")
+
+if (userSearchField) {
+  userSearchField.addEventListener("input", function () {
+  const query = this.value;
+    if (query.length > 2) { // Trigger when the user types at least 3 characters
+        fetchSuggestions(query);
+    }
+  });
+}
+
+// fetchSuggestions function
+function fetchSuggestions(query) {
+  // This is a simulated list of suggestions. In practice, you would get this from a backend service.
+  const allUsers = ["alice@example.com", "bob@example.com", "charlie@example.com", "david@example.com"];
+  
+  const filteredSuggestions = allUsers.filter(user => user.includes(query));
+
+  const dropdown = document.getElementById("suggestions");
+  dropdown.innerHTML = ""; // Clear existing suggestions
+  
+  filteredSuggestions.forEach(suggestion => {
+      const option = document.createElement("option");
+      option.value = suggestion;
+      option.textContent = suggestion;
+      dropdown.appendChild(option);
+  });
+}
 
 // ///////////////////////////
 // VIEWPORT HEIGHT STYLING //
@@ -73,13 +133,67 @@ window.addEventListener('resize', calculateViewportHeight);
 var dropdown = document.getElementsByClassName("dropdown-btn");
 var i;
 
-for (i = 0; i < dropdown.length; i++) {
-  dropdown[i].addEventListener("click", function() {
-    var dropdownContent = this.nextElementSibling;
-    if (dropdownContent.style.display === "block") {
-      dropdownContent.style.display = "none";
-    } else {
-      dropdownContent.style.display = "block";
+if (dropdown) {
+  for (i = 0; i < dropdown.length; i++) {
+    dropdown[i].addEventListener("click", function() {
+      var dropdownContent = this.nextElementSibling;
+      if (dropdownContent.style.display === "block") {
+        dropdownContent.style.display = "none";
+      } else {
+        dropdownContent.style.display = "block";
+      }
+    });
+  }
+}
+
+
+///////////////////////
+// drag and drop   //
+/////////////////////
+
+
+// implement  drop 
+function allowDrop(ev) {
+  ev.preventDefault(); // Prevent default behavior (prevent it from being dropped in some other element)
+}
+
+function drag(ev) {
+  ev.dataTransfer.setData("text", ev.target.id); // Get the id of the draggable item
+}
+
+function drop(ev) {
+  ev.preventDefault();
+  var data = ev.dataTransfer.getData("text");
+  ev.target.appendChild(document.getElementById(data));
+  updateBackend(data); // Call the function to update the backend after dropping
+}
+
+//   drag
+function allowDrop(ev) {
+  ev.preventDefault(); // Prevent default behavior (prevent it from being dropped in some other element)
+}
+
+function drag(ev) {
+  ev.dataTransfer.setData("text", ev.target.id); // Get the id of the draggable item
+}
+
+function drop(ev) {
+  ev.preventDefault();
+  var data = ev.dataTransfer.getData("text");
+  ev.target.appendChild(document.getElementById(data));
+  updateBackend(data); // Call the function to update the backend after dropping
+}
+
+//   update backend
+function updateBackend(itemId) {
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", "your-backend-url", true);
+  xhr.setRequestHeader("Content-Type", "application/json");
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+      console.log('Response from server: ', this.responseText); // Handle the response from the server
     }
-  });
+  };
+  var data = JSON.stringify({ item_id: itemId });
+  xhr.send(data);
 }

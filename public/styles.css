@@ -42,6 +42,9 @@ a:hover {
   --bs-tooltip-color: var(--bs-white);
 }
 
+.material-symbols-outlined {
+  cursor: pointer;
+}
 
 /* Text */
 
@@ -185,6 +188,10 @@ button.nav-link.tab-link {
   height: 1em;
 }
 
+span.required {
+  color: #D93025;
+}
+
 /* Profile Form */
 
 #profileFormSwitch {
@@ -321,11 +328,6 @@ button.nav-link.tab-link {
 
 /* Badges */
 
-
-.badge:hover {
-  background-color: var(--secondary-color);
-}
-
 .badge {
   .close {
     margin-left: 0.25rem;
@@ -334,6 +336,12 @@ button.nav-link.tab-link {
     text-shadow: 0 1px 0 rgba(#000000, 0.5);
   }
 }
+
+.badge:hover {
+  background-color: var(--secondary-color);
+  color: white;
+}
+
 
 a.badge-tag:link {
   text-decoration: none;
@@ -467,6 +475,25 @@ a.badge-tag:link {
       height: calc(100vh / 3);
   }
 }
+
+img.features {
+  max-height: 300px;
+  width: auto;
+}
+
+@media (max-width: 767px) {
+  img.features {
+    max-height: 150px;
+    width: auto;
+  }
+}
+
+@media (max-width: 767px) {
+  p.lead {
+    text-align: center;
+  }
+}
+
 
 /* Profile Page */
 
