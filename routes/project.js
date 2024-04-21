@@ -116,7 +116,7 @@ router.get('/project/:projectSlug/edit/', ensureAuth, async (req, res) => {
       path: 'users documents', // Populate both users and documents
       populate: {
         path: 'pages', // Populate pages within documents
-        model: 'Page' // Specify the model of the pages
+        model: 'page' // Specify the model of the pages
       }
     })
     .exec();
