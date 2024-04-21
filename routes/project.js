@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const marked = require('marked');
 const turndown = require('turndown');
 const turndownService = new turndown();
+const DOMPurify = require('dompurify');
 
 
 // Import middleware
@@ -72,7 +73,7 @@ router.post('/project/create', ensureAuth, validateTitles, validateSlug, async (
     }
 
     // Convert description markdown to HTML 
-    const descriptionHTML = marked.parse(description);
+    const descriptionHTML = DOMPurify.sanitize(marked.parse(description));
 
     const project = new Project({
       slug: slug,
@@ -338,7 +339,7 @@ router.post('/document/create/:projectId', ensureAuth, async (req, res) => {
     }
 
     // Convert description Markdown to HTML
-    const descriptionHTML = marked.parse(description);
+    const descriptionHTML = DOMPurify.sanitize(marked.parse(description));
 
     // Get public value
     let publicChoice = false;
@@ -655,7 +656,7 @@ router.post('/page/create/:projectId/:docId', ensureAuth, async (req, res) => {
   // TODO: Validate form fields
   
   // Convert description field Markdown to HTML
-  const bodyHTML = marked.parse(body);
+  const bodyHTML = DOMPurify.sanitize(marked.parse(bodu));
   
   // Get order for page
   const order = document.pages.length + 1;
@@ -791,6 +792,12 @@ router.get('/project/:projectSlug/:documentSlug/:pageSlug', async (req, res) => 
         model: 'page'
       }
     })
+
+    // Confirm project found, error if not
+    if (!project) {
+      console.log('No project found with slug:', projectSlug);
+      return res.status(404).send('Project not found.');
+    }
 
     // Find the document within this project using the document slug and ensure it belongs to the project
     const document = await Document.findOne({
