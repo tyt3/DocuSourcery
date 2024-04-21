@@ -46,7 +46,7 @@
         action="/project/<%= project.id %>/<%= document.id %>">
       <% } else { %>
         <form id="documentForm" method="POST" 
-        action="/project/<%= project.id %>/document/create">
+        action="/document/create/<%= project.id %>">
       <% } %>
         <div class="row gy-4">
           <!-- Tab Panels -->
