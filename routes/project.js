@@ -120,7 +120,7 @@ router.get('/project/:projectSlug/edit/', ensureAuth, async (req, res) => {
       }
     })
 
-    // Convert description field HTML to Markdown using turndown.js
+    // Convert description field HTML to Markdown
     project.description = turndownService.turndown(project.description);
 
     res.render('project/projectEdit.ejs', { 
@@ -405,7 +405,7 @@ router.get('/project/:projectSlug/:documentSlug/edit', ensureAuth, async (req, r
       return res.status(404).json({ error: 'Document not found' });
     }
 
-    // Convert description field HTML to Markdown using turndown.js
+    // Convert description field HTML to Markdown
     document.description = turndownService.turndown(document.description);
 
     // Send response
@@ -579,20 +579,44 @@ router.post('/page/create/:projectId/:docId', ensureAuth, async (req, res) => {
 router.get('/project/:projectSlug/:documentSlug/:pageSlug/edit', ensureAuth, async (req, res) => {
   const { projectSlug, documentSlug, pageSlug } = req.params;
   try {
-    // TODO: Get project, document, and page objects and send to frontend
-    // TODO: Confirm that document is in project and page is in document
-    // TODO: Convert description field HTML to Markdown with turndown.js
+    // Get project, document, and page objects using slugs
+    const project = await Project.findOne({ slug: projectSlug });
+    if (!project) {
+      return res.status(404).json({ error: 'Project not found' });
+    }
 
+    const document = await Document.findOne({
+      slug: documentSlug,
+      projectId: project._id
+    });
+    if (!document) {
+      return res.status(404).json({ error: 'Document not found' });
+    }
+
+    const page = await Page.findOne({
+      slug: pageSlug,
+      documentId: document._id
+    });
+    if (!page) {
+      return res.status(404).json({ error: 'Page not found' });
+    }
+
+    // Convert `body` field HTML to Markdown
+    page.body = turndownService.turndown(page.body);
+
+    // Send response
     res.render('project/pageEdit.ejs', { 
       user: req.user,
-      project: null, // TODO: Replace with project
-      document: null, // TODO: Replace with document
-      page: null, // TODO: Replace with page
+      project: project,
+      document: document,
+      page: page,
     });
   } catch (err) {
-    throw err;
+    console.error('Error:', err.message);
+    throw err; // Re-throw the error to propagate it to the caller
   }
 });
+
 
 // Edit Page
 router.put('/page/:id', ensureAuth, async (req, res) => {
