@@ -456,8 +456,11 @@ router.put('/document/:id', ensureAuth, async (req, res) => {
     // Save the updated document
     await document.save();
 
-    // Send a success response
-    res.send({ message: 'Document updated successfully', document });
+    // Get project
+    const project = await Document.findById(document.projectId);
+
+    // Redirect to edit page view
+    res.redirect(`/project/${project.slug}/${document.slug}/edit`);
   } catch (err) {
     console.error('Error updating document:', err);
     res.status(500).send('Server error while updating document.');
