@@ -118,6 +118,9 @@ router.get('/project/:projectSlug/edit/', ensureAuth, async (req, res) => {
         path: 'pages',
         model: 'page'
       }
+    }).populate({
+      path: 'tags', 
+      model: 'tag'
     })
 
     // Convert description field HTML to Markdown
@@ -201,6 +204,9 @@ router.get('/project/:slug', async (req, res) => {
         path: 'pages',
         model: 'page'
       }
+    }).populate({
+      path: 'tags', 
+      model: 'tag'
     })
 
     if ((project.permissions.loginRequired && req.user) || !project.permissions.loginRequired) {
