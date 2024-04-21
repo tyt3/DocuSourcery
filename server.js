@@ -48,7 +48,7 @@ app.set("views", __dirname + "/views/");
 const staticRouter = require("./routes/static");
 const userRouter = require("./routes/user");
 const projectRouter = require("./routes/project");
-// const apiRouter = require("./routes/api");
+const apiRouter = require("./routes/api");
 
 app.use("/", staticRouter);
 app.use("/", userRouter);
