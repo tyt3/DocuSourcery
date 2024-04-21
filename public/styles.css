@@ -42,6 +42,9 @@ a:hover {
   --bs-tooltip-color: var(--bs-white);
 }
 
+.material-symbols-outlined {
+  cursor: pointer;
+}
 
 /* Text */
 
