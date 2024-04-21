@@ -243,7 +243,7 @@ router.get('/dashboard', ensureAuth, async (req, res) => {
       projects: projects.map(project => ({
         ...project.toObject(),
         canEdit: project.users.some(u => u.user === req.user._id && u.role > 1),
-        isCreator: project.createdBy === req.user._id
+        isCreator: project.createdBy._id === req.user._id
       })),
       pins: null, // TODO: Implement
       trash: null, // TODO: Implement
