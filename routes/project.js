@@ -656,7 +656,7 @@ router.post('/page/create/:projectId/:docId', ensureAuth, async (req, res) => {
   // TODO: Validate form fields
   
   // Convert description field Markdown to HTML
-  const bodyHTML = DOMPurify.sanitize(marked.parse(bodu));
+  const bodyHTML = DOMPurify.sanitize(marked.parse(body));
   
   // Get order for page
   const order = document.pages.length + 1;
