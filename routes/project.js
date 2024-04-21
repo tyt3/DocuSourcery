@@ -481,13 +481,40 @@ router.delete('/document/:id', ensureAuth, async (req, res) => {
 
 // Restore Document
 router.put('/document/restore/:id', ensureAuth, async (req, res) => {
-  const documentId = req.params.id;
-  try {
     // TODO: Implement
     // Get document by ID
     // Set deleted to false
+  const documentId = req.params.id;
+
+  try {
+    // Fetch the document to be restored
+    const document = await Document.findById(documentId);
+    if (!document) {
+      // If the document is not found, send a 404 response
+      return res.status(404).send('Document not found.');
+    }
+
+    // Check if the document is already active (not marked as deleted)
+    if (!document.deleted) {
+      // If the document is not deleted, send a 400 response
+      return res.status(400).send('Document is already active and not marked as deleted.');
+    }
+
+    // Restore the document by setting 'deleted' to false
+    document.deleted = false;
+    document.deletedDate = null; // Optionally clear the deletion date
+    document.deletedBy = null;  // Optionally clear the user who marked it as deleted
+    document.modifiedDate = new Date(); // Update the modified date
+
+    // Save the updated document
+    await document.save();
+
+    // Send a success response indicating the document has been restored
+    res.send({ message: 'Document restored successfully' });
   } catch (err) {
-    throw err;
+    // If there is an error during the process, log it and send a 500 response
+    console.error('Error restoring document:', err);
+    res.status(500).send('Server error while restoring document.');
   }
 });
 
