@@ -144,22 +144,86 @@ router.get('/project/:projectSlug/edit/', ensureAuth, async (req, res) => {
 
 
 // Edit Project
-router.post('/project/edit/:id', ensureAuth, validateTitles, validateSlug, async (req, res) => {
-  const projectId = req.params.id;
-
-    // TODO: Implement 
+router.post(
+  "/project/edit/:id",
+  ensureAuth,
+  validateTitles,
+  validateSlug,
+  async (req, res) => {
+    // TODO: Implement
     // Apply same middleware as in project/create to validate form fields
     // Convert description field Markdown to HTML
     // Get form fields from request
     // Validate input, flash error message and reload if any errors
     // Update object with new data
 
-  try {
-    // TODO: Implement
-  } catch (err) {
-    throw err;
+    const projectId = req.params.id;
+    const {
+      title,
+      subtitle,
+      slug,
+      description,
+      tags,
+      noLogin,
+      canDuplicate,
+      isPublic,
+    } = req.body;
+
+    console.log(title, slug, isPublic);
+    try {
+      const project = await Project.findById(projectId);
+      if (!project) {
+        return res.status(404).send("Project not found.");
+      }
+
+      // Convert description Markdown to HTML
+      const descriptionHTML = marked.parse(description);
+
+      // Get public value
+      let publicChoice = false;
+      if (isPublic === "on") {
+        publicChoice = true;
+      }
+
+      // Update the project fields
+      project.title = title || project.title;
+      project.subtitle = subtitle || project.subtitle; // Keep existing subtitle if none provided
+      project.slug = slug || project.slug;
+      project.description = descriptionHTML || document.description;
+      project.public = publicChoice !== undefined ? isPublic : project.public;
+
+      // Handle tags similarly as in the project creation
+      let linkedTags = [];
+      if (tags) {
+        const tagsArray = tags.split(",").map((tag) => tag.trim());
+        for (const tagTitle of tagsArray) {
+          let tag = await Tag.findOne({ title: tagTitle });
+          if (!tag) {
+            tag = new Tag({
+              title: tagTitle,
+              slug: tagTitle.replace(/\s+/g, "-").toLowerCase(),
+              createdBy: req.user._id,
+            });
+            await tag.save();
+          }
+          linkedTags.push(tag._id);
+        }
+      }
+      project.tags = linkedTags;
+
+      // Update permissions based on form input
+      project.permissions.set("noLogin", noLogin);
+      project.permissions.set("duplicatable", canDuplicate);
+
+      await project.save();
+
+      res.redirect(`/project/${project.slug}/edit`);
+    } catch (err) {
+      console.error("Error updating project:", err);
+      res.status(500).send(`Server error while updating project: ${err}`);
+    }
   }
-});
+);
 
 // Delete Project
 router.delete('/project/:id', ensureAuth, async (req, res) => {
