@@ -226,9 +226,7 @@ router.post(
 );
 
 // Delete Project
-router.delete('/project/:id', ensureAuth, async (req, res) => {
-  const projectId = req.params.id;
-  try {
+router.delete("/project/:id", ensureAuth, async (req, res) => {
     // TODO: Implement
     // Must be authenticated
     // Redirect to Dashboard
@@ -236,10 +234,31 @@ router.delete('/project/:id', ensureAuth, async (req, res) => {
     // - set to deleted=true
     // - set deletedDate=now
     // - set deletedBy=authenticatedUserID
-    // if project.deleted=true: 
+    // if project.deleted=true:
     // - delete object
+  const projectId = req.params.id;
+  try {
+    const project = await Project.findById(projectId);
+
+    if (!project) {
+      return res.status(404).send("Project not found.");
+    }
+
+    if (project.deleted) {
+      // Optional: Allow hard delete if the project is already marked as deleted.
+      await Project.deleteOne({ _id: projectId });
+      res.send("Project permanently deleted.");
+    } else {
+      // Soft delete: mark the project as deleted.
+      project.deleted = true;
+      project.deletedDate = new Date();
+      project.deletedBy = req.user._id; // assuming req.user._id contains the ID of the authenticated user
+      await project.save();
+      res.send("Project marked as deleted.");
+    }
   } catch (err) {
-    throw err;
+    console.error("Error deleting project:", err);
+    res.status(500).send(`Server error while deleting project: ${err}`);
   }
 });
 
