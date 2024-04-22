@@ -1045,7 +1045,7 @@ router.get('/tag/:slug', async (req, res) => {
       var formattedDate = modifiedDateMoment.format('MM/DD/YYYY HH:mm:ss');
     
       // Update the 'modifiedDate' field in the project with the formatted date string
-      project.dateModified = formattedDate;
+      project.modifiedDate = formattedDate;
     });
 
     // Render the projects with formatted dates on the tag viewer page
