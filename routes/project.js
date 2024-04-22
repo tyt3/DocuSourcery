@@ -20,6 +20,22 @@ const Page = require('../models/page');
 const Tag = require('../models/tag');
 
 
+// FUNCTIONS
+function formatModDate(projectList) {
+  projectList.forEach(project => {
+    // Convert the 'modifiedDate' field to a Moment.js object
+    var modifiedDateMoment = moment(project.modifiedDate);
+
+    // Format the Moment.js object as 'MM/DD/YYYY HH:MM:SS'
+    var formattedDate = modifiedDateMoment.format('MM/DD/YYYY HH:mm:ss');
+
+    // Update the 'modifiedDate' field in the project with the formatted date string
+    project.dateModified = formattedDate;
+  });
+  return projectList;
+}
+
+
 // PROJECT
 
 // Create Project View
@@ -396,10 +412,13 @@ router.get('/projects', async (req, res) => {
       {$sort: { numProjects: -1 }} // Sort by projectsCount in descending order
     ]);
 
+    // Format modified dates
+    formattedProjects = formatModDate(projects);
+
     // Render the projects template with sorted projects
     res.render('project/projects.ejs', {
       user: req.user,
-      projects: projects,
+      projects: formattedProjects,
       tags: tags,
     });
   } catch (err) {
@@ -1037,22 +1056,13 @@ router.get('/tag/:slug', async (req, res) => {
       deleted: false
     });
 
-    projects.forEach(project => {
-      // Convert the 'modifiedDate' field to a Moment.js object
-      var modifiedDateMoment = moment(project.modifiedDate);
-    
-      // Format the Moment.js object as 'MM/DD/YYYY HH:MM:SS'
-      var formattedDate = modifiedDateMoment.format('MM/DD/YYYY HH:mm:ss');
-    
-      // Update the 'modifiedDate' field in the project with the formatted date string
-      project.dateModified = formattedDate;
-    });
+    formattedProjects = formatModDate(projects);
 
     // Render the projects with formatted dates on the tag viewer page
     res.render('project/tag.ejs', { 
       user: req.user,
       tag: tag,
-      projects: projects
+      projects: formattedProjects
     });
   } catch (err) {
     throw err;
