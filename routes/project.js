@@ -236,6 +236,16 @@ router.delete("/project/:id", ensureAuth, async (req, res) => {
     // - set deletedBy=authenticatedUserID
     // if project.deleted=true:
     // - delete object
+  const {
+      title,
+      subtitle,
+      slug,
+      description,
+      tags,
+      noLogin,
+      canDuplicate,
+      isPublic,
+      } = req.body;
   const projectId = req.params.id;
   try {
     const project = await Project.findById(projectId);
@@ -247,14 +257,14 @@ router.delete("/project/:id", ensureAuth, async (req, res) => {
     if (project.deleted) {
       // Optional: Allow hard delete if the project is already marked as deleted.
       await Project.deleteOne({ _id: projectId });
-      res.send("Project permanently deleted.");
+      res.redirect(`/dashboard`);
     } else {
       // Soft delete: mark the project as deleted.
       project.deleted = true;
       project.deletedDate = new Date();
       project.deletedBy = req.user._id; // assuming req.user._id contains the ID of the authenticated user
       await project.save();
-      res.send("Project marked as deleted.");
+      res.redirect(`/project/${project.slug}/edit`);
     }
   } catch (err) {
     console.error("Error deleting project:", err);
@@ -263,14 +273,49 @@ router.delete("/project/:id", ensureAuth, async (req, res) => {
 });
 
 // Restore Project
-router.post('/project/restore/:id', ensureAuth, async (req, res) => {
-  const projectId = req.params.id;
-  try {
+router.post("/project/restore/:id", ensureAuth, async (req, res) => {
+
     // TODO: Implement
     // Get project by ID
     // Set deleted to false
+  const projectId = req.params.id;
+  const {
+      title,
+      subtitle,
+      slug,
+      description,
+      tags,
+      noLogin,
+      canDuplicate,
+      isPublic,
+      } = req.body;
+  try {
+    const project = await Project.findById(projectId);
+
+    if (!project) {
+      return res.status(404).send("Project not found.");
+    }
+
+    // Check if the project is actually deleted
+    if (!project.deleted) {
+      return res.status(400).send("Project is not marked as deleted and cannot be restored.");
+    }
+
+    // Optional: Check if the user has the right to restore the project
+    if (!project.users.some(user => user.user.toString() === req.user._id.toString() && [2, 3].includes(user.role))) {
+      return res.status(403).send("Unauthorized to restore this project.");
+    }
+
+    // Restore the project by setting `deleted` to false and clearing deletion details
+    project.deleted = false;
+    project.deletedDate = null;
+    project.deletedBy = null;
+
+    await project.save();
+    res.redirect(`/project/${project.slug}/edit`);
   } catch (err) {
-    throw err;
+    console.error("Error restoring project:", err);
+    res.status(500).send(`Server error while restoring project: ${err}`);
   }
 });
 
