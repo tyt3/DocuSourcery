@@ -1037,7 +1037,7 @@ router.get('/tag/:slug', async (req, res) => {
       deleted: false
     });
 
-    projects.forEach(project => {
+    var formattedProjects = projects.forEach(project => {
       // Convert the 'modifiedDate' field to a Moment.js object
       var modifiedDateMoment = moment(project.modifiedDate);
     
@@ -1052,7 +1052,7 @@ router.get('/tag/:slug', async (req, res) => {
     res.render('project/tag.ejs', { 
       user: req.user,
       tag: tag,
-      projects: projects
+      projects: formattedProjects
     });
   } catch (err) {
     throw err;
