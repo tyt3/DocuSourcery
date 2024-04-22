@@ -35,6 +35,13 @@ function formatModDate(projectList) {
   return projectList;
 }
 
+function switchToBool(switchField) {
+  let choice = false;
+  if (switchField === "on") {
+    choice = true;
+  }
+  return choice;
+}
 
 // PROJECT
 
@@ -84,10 +91,9 @@ router.post('/project/create', ensureAuth, validateTitles, validateSlug, async (
   }
 
   try {
-    let publicChoice = false;
-    if (isPublic === "on") {
-      publicChoice = true;
-    }
+    let publicChoice = switchToBool(isPublic);
+    let loginChoice = switchToBool(noLogin);
+    let dupChoice = switchToBool(canDuplicate);
 
     // Convert description markdown to HTML 
     const descriptionHTML = marked.parse(description);
@@ -99,7 +105,7 @@ router.post('/project/create', ensureAuth, validateTitles, validateSlug, async (
       createdBy: req.user._id,
       public: publicChoice,
       tags: linkedTags,
-      permissions: {noLogin: noLogin, duplicatable: canDuplicate},
+      permissions: {noLogin: loginChoice, duplicatable: dupChoice},
       users: [
         {
           user: req.user._id,
