@@ -1030,9 +1030,16 @@ router.get('/tag/:slug', async (req, res) => {
   const tagSlug = req.params.slug;
   try {
     const tag = await Tag.findOne({ slug: tagSlug });
+
+    const projects = await Project.find({
+      tags: tag._id,
+      deleted: false
+    });
+
     res.render('project/tag.ejs', { 
       user: req.user,
-      tag: tag
+      tag: tag,
+      projects: projects
     });
   } catch (err) {
     throw err;
