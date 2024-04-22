@@ -6,6 +6,7 @@ const marked = require('marked');
 const turndown = require('turndown');
 const turndownService = new turndown();
 const DOMPurify = require('dompurify');
+const moment = require('moment');
 
 
 // Import middleware
@@ -1031,11 +1032,23 @@ router.get('/tag/:slug', async (req, res) => {
   try {
     const tag = await Tag.findOne({ slug: tagSlug });
 
-    const projects = await Project.find({
+    var projects = await Project.find({
       tags: tag._id,
       deleted: false
     });
 
+    projects.forEach(project => {
+      // Convert the 'modifiedDate' field to a Moment.js object
+      var modifiedDateMoment = moment(project.modifiedDate);
+    
+      // Format the Moment.js object as 'MM/DD/YYYY HH:MM:SS'
+      var formattedDate = modifiedDateMoment.format('MM/DD/YYYY HH:mm:ss');
+    
+      // Update the 'modifiedDate' field in the project with the formatted date string
+      project.modifiedDate = formattedDate;
+    });
+
+    // Render the projects with formatted dates on the tag viewer page
     res.render('project/tag.ejs', { 
       user: req.user,
       tag: tag,
