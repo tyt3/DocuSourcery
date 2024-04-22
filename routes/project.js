@@ -1037,19 +1037,16 @@ router.get('/tag/:slug', async (req, res) => {
       deleted: false
     });
 
-    // Iterate over each project
-    for (let i = 0; i < projects.length; i++) {
-      const project = projects[i];
-
+    projects.forEach(project => {
       // Convert the 'modifiedDate' field to a Moment.js object
-      const modifiedDateMoment = moment(project.modifiedDate);
-
+      var modifiedDateMoment = moment(project.modifiedDate);
+    
       // Format the Moment.js object as 'MM/DD/YYYY HH:MM:SS'
-      const formattedDate = modifiedDateMoment.format('MM/DD/YYYY HH:mm:ss');
-
+      var formattedDate = modifiedDateMoment.format('MM/DD/YYYY HH:mm:ss');
+    
       // Update the 'modifiedDate' field in the project with the formatted date string
-      projects[i].modifiedDate = formattedDate;
-    }
+      project.dateModified = formattedDate;
+    });
 
     // Render the projects with formatted dates on the tag viewer page
     res.render('project/tag.ejs', { 
