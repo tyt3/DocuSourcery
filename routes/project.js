@@ -68,7 +68,6 @@ router.get('/project/create', ensureAuth, async (req, res) => {
 router.post('/project/create', ensureAuth, validateTitles, validateSlug, async (req, res) => {
   const { title, subtitle, slug, description, tags, noLogin, canDuplicate, isPublic } = req.body;
 
-  // TODO: Convert description field Markdown to HTML
   let linkedTags = [];
   try {
     if (tags) {
@@ -120,22 +119,24 @@ router.post('/project/create', ensureAuth, validateTitles, validateSlug, async (
 
     const newProject = await project.save();
 
-    // Update all tags in tagList array to add the new project ID to its projects array
-    await Promise.all(tagList.map(async (tagId) => {
-      // Update the tag by its ObjectId
-      const updatedTag = await Tag.findOneAndUpdate(
-          { _id: tagId }, // Query to find the tag
-          { $addToSet: { projects: newProject._id } }, // Update operation
-          { new: true } // Return the updated tag
-      );
+    // Update all tags in linkedTags array to add the new project ID to its projects array
+    if (linkedTags) {
+      await Promise.all(linkedTags.map(async (tagId) => {
+        // Update the tag by its ObjectId
+        const updatedTag = await Tag.findOneAndUpdate(
+            { _id: tagId }, // Query to find the tag
+            { $addToSet: { projects: newProject._id } }, // Update operation
+            { new: true } // Return the updated tag
+        );
 
-      if (!updatedTag) {
-          console.log(`Tag with ID ${tagId} not found.`);
-      } else {
-          console.log(`Project ${projectId} appended to tag ${tagId} successfully.`);
-      }
-    }));
-
+        if (!updatedTag) {
+            console.log(`Tag with ID ${tagId} not found.`);
+        } else {
+            console.log(`Project ${projectId} appended to tag ${tagId} successfully.`);
+        }
+      }));
+    }
+    
     // Render the new project
     res.render('project/projectEdit.ejs', { 
       user: req.user, 
