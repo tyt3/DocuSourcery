@@ -9,7 +9,7 @@
           aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <p>Are you sure you want to delete your page, "{{ page.title }}"? 
+        <p>Are you sure you want to delete your page, "<%= page.title %>"? 
           <% if (page.deleted) { %>
           <strong>This action cannot be undone.</strong>
           <% } %>
