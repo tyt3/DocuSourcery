@@ -239,12 +239,12 @@ router.get('/dashboard', ensureAuth, async (req, res) => {
 
     // Find pinned project list
     // Extract the array of project IDs from pinnedProjects
-    const pinnedIds = req.user.pinnedProjects;
+    const pinnedIds = req.user.pinnedProjects.map(project => project._id);
     var pinnedProjs = undefined;
 
     if (pinnedIds) {
       // Query the 'projects' collection to find documents with IDs in the projectIds array
-      pinnedProjs = Project.find({ _id: { $in: pinnedIds } })
+      pinnedProjs = await Project.find({ _id: { $in: pinnedIds } })
         .then(projs => {
           console.log('Matching projects:', projs);
         })
@@ -254,6 +254,7 @@ router.get('/dashboard', ensureAuth, async (req, res) => {
     }
 
     if (pinnedProjs) {
+      console.log(`${pinnedProjs.length} pinned projects found.`)
       // Render the dashboard page with the list of projects
       res.render('user/dashboard.ejs', {
         user: req.user,
@@ -270,6 +271,7 @@ router.get('/dashboard', ensureAuth, async (req, res) => {
         trash: null, // TODO: Implement
       });
     } else {
+      console.log('User has no pinned projects.')
       res.render('user/dashboard.ejs', {
         user: req.user,
         projects: projects.map(project => ({
