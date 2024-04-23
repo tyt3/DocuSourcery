@@ -240,10 +240,11 @@ router.get('/dashboard', ensureAuth, async (req, res) => {
     // Find pinned project list
     // Extract the array of project IDs from pinnedProjects
     const pinnedIds = req.user.pinnedProjects;
+    var pinnedProjs = undefined;
 
     if (pinnedIds) {
       // Query the 'projects' collection to find documents with IDs in the projectIds array
-      const pinnedProjs = Project.find({ _id: { $in: pinnedIds } })
+      pinnedProjs = Project.find({ _id: { $in: pinnedIds } })
         .then(projs => {
           console.log('Matching projects:', projs);
         })
@@ -252,21 +253,34 @@ router.get('/dashboard', ensureAuth, async (req, res) => {
         });
     }
 
-    // Render the dashboard page with the list of projects
-    res.render('user/dashboard.ejs', {
-      user: req.user,
-      projects: projects.map(project => ({
-        ...project.toObject(),
-        canEdit: project.users.some(u => u.user === req.user._id && u.role > 1),
-        isCreator: project.createdBy._id === req.user._id
-      })),
-      pins: pinnedProjs.map(project => ({
-        ...project.toObject(),
-        canEdit: project.users.some(u => u.user === req.user._id && u.role > 1),
-        isCreator: project.createdBy._id === req.user._id
-      })),
-      trash: null, // TODO: Implement
-    });
+    if (pinnedProjs) {
+      // Render the dashboard page with the list of projects
+      res.render('user/dashboard.ejs', {
+        user: req.user,
+        projects: projects.map(project => ({
+          ...project.toObject(),
+          canEdit: project.users.some(u => u.user === req.user._id && u.role > 1),
+          isCreator: project.createdBy._id === req.user._id
+        })),
+        pins: pinnedProjs.map(project => ({
+          ...project.toObject(),
+          canEdit: project.users.some(u => u.user === req.user._id && u.role > 1),
+          isCreator: project.createdBy._id === req.user._id
+        })),
+        trash: null, // TODO: Implement
+      });
+    } else {
+      res.render('user/dashboard.ejs', {
+        user: req.user,
+        projects: projects.map(project => ({
+          ...project.toObject(),
+          canEdit: project.users.some(u => u.user === req.user._id && u.role > 1),
+          isCreator: project.createdBy._id === req.user._id
+        })),
+        pins: null,
+        trash: null, // TODO: Implement
+      });
+    }
   } catch (err) {
     console.error('Error fetching dashboard data:', err);
     res.status(500).send('An error occurred while fetching the dashboard data.');
