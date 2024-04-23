@@ -16,21 +16,22 @@
       <tbody>
         <!-- Models -->
         <tr>
-          <td class="w-75"><a href="/admin/user">Users</a></td>
+          <td class="w-75"><a href="/admin/users">Users</a></td>
           <td>
-            <a href="/admin/user/add">
+            <button type="button" data-bs-toggle="modal" data-bs-target="#addUserModal"
+                    class="btn p-0">
               <span class="material-symbols-outlined fs-6 fw-bold">add</span>
               Add
-            </a>
+            </button>
           </td>
         </tr>
         <tr>
           <td><a href="#">Projects</a></td>
           <td>
-            <button type="button" data-bs-toggle="modal" data-bs-target="#addUserModal">
+            <a href="#">
               <span class="material-symbols-outlined fs-6 fw-bold">add</span>
               Add
-            </button>
+            </a>
           </td>
         </tr>
         <tr>
@@ -164,4 +165,5 @@
     </div>
   </div>
 </div>
+
 <%- include('../baseFooter') -%>
