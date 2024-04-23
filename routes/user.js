@@ -238,19 +238,11 @@ router.get('/dashboard', ensureAuth, async (req, res) => {
     console.log(`Found ${projects.length} projects for user: ${req.user._id}`);
 
     // Find pinned project list
-    // Extract the array of project IDs from pinnedProjects
     const pinnedIds = req.user.pinnedProjects.map(project => project._id);
-    var pinnedProjs = undefined;
+    var pinnedProjs;
 
     if (pinnedIds) {
-      // Query the 'projects' collection to find documents with IDs in the projectIds array
-      pinnedProjs = await Project.find({ _id: { $in: pinnedIds } })
-        .then(projs => {
-          console.log('Matching projects:', projs);
-        })
-        .catch(error => {
-          console.error('Error querying projects:', error);
-        });
+      pinnedProjs = await Project.find({ _id: { $in: pinnedIds } });
     }
 
     if (pinnedProjs) {
