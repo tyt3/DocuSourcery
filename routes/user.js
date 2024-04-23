@@ -237,6 +237,19 @@ router.get('/dashboard', ensureAuth, async (req, res) => {
 
     console.log(`Found ${projects.length} projects for user: ${req.user._id}`);
 
+    // Find pinned project list
+    // Extract the array of project IDs from pinnedProjects
+    const pinnedIds = req.user.pinnedProjects.map(project => project._id);
+
+    // Query the 'projects' collection to find documents with IDs in the projectIds array
+    const pinnedProjs = Project.find({ _id: { $in: pinnedIds } })
+      .then(projs => {
+        console.log('Matching projects:', projs);
+      })
+      .catch(error => {
+        console.error('Error querying projects:', error);
+      });
+
     // Render the dashboard page with the list of projects
     res.render('user/dashboard.ejs', {
       user: req.user,
@@ -245,7 +258,11 @@ router.get('/dashboard', ensureAuth, async (req, res) => {
         canEdit: project.users.some(u => u.user === req.user._id && u.role > 1),
         isCreator: project.createdBy._id === req.user._id
       })),
-      pins: null, // TODO: Implement
+      pins: pinnedProjs.map(project => ({
+        ...project.toObject(),
+        canEdit: project.users.some(u => u.user === req.user._id && u.role > 1),
+        isCreator: project.createdBy._id === req.user._id
+      })),
       trash: null, // TODO: Implement
     });
   } catch (err) {
