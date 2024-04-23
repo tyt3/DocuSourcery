@@ -49,11 +49,13 @@ const staticRouter = require("./routes/static");
 const userRouter = require("./routes/user");
 const projectRouter = require("./routes/project");
 const apiRouter = require("./routes/api");
+const adminRouter = require("./routes/admin");
 
 app.use("/", staticRouter);
 app.use("/", userRouter);
 app.use("/", projectRouter);
 app.use("/api", apiRouter);
+app.use("/admin", adminRouter);
 
 // listen for requests :)
 const listener = app.listen(process.env.PORT, function() {
