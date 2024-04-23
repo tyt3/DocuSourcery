@@ -241,15 +241,17 @@ router.get('/dashboard', ensureAuth, async (req, res) => {
     // Extract the array of project IDs from pinnedProjects
     const pinnedIds = req.user.pinnedProjects.map(project => project._id);
 
-    // Query the 'projects' collection to find documents with IDs in the projectIds array
-    const pinnedProjs = Project.find({ _id: { $in: pinnedIds } })
-      .then(projs => {
-        console.log('Matching projects:', projs);
-      })
-      .catch(error => {
-        console.error('Error querying projects:', error);
-      });
-
+    if (pinnedIds) {
+      // Query the 'projects' collection to find documents with IDs in the projectIds array
+      const pinnedProjs = Project.find({ _id: { $in: pinnedIds } })
+        .then(projs => {
+          console.log('Matching projects:', projs);
+        })
+        .catch(error => {
+          console.error('Error querying projects:', error);
+        });
+    }
+    
     // Render the dashboard page with the list of projects
     res.render('user/dashboard.ejs', {
       user: req.user,
