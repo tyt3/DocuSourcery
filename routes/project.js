@@ -4,7 +4,11 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const marked = require('marked');
 const turndown = require('turndown');
-const turndownService = new turndown();
+const turndownService = new turndown({
+  headingStyle: 'atx',
+  bulletListMarker: '-',
+  codeBlockStyle: 'fenced'
+});
 const DOMPurify = require('dompurify');
 const moment = require('moment');
 
