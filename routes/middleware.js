@@ -30,6 +30,15 @@ function ensureNotAuth(req, res, next) {
   }
 };
 
+// Check if the user is authenticated\
+function ensureAdmin(req, res, next) {
+  if (req.user.admin) {
+    return next();
+  } else {
+    // Store the original requested URL in the session
+    req.status(401).json({ error: 'You must be a system administrator to access this page.' });
+  }
+};
 
 // Validate API key before allowing API request
 const checkApiKey = async (req, res, next) => {
@@ -250,6 +259,7 @@ function populateCurrentUser(req, res, next) {
 module.exports = {
   ensureAuth: ensureAuth,
   ensureNotAuth: ensureNotAuth,
+  ensureAdmin: ensureAdmin,
   validatePassword: validatePassword,
   checkUsernameAndEmail: checkUsernameAndEmail,
   checkAuthUsernameAndEmail: checkAuthUsernameAndEmail,
