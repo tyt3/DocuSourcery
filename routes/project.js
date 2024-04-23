@@ -1108,9 +1108,16 @@ router.get('/tag/:slug', async (req, res) => {
 router.get('/trash', ensureAuth, async (req, res) => {
   try {
     // TODO: Get all user projects where role=3 and deleted=true
+    trash = await Project.find({
+      users: {
+        user: req.user._id,
+        role: 3
+      },
+      trash: true
+    });
     res.render('project/trash.ejs', { 
       user: req.user,
-      projects: [] 
+      projects: trash
     });
   } catch (err) {
     throw err;
