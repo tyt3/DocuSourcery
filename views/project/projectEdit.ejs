@@ -286,6 +286,10 @@
                   </table>
                 </div>
               </div>
+              <button type="button" id="addUserBtn" class="btn btn-12 btn-ds-primary"
+                data-bs-toggle="modal" data-bs-target="#addUserModal">
+                Add User
+              </button>
             </div>
           </div>
           <div class="col-12 col-md-4 col-xxl-3 relative" id="action-panel">
@@ -296,8 +300,8 @@
                     Save Project
                   </button>
                   <% if (project) { %>
-                  <button type="button" id="addUserBtn" class="btn btn-block btn-outline-danger"
-                    data-bs-toggle="modal" data-bs-target="#addUserModal">
+                  <button type="button" id="deleteProjectBtn" class="btn btn-block btn-outline-danger"
+                    data-bs-toggle="modal" data-bs-target="#deleteProjectModal">
                     Delete Project
                   </button>
                   <a href="/project/<%= project.slug %>"
