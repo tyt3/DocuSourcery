@@ -26,3 +26,7 @@ router.get('/admin', async (req, res) => {
     throw err;
   }
 });
+
+
+// Export router
+module.exports = router;
