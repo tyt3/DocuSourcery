@@ -252,14 +252,12 @@ router.get('/dashboard', ensureAuth, async (req, res) => {
 
     // Find trash
     var trash = await Project.find({
-      users: {
-        'users.user': req.user._id,
-        'users.role': 3
-      },
+      'users.user': req.user._id,
+      'users.role': 3,
       deleted: true
     }).populate({
       path: 'deletedBy',
-      select: 'username email' // Only fetch the username and email of the deletor
+      select: 'username email' // Only fetch the username and email of the deleter
     });
 
     if (trash) {
