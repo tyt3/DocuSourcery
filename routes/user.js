@@ -239,7 +239,7 @@ router.get('/dashboard', ensureAuth, async (req, res) => {
 
     // Find pinned project list
     // Extract the array of project IDs from pinnedProjects
-    const pinnedIds = req.user.pinnedProjects.map(project => project._id);
+    const pinnedIds = req.user.pinnedProjects;
 
     if (pinnedIds) {
       // Query the 'projects' collection to find documents with IDs in the projectIds array
@@ -251,7 +251,7 @@ router.get('/dashboard', ensureAuth, async (req, res) => {
           console.error('Error querying projects:', error);
         });
     }
-    
+
     // Render the dashboard page with the list of projects
     res.render('user/dashboard.ejs', {
       user: req.user,
