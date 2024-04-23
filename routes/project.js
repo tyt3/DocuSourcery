@@ -136,7 +136,7 @@ router.post('/project/create', ensureAuth, validateTitles, validateSlug, async (
         }
       }));
     }
-    
+
     // Render the new project
     res.render('project/projectEdit.ejs', { 
       user: req.user, 
@@ -1114,7 +1114,7 @@ router.get('/trash', ensureAuth, async (req, res) => {
         user: req.user._id,
         role: 3
       },
-      trash: true
+      deleted: true
     });
     res.render('project/trash.ejs', { 
       user: req.user,
