@@ -434,6 +434,28 @@ router.get('/projects', async (req, res) => {
   }
 });
 
+// Pin Project
+router.get('/project/pin/:id', async (req, res) => {
+  const projectId = req.params.id;
+  try {
+    const pinUser = await User.findOneAndUpdate(
+      { _id: req.user.id }, // Query to find the user making the request
+      { $addToSet: { pinnedProjects: projectId } }, // Add project to pinned list
+      { new: true } // Return the updated tag
+    );
+    if (!pinUser) {
+      console.log(`User with ID ${req.user.id} not found.`);
+    } else {
+      console.log(`Project ${projectId} appended to user's pinned projects successfully.`);
+    }
+    res.redirect(`/dashboard`);
+    
+  } catch (err) {
+    console.error("Failed to pin the selected project:", err);
+    res.status(500).send("Server error occurred while trying to pin a project.");
+  }
+});
+
 // router.get('/projects', async (req, res) => {
 //   await Project.find({public: true})
 //     .then((projects) => {
