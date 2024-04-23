@@ -234,3 +234,20 @@ document.getElementById("updateProjectForm").addEventListener("submit", function
       console.error("Error updating project:", error);
     });
 });
+
+
+//backend handling
+app.put("/api/projects/:id", (req, res) => {
+  const projectId = req.params.id;
+  const updatedData = req.body;
+
+
+Project.update(projectId, updatedData)
+    .then(() => {
+      res.json({ success: true });
+    })
+    .catch((error) => {
+      res.status(500).json({ success: false, error });
+    });
+});
+
