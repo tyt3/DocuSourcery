@@ -378,17 +378,23 @@ a.badge-tag:link {
   }
 }
 
-th,
+.admin-table th,
 td {
   padding: 10px;
   border-bottom: 1px solid #dddddd;
 }
 
-th {
-  background-color: #f2f2f2;
-  text-align: left;
+/* Set width of the second column to auto */
+.admin-table td:nth-child(2) {
+  width: auto;
 }
 
+.admin-table td a {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+
+}
 
 /* Branding Palette Items */
 
