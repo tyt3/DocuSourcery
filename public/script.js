@@ -197,3 +197,40 @@ function updateBackend(itemId) {
   var data = JSON.stringify({ item_id: itemId });
   xhr.send(data);
 }
+
+
+///////////////////////
+// form submission  //
+/////////////////////
+document.getElementById("updateProjectForm").addEventListener("submit", function (event) {
+  event.preventDefault(); // Prevent the default form submission behavior
+
+  const projectId = document.getElementById("projectId").value;
+  const projectName = document.getElementById("projectName").value;
+  const projectDescription = document.getElementById("projectDescription").value;
+
+  const updateData = {
+    name: projectName,
+    description: projectDescription,
+  };
+
+  // Using AJAX request using Fetch API to update project
+  fetch(`/api/projects/${projectId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(updateData), // Convert data to JSON string
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.success) {
+        console.log("Project updated successfully");
+      } else {
+        console.error("Failed to update project", data.error);
+      }
+    })
+    .catch((error) => {
+      console.error("Error updating project:", error);
+    });
+});
