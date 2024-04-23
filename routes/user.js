@@ -253,8 +253,8 @@ router.get('/dashboard', ensureAuth, async (req, res) => {
     // Find trash
     var trash = await Project.find({
       users: {
-        user: req.user._id,
-        role: 3
+        'users.user': req.user._id,
+        'users.role': 3
       },
       deleted: true
     }).populate({
