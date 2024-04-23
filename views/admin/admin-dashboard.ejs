@@ -1,32 +1,40 @@
 <%- include('../baseHeader') -%>
-<div class="table-container">
+<div class="container main-content my-5">
+  <!-- Title -->
+  <h1 class="mb-4">
+    Site Administration
+  </h1>
+  
+  <!-- Models Table -->
+  <div class="table-container">
     <table>
-       <thead class="bg-ds-primary">
-          <tr>
-             <th>Models</th>
-          </tr>
-       </thead>
-       <tbody>
-          <!-- Models -->
-          <tr>
-            <td><a href="/admin/user">Users</a></td>
-            <td>
-                <a href="/admin/user/add">
-                    <span class="material-symbols-outlined">add</span>
-                    Add
-                </a>
-            </td>
-          </tr>
-          <tr>
-            <td><a href="/admin/project">Projects</a></td>
-            <td>
-                <a href="/admin/project/add">
-                    <span class="material-symbols-outlined">add</span>
-                    Add
-                </a>
-            </td>
-          </tr>
-       </tbody>
+      <thead class="bg-ds-primary">
+        <tr>
+          <th>Models</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Models -->
+        <tr>
+          <td><a href="/admin/user">Users</a></td>
+          <td>
+            <a href="/admin/user/add">
+              <span class="material-symbols-outlined">add</span>
+              Add
+            </a>
+          </td>
+        </tr>
+        <tr>
+          <td><a href="/admin/project">Projects</a></td>
+          <td>
+            <a href="/admin/project/add">
+              <span class="material-symbols-outlined">add</span>
+              Add
+            </a>
+          </td>
+        </tr>
+      </tbody>
     </table>
- </div>
- <%- include('../baseFooter') -%>
+  </div>
+</div>
+  <%- include('../baseFooter') -%>
