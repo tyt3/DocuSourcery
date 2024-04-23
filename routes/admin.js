@@ -15,7 +15,7 @@ const Tag = require('../models/tag');
 
 
 // Admin Dashboard
-router.get('/admin', async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     if (req.isAuthenticated()) {
       res.render('admin/admin-dashboard.ejs', { user: req.user });
