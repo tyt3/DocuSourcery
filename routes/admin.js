@@ -4,7 +4,7 @@ const router = express.Router();
 const mongoose = require('mongoose');
 
 // Import middleware
-const { ensureAuth, ensureAdmin } = require('./middleware');
+const { ensureAuth, ensureAdmin, checkUsernameAndEmail, validatePassword } = require('./middleware');
 
 // Import data models
 const User = require('../models/user');
