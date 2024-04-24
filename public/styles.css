@@ -363,12 +363,16 @@ a.badge-tag:link {
   align-items: center; 
 }
 
-.admin-table {
-  width: 50%;
+.admin-table,
+.model-table {
   border-collapse: collapse;
   border-radius: 15px;
   overflow: hidden;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.admin-table {
+  width: 100;
 }
 
 /* For xs and sm screens */
@@ -379,7 +383,9 @@ a.badge-tag:link {
 }
 
 .admin-table th,
-.admin-table td {
+.admin-table td,
+.model-table th,
+.model-table td {
   padding: 10px;
   border-bottom: 1px solid #dddddd;
 }
@@ -390,7 +396,9 @@ a.badge-tag:link {
 }
 
 .admin-table td a,
-.admin-table td button {
+.admin-table td button,
+.model-table td a,
+.model-table td button {
   text-decoration: none;
   display: flex;
   align-items: center;

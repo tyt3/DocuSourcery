@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 
 // Import middleware
 const { ensureAuth, ensureAdmin, checkUsernameAndEmail, validatePassword } = require('./middleware');
+const bcrypt = require('bcrypt');
 
 // Import data models
 const User = require('../models/user');
@@ -45,16 +46,45 @@ router.get('/users', async (req, res) => {
 
 
 // Add User
-router.post('/user/add', ensureAuth, ensureAdmin, checkUsernameAndEmail, validatePassword, async (req, res) => {
+router.post('/user/add', ensureAuth, ensureAdmin, checkUsernameAndEmail, async (req, res) => {
   const { firstName, lastName, username, email, password, passwordConf, admin } = req.body;
-  const userId = req.params.id;
 
   try {
-    // Fetch the existing user
-    const usr = await User.findById(userId);
-    if (!usr) {
-      return res.status(404).send('User not found.');
-    }
+       // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create the User document
+    const user = new User({
+      username: username,
+      email: email,
+      firstName: firstName,
+      lastName: lastName,
+      password: hashedPassword,
+      admin: admin
+    });
+
+    const newUser = await user.save();
+
+    // Redirect to admin page
+    res.redirect('/admin/users');
+  } catch (err) {
+    console.error('Error adding user:', err);
+    res.status(500).send('Internal server error while adding user.');
+  }
+});
+
+
+// Edit User
+router.post('/user/edit/:id', ensureAuth, ensureAdmin, checkUsernameAndEmail, validatePassword, async (req, res) => {
+  const { firstName, lastName, username, email, password, passwordConf, admin } = req.body;
+  const userId = req.params.id;
+  
+  try {
+     // Fetch the existing user
+     const usr = await User.findById(userId);
+     if (!usr) {
+       return res.status(404).send('User not found.');
+     }
 
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -69,35 +99,6 @@ router.post('/user/add', ensureAuth, ensureAdmin, checkUsernameAndEmail, validat
 
     // Save the updated usr
     await usr.save();
-
-    // Redirect to admin page
-    res.redirect('/admin/users');
-  } catch (err) {
-    console.error('Error adding user:', err);
-    res.status(500).send('Internal server error while adding user.');
-  }
-});
-
-
-// Edit User
-router.post('/user/add/:id', ensureAuth, ensureAdmin, checkUsernameAndEmail, validatePassword, async (req, res) => {
-  const { firstName, lastName, username, email, password, passwordConf, admin } = req.body;
-  
-  try {
-    // Hash the password
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    // Create the User document
-    const user = new User({
-      username: username,
-      email: email,
-      firstName: firstName,
-      lastName: lastName,
-      password: hashedPassword,
-      admin: admin
-    });
-
-    const newUser = await user.save();
 
     // Redirect or log the user in directly
     res.redirect('/admin/users');
