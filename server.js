@@ -9,6 +9,8 @@ const session = require('express-session');
 const passport = require('passport');
 const flash = require('connect-flash');
 const { connectDB } = require('./DBconnect');
+const moment = require('moment');
+
 
 const app = express();
 
@@ -18,6 +20,7 @@ connectDB();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
+app.locals.moment = moment;
 
 // Load passport related session
 app.use(session({
