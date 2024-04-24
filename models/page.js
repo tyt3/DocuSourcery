@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const { populateCurrentUser: populateCurrentUser } = require('../routes/middleware');
+//const { populateCurrentUser: populateCurrentUser } = require('../routes/middleware');
 
 
 // Define Page model
@@ -21,7 +21,7 @@ const PageSchema = new Schema({
 });
 
 // Apply middleware to populate createdBy, updatedBy, and deletedBy fields before saving
-PageSchema.pre('save', populateCurrentUser);
+//PageSchema.pre('save', populateCurrentUser);
 
 
 // Export model
