@@ -233,11 +233,14 @@ router.get("/documents/:slug/pages", async function(req, res) {
   try {
     const document = await Document.findOne({ slug: documentSlug });
     if (document) {
-	  const pages = await Page.find({'_id': { $in: document.pages}}).exec();
-      res.status(200).json(pages);
+	  if (document.pages) {
+		const pages = await Page.find({'_id': { $in: document.pages}}).exec();
+		res.status(200).json(pages);
+	  }
+	  res.status(204).json({'No Response': 'No pages exist under the provided document'}); 
     }
     else {
-      res.status(204).json({'No Response': 'No pages exist under the provided document'});
+      res.status(400).json({'Error': 'Document not found'});
     }
   } catch (err) {
     res.status(500).send(err)
