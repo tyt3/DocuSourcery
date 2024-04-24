@@ -49,7 +49,7 @@
                 <ul class="list-group">
                   <li class="list-group-item">
                     <div class="row">
-                      <div class="col-md-2 col-xxl-1 d-none d-md-block d-flex align-items-md-center">
+                      <div class="col-md-2 d-none d-md-block d-flex align-items-md-center">
                         <% const isPinned = user.pinnedProjects.includes(project._id)  %>
                         <% if (isPinned) { %>
                         <a href="/unpin/<%= project._id %>" data-bs-toggle="tooltip" 
@@ -63,7 +63,7 @@
                         <a href="/project/<%= project.slug %>/edit"><span 
                           class="material-symbols-outlined">edit</span></a>
                       </div>
-                      <div class="col-12 col-md-10 col-xxl-11">
+                      <div class="col-12 col-md-10">
                         <a href="/project/<%= project.slug %>">
                           <%= project.title %>
                         </a>
