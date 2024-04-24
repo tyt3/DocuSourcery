@@ -130,23 +130,6 @@ router.get("/projects/:slug/pages", async function(req, res) {
   }
 });
 
-// Get all pages under a document
-router.get("/documents/:slug/pages", async function(req, res) {
-  const documentSlug = req.params.slug;
-  try {
-    const document = await Document.findOne({ slug: documentSlug });
-    if (document) {
-	  const pages = await Page.find({'_id': { $in: document.pages}}).exec();
-      res.status(200).json(docs);
-    }
-    else {
-      res.status(204).json({'No Response': 'No pages exist under the provided document'});
-    }
-  } catch (err) {
-    res.status(500).send(err)
-  }
-});
-
 // Create Project
 router.post('/projects/create', async (req, res) => {
   const { title, subtitle, slug, description, tags, noLogin, canDuplicate, isPublic } = req.params.body;
@@ -233,11 +216,28 @@ router.get("/documents/:slug", async function(req, res) {
   const documentSlug = req.params.slug;
   try {
     const document = await Document.findOne({ slug: documentSlug });
-    if (project) {
+    if (document) {
       res.status(200).json(document);
     }
     else {
       res.status(204).json({'No Response': 'No documents exist with the provided slug'});
+    }
+  } catch (err) {
+    res.status(500).send(err)
+  }
+});
+
+// Get all pages under a document
+router.get("/documents/:slug/pages", async function(req, res) {
+  const documentSlug = req.params.slug;
+  try {
+    const document = await Document.findOne({ slug: documentSlug });
+    if (document) {
+	  const pages = await Page.find({'_id': { $in: document.pages}}).exec();
+      res.status(200).json(pages);
+    }
+    else {
+      res.status(204).json({'No Response': 'No pages exist under the provided document'});
     }
   } catch (err) {
     res.status(500).send(err)
