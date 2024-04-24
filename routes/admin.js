@@ -75,7 +75,7 @@ router.post('/user/add', ensureAuth, ensureAdmin, checkUsernameAndEmail, validat
 
 
 // Edit User
-router.post('/user/edit/:id', ensureAuth, ensureAdmin, checkUsernameAndEmail, async (req, res) => {
+router.post('/user/edit/:id', ensureAuth, ensureAdmin, async (req, res) => {
   const { firstName, lastName, username, email, password, passwordConf, admin } = req.body;
   const userId = req.params.id;
   
