@@ -119,7 +119,7 @@ router.post('/user/edit/:id', ensureAuth, ensureAdmin, async (req, res) => {
 
 
 // Delete User
-router.delete('/user/delete/:id', ensureAuth, ensureAdmin, async (req, res) => {
+router.post('/user/delete/:id', ensureAuth, ensureAdmin, async (req, res) => {
   const usrId = req.params.id;
 
   try {
