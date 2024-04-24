@@ -36,7 +36,7 @@ function switchToBool(switchField) {
     choice = true;
   }
   return choice;
-
+}
 
 // USERS
 
