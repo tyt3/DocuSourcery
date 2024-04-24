@@ -16,13 +16,9 @@ const Tag = require('../models/tag');
 
 
 // Admin Dashboard
-router.get('/', async (req, res) => {
+router.get('/', ensureAuth, ensureAdmin, async (req, res) => {
   try {
-    if (req.isAuthenticated()) {
-      res.render('admin/admin-dashboard.ejs', { user: req.user });
-    } else {
-      res.render('static/index.ejs', { user: null });
-    }
+    res.render('admin/admin-dashboard.ejs', { user: req.user });
   } catch (err) {
       console.error(err);
       res.status(500).send('Internal Server Error');
@@ -31,7 +27,7 @@ router.get('/', async (req, res) => {
 
 
 // User Management
-router.get('/users', async (req, res) => {
+router.get('/users', ensureAuth, ensureAdmin, async (req, res) => {
   try {
       // Fetch all users from the database
       const users = await User.find();
@@ -71,7 +67,7 @@ router.post('/user/add', ensureAuth, ensureAdmin, checkUsernameAndEmail, validat
 
     const newUser = await user.save();
 
-    // Redirect to admin page
+    // Redirect to user management dashboard
     res.redirect('/admin/users');
   } catch (err) {
     console.error('Error adding user:', err);
@@ -91,6 +87,8 @@ router.post('/user/edit/:id', ensureAuth, ensureAdmin, async (req, res) => {
      if (!usr) {
        return res.status(404).send('User not found.');
      }
+
+    // TODO: Validate username and password
 
     // Hash the password
     let hashedPassword = null;
@@ -115,7 +113,7 @@ router.post('/user/edit/:id', ensureAuth, ensureAdmin, async (req, res) => {
     // Save the updated usr
     await usr.save();
 
-    // Redirect or log the user in directly
+    // Redirect to user management dashboard
     res.redirect('/admin/users');
   } catch (err) {
     console.error('Error adding user:', err);
@@ -138,7 +136,8 @@ router.post('/user/delete/:id', ensureAuth, ensureAdmin, async (req, res) => {
     // Perform a permanent delete
     await User.deleteOne({ _id: usrId });
 
-    return res.send({ message: 'User permanently deleted successfully' });
+    // Redirect to user management dashboard
+    res.redirect('/admin/users');
   } catch (err) {
     console.error('Error deleting user:', err);
     res.status(500).send('Internal server error while deleting user.');
