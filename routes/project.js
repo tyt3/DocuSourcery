@@ -447,24 +447,54 @@ router.get('/projects', async (req, res) => {
 });
 
 // Pin Project
-router.get('/project/pin/:id', async (req, res) => {
+router.get('/project/pin/:id', ensureAuth, async (req, res) => {
   const projectId = req.params.id;
   try {
+    const project = await Project.findById(projectId);
+    if (!project) {
+      return res.status(404).send("Project not found.");
+    }
     const pinUser = await User.findOneAndUpdate(
       { _id: req.user.id }, // Query to find the user making the request
       { $addToSet: { pinnedProjects: projectId } }, // Add project to pinned list
       { new: true } // Return the updated tag
     );
-    if (!pinUser) {
-      console.log(`User with ID ${req.user.id} not found.`);
-    } else {
-      console.log(`Project ${projectId} appended to user's pinned projects successfully.`);
-    }
-    res.redirect(`/dashboard`);
+    
+    // Redirect to referring page
+    const previousPage = req.header('referer') || '/dashbord';
+    res.redirect(previousPage);
     
   } catch (err) {
     console.error("Failed to pin the selected project:", err);
     res.status(500).send("Server error occurred while trying to pin a project.");
+  }
+});
+
+// Unpin Project
+router.get('/project/unpin/:id', ensureAuth, async (req, res) => {
+  const projectId = req.params.id;
+  const userId = req.user.id;
+
+  try {
+    // Find the project by ID
+    const project = await Project.findById(projectId);
+    if (!project) {
+      return res.status(404).json({ error: 'Project not found' });
+    }
+
+    // Check if the project is pinned by the authenticated user
+    const user = await User.findById(userId);
+    if (user.pinnedProjects.includes(projectId)) {
+      // Remove the project from the user's pinnedProjects array
+      user.pinnedProjects.pull(projectId);
+      await user.save();
+    }
+
+    // Return to the previous page or dashboard
+    res.redirect(req.get('referer') || '/dashboard');
+  } catch (error) {
+    console.error('Error unpinning project:', error);
+    res.status(500).json({ error: 'Internal server error' });
   }
 });
 
