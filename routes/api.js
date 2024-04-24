@@ -53,7 +53,7 @@ router.get("/users", async function(req, res) {
 
 // Get user by username
 router.get("/users/:username", async function(req, res) {
-  const userName = req.params.slug;
+  const userName = req.params.username;
   try {
     const user = await User.findOne({ username: userName });
     if (user) {
