@@ -277,7 +277,7 @@ router.post(
 );
 
 // Delete Project
-router.delete("/project/:id", ensureAuth, async (req, res) => {
+router.post("/project/delete/:id", ensureAuth, async (req, res) => {
     // TODO: Implement
     // Must be authenticated
     // Redirect to Dashboard
@@ -293,6 +293,7 @@ router.delete("/project/:id", ensureAuth, async (req, res) => {
       slug,
       description,
       tags,
+      trash,
       noLogin,
       canDuplicate,
       isPublic,
@@ -312,6 +313,7 @@ router.delete("/project/:id", ensureAuth, async (req, res) => {
     } else {
       // Soft delete: mark the project as deleted.
       project.deleted = true;
+      project.trash = true;
       project.deletedDate = new Date();
       project.deletedBy = req.user._id; // assuming req.user._id contains the ID of the authenticated user
       await project.save();
