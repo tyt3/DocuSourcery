@@ -256,8 +256,11 @@ router.get('/dashboard', ensureAuth, async (req, res) => {
       'users.role': 3,
       deleted: true
     }).populate({
+      path: 'createdBy',
+      select: 'username firstName lastName email' // Only fetch the username and email of the creator
+    }).populate({
       path: 'deletedBy',
-      select: 'username email' // Only fetch the username and email of the deleter
+      select: 'username firstName lastName email' // Only fetch the username and email of the deleter
     });
 
     if (trash) {
