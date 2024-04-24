@@ -896,27 +896,29 @@ router.get('/project/:projectSlug/:documentSlug/page/create', ensureAuth, async 
 });
 
 // Create Page
-router.post('/page/create/:projectId/:docId', ensureAuth, async (req, res) => {
-  const { projectId, docId } = req.params;
+router.post("/page/create/:docId", ensureAuth, async (req, res) => {
+  const docId = req.params;
   const { title, slug, body, isPublic } = req.body;
 
-   // Get project and document, error if not found 
-   const project = await Project.findById(projectId);
-    if (!project) {
-      console.log('No project found with ID:', projectId);
-      return res.status(404).send('Project not found.');
-    }
-    // Confirm that document is in project
-    const document = await Document.findOne({ _id: docId, projectId: project._id });
-    if (!document) {
-      console.log('No document found with ID:', docId);
-      return res.status(404).send("Document not found or does not belong to the specified project.");
-    }
+  // Get project and document, error if not found
+  const document = await Document.findById(docId);
+  if (!document) {
+    console.log("No document found with ID:", docId);
+    return res
+      .status(404)
+      .send("Document not found or does not belong to the specified project.");
+  }
+  
+  const project = await Project.findById(document.projectId);
+  if (!project) {
+    console.log("No project found with ID:", project.projectId);
+    return res.status(404).send("Project not found.");
+  }
 
   // TODO: Validate form fields
-  
+
   // Convert description field Markdown to HTML
-  const bodyHTML = marked.parse(body);  
+  const bodyHTML = marked.parse(body);
 
   // Get order for page
   const order = document.pages.length + 1;
@@ -936,16 +938,15 @@ router.post('/page/create/:projectId/:docId', ensureAuth, async (req, res) => {
       public: publicChoice,
       order: order,
       createdBy: req.user._id,
-      projectId: projectId,
-      docId: docId
+      projectId: project.projectId,
+      documentId: docId,
     });
 
     const newPage = await page.save();
     res.status(201).json(newPage); // Return the created page as JSON
-
   } catch (err) {
     console.error(err);
-    res.status(500).send('Internal Server Error');
+    res.status(500).send("Internal Server Error");
   }
 });
 
