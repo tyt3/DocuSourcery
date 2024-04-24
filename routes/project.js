@@ -316,7 +316,7 @@ router.post("/project/delete/:id", ensureAuth, async (req, res) => {
       project.deletedDate = new Date();
       project.deletedBy = req.user._id; // assuming req.user._id contains the ID of the authenticated user
       await project.save();
-      res.redirect(`/project/${project.slug}/edit`);
+      res.redirect(`/dashboard`);
     }
   } catch (err) {
     console.error("Error deleting project:", err);
@@ -736,7 +736,7 @@ router.post("/document/delete/:id", ensureAuth, async (req, res) => {
         return res.status(404).json({ error: "Project not found" });
       }
       // Redirect to edit page view
-      res.redirect(`/project/${project.slug}/${document.slug}/edit`);
+      res.redirect(`/project/${project.slug}/edit`);
     } else {
       // Perform a permanent delete
       await Document.deleteOne({ _id: documentId });
@@ -745,7 +745,7 @@ router.post("/document/delete/:id", ensureAuth, async (req, res) => {
         return res.status(404).json({ error: "Project not found" });
       }
       // Redirect to edit page view
-      res.redirect(`/project/${project.slug}`);
+      res.redirect(`/project/${project.slug}/edit`);
       //return res.send({ message: "Document permanently deleted successfully" });
     }
   } catch (err) {
