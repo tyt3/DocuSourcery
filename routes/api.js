@@ -106,7 +106,41 @@ router.get("/projects/:slug/documents", async function(req, res) {
       res.status(200).json(docs);
     }
     else {
-      res.status(204).json({'No Response': 'No documents exist with the provided project'});
+      res.status(204).json({'No Response': 'No documents exist under the provided project'});
+    }
+  } catch (err) {
+    res.status(500).send(err)
+  }
+});
+
+// Get all pages under a project
+router.get("/projects/:slug/pages", async function(req, res) {
+  const projectSlug = req.params.slug;
+  try {
+    const project = await Project.findOne({ slug: projectSlug });
+    if (project) {
+	  const pages = await Page.find({'projectId': project._id }).exec();
+      res.status(200).json(pages);
+    }
+    else {
+      res.status(204).json({'No Response': 'No pages exist under the provided project'});
+    }
+  } catch (err) {
+    res.status(500).send(err)
+  }
+});
+
+// Get all pages under a document
+router.get("/documents/:slug/pages", async function(req, res) {
+  const documentSlug = req.params.slug;
+  try {
+    const document = await Document.findOne({ slug: documentSlug });
+    if (document) {
+	  const pages = await Page.find({'_id': { $in: document.pages}}).exec();
+      res.status(200).json(docs);
+    }
+    else {
+      res.status(204).json({'No Response': 'No pages exist under the provided document'});
     }
   } catch (err) {
     res.status(500).send(err)
