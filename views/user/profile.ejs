@@ -1,3 +1,11 @@
+<% function truncate(str, maxLength) {
+  if (str.length > maxLength) {
+      return str.slice(0, maxLength) + '...';
+  } else {
+      return str;
+  }
+} %>
+
 <%- include('../baseHeader') -%>
 <!-- Main Content -->
 <div class="container main-content my-5">
@@ -52,23 +60,20 @@
     <% projects.forEach(function(project) { %>
     <div class="col-md-6 col-xl-4">
       <div class="card h-100 shadow-sm">
+        <% if (user) { %>
         <div class="card-header">
-          <% if (user) { %>
-          <div class="card-header">
-            <div class="row">
-              <div class="col text-end">
-                <% const isPinned = user.pinnedProjects.includes(project._id)  %>
-                <% if (isPinned) { %>
-                <a href="/unpin/<%= project._id %>" data-bs-toggle="tooltip" 
-                  data-bs-placement="top" data-bs-title="Unpin project"><span 
-                  class="material-symbols-outlined">keep_off</span></a>
-                <% } else { %>
-                <a href="/pin/<%= project._id %>" data-bs-toggle="tooltip" 
-                  data-bs-placement="top" data-bs-title="Pin project"><span 
-                  class="material-symbols-outlined">keep</span></a>
-                <% } %>
-              <!-- <span class="material-symbols-outlined">edit</span>
-              <span class="material-symbols-outlined">delete</span> -->
+          <div class="row">
+            <div class="col text-end">
+              <% const isPinned = user.pinnedProjects.includes(project._id)  %>
+              <% if (isPinned) { %>
+              <a href="/unpin/<%= project._id %>" data-bs-toggle="tooltip" 
+                data-bs-placement="top" data-bs-title="Unpin project"><span 
+                class="material-symbols-outlined">keep_off</span></a>
+              <% } else { %>
+              <a href="/pin/<%= project._id %>" data-bs-toggle="tooltip" 
+                data-bs-placement="top" data-bs-title="Pin project"><span 
+                class="material-symbols-outlined">keep</span></a>
+              <% } %>
             </div>
           </div>
         </div>
@@ -77,10 +82,14 @@
           <h5 class="card-title">
             <a href="#"><%= project.title %></a>
           </h5>
-          <h* class="card-subtitle">
+          <h6 class="card-subtitle">
             <%= project.subtitle %>
+          </h6>
           <p class="card-text mt-2">
-            <strong>Last modified</strong>: <%= project.dateModified %>
+            <%= truncate(project.description, 500) %>
+          </p>
+          <p class="card-text mt-2">
+            <strong>Last modified</strong>: <%= moment(project.modifiedDate).format('MMM D, YYYY, h:MM A') %>
           </p>
         </div>
         <div class="card-footer border-top-0 mb-2 bg-white">
@@ -88,7 +97,6 @@
         </div>
       </div>
     </div>
-    <!-- End loop -->
     <% }); %>
   </div>
   <%  } else { %>
