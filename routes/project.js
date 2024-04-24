@@ -447,7 +447,7 @@ router.get('/projects', async (req, res) => {
 });
 
 // Pin Project
-router.get('/project/pin/:id', ensureAuth, async (req, res) => {
+router.get('/pin/:id', ensureAuth, async (req, res) => {
   const projectId = req.params.id;
   try {
     const project = await Project.findById(projectId);
@@ -470,7 +470,7 @@ router.get('/project/pin/:id', ensureAuth, async (req, res) => {
 });
 
 // Unpin Project
-router.get('/project/unpin/:id', ensureAuth, async (req, res) => {
+router.get('/unpin/:id', ensureAuth, async (req, res) => {
   const projectId = req.params.id;
   const userId = req.user.id;
 
