@@ -45,16 +45,16 @@
         <div class="card-header">
           <div class="row">
             <div class="col text-end">
-                <% const isPinned = user.pinnedProjects.includes(project.id)  %>
-                <% if (isPinned) { %>
-                  <a href="/unpin/<%= project._id %>"  data-bs-toggle="tooltip" 
-                    data-bs-placement="top" data-bs-title="Unpin project"><img class="card-header-icons"
-                      src="https://cdn.glitch.global/7b5eb0c7-6676-473b-a061-efb01c2ba784/push_pin_w_strike_FILL0_wght400_GRAD0_opsz48.svg?v=1713672190839"></a>
-                <% } else { %>
-                    <a href="/pin/<%= project._id %>" data-bs-toggle="tooltip" 
-                      data-bs-placement="top" data-bs-title="Pin project"><img class="card-header-icons" 
-                      src="https://cdn.glitch.global/7b5eb0c7-6676-473b-a061-efb01c2ba784/push_pin_FILL0_wght400_GRAD0_opsz48.svg?v=1713672185447"></a>
-                <% } %>
+              <% const isPinned = user.pinnedProjects.includes(project.id)  %>
+              <% if (isPinned) { %>
+                <a href="/unpin/<%= project._id %>"  data-bs-toggle="tooltip" 
+                  data-bs-placement="top" data-bs-title="Unpin project"><img class="card-header-icons"
+                    src="https://cdn.glitch.global/7b5eb0c7-6676-473b-a061-efb01c2ba784/push_pin_w_strike_FILL0_wght400_GRAD0_opsz48.svg?v=1713672190839"></a>
+              <% } else { %>
+                  <a href="/pin/<%= project._id %>" data-bs-toggle="tooltip" 
+                    data-bs-placement="top" data-bs-title="Pin project"><img class="card-header-icons" 
+                    src="https://cdn.glitch.global/7b5eb0c7-6676-473b-a061-efb01c2ba784/push_pin_FILL0_wght400_GRAD0_opsz48.svg?v=1713672185447"></a>
+              <% } %>
             </div>
           </div>
         </div>
