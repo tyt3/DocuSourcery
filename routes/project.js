@@ -576,10 +576,7 @@ router.post('/document/create/:projectId', ensureAuth, async (req, res) => {
     const descriptionHTML = marked.parse(description);
 
     // Get public value
-    let publicChoice = false;
-    if (isPublic === "on") {
-      publicChoice = true;
-    }
+    let publicChoice = switchToBool(isPublic);
 
     // Create a new document
     const newDocument = new Document({
@@ -677,10 +674,7 @@ router.post('/document/edit/:id', ensureAuth, async (req, res) => {
     }
 
     // Get public value
-    let publicChoice = false;
-    if (isPublic === "on") {
-      publicChoice = true;
-    }
+    let publicChoice = switchToBool(isPublic);
 
     // Convert description Markdown to HTML
     const descriptionHTML = marked.parse(description);
@@ -924,10 +918,7 @@ router.post("/page/create/:docId", ensureAuth, async (req, res) => {
   const order = document.pages.length + 1;
 
   // Get public value
-  let publicChoice = false;
-  if (isPublic === "on") {
-    publicChoice = true;
-  }
+  let publicChoice = switchToBool(isPublic);
 
   try {
     // Assuming you have a Page schema with projectId and docId as references
@@ -992,7 +983,7 @@ router.get('/project/:projectSlug/:documentSlug/:pageSlug/edit', ensureAuth, asy
     const order = document.pages ? document.pages.length + 1 : 1;
 
     // Get public value
-    let publicChoice = isPublic === "on";
+    let publicChoice = switchToBool(isPublic);
 
     // Create and save the new page
     const newPage = await Page.create({

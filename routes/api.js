@@ -233,7 +233,7 @@ router.get("/documents/:slug/pages", async function(req, res) {
   try {
     const document = await Document.findOne({ slug: documentSlug });
     if (document) {
-	  if (document.pages) {
+	  if (document.pages.length > 0) {
 		const pages = await Page.find({'_id': { $in: document.pages}}).exec();
 		res.status(200).json(pages);
 	  }
