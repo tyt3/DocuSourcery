@@ -39,7 +39,7 @@ function formatModDate(projectList) {
   return projectList;
 }
 
-function switchToBool(switchField) {
+export function switchToBool(switchField) {
   let choice = false;
   if (switchField === "on") {
     choice = true;
@@ -47,7 +47,7 @@ function switchToBool(switchField) {
   return choice;
 }
 
-async function appendProjectToTags(tagList, projectId) {
+export async function appendProjectToTags(tagList, projectId) {
   try {
     // Update all tags in tagList array
     await Promise.all(tagList.map(async (tagId) => {

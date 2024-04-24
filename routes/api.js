@@ -1,9 +1,11 @@
 // // Route handlers
 const express = require('express');
 const router = express.Router();
+const marked = require('marked');
 
 // // Import middleware
-const { checkApiKey } = require('./middleware');
+const { checkApiKey, validateTitles, validateSlug } = require('./middleware');
+import { switchToBool, appendProjectToTags } = from './routes/project';
 
 // // Import data models
 const User = require('../models/user');
@@ -27,7 +29,7 @@ router.get("/users", async function(req, res) {
 });
 
 // Get user by username
-router.get("/projects/:username", async function(req, res) {
+router.get("/users/:username", async function(req, res) {
   const userName = req.params.slug;
   try {
     const user = await User.findOne({ username: userName });
@@ -68,6 +70,74 @@ router.get("/projects/:slug", async function(req, res) {
     }
   } catch (err) {
     res.status(500).send(err)
+  }
+});
+
+// Create Project
+router.post('/projects/create', async (req, res) => {
+  const { title, subtitle, slug, description, tags, noLogin, canDuplicate, isPublic } = req.params.body;
+
+  let linkedTags = [];
+  try {
+    if (tags) {
+      const tagsArray = tags.split(',').map(tag => tag.trim());
+
+      for (const tagTitle of tagsArray) {
+        let tag = await Tag.findOne({ title: tagTitle });
+
+        if (!tag) {
+          // Create a new tag if it doesn't exist
+          tag = new Tag({
+            title: tagTitle,
+            slug: tagTitle.replace(/\s+/g, '-').toLowerCase(), // Replace whitespace with hyphens
+            createdBy: req.user._id
+          });
+          await tag.save();
+        }
+        linkedTags.push(tag._id);
+      }
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).send(`An error occurred during tag handling: ${err}`);
+  }
+
+  try {
+    let publicChoice = switchToBool(isPublic);
+    let loginChoice = switchToBool(noLogin);
+    let dupChoice = switchToBool(canDuplicate);
+
+    // Convert description markdown to HTML
+    const descriptionHTML = marked.parse(description);
+    const project = new Project({
+      slug: slug,
+      title: title,
+      subtitle: subtitle,
+      description: descriptionHTML,
+      createdBy: req.user._id,
+      public: publicChoice,
+      tags: linkedTags,
+      permissions: {noLogin: loginChoice, duplicatable: dupChoice},
+      users: [
+        {
+          user: req.user._id,
+          role: 3
+        }
+      ]
+    });
+
+    const newProject = await project.save();
+
+    // Update all tags in linkedTags array to add the new project ID to its projects array
+    if (linkedTags) {
+      appendProjectToTags(linkedTags, newProject._id);
+    }
+
+    // Return the new project
+    res.json(newProject);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send(`An error occurred during project creation: ${err}`);
   }
 });
 
@@ -146,7 +216,7 @@ router.get("/tags", async function(req, res) {
 router.get("/tags/:slug", async function(req, res) {
   const tagSlug = req.params.slug;
   try {
-    const tag = await Tag.findOne({ slug: pageSlug });
+    const tag = await Tag.findOne({ slug: tagSlug });
     if (tag) {
       res.status(200).json(page);
     }
