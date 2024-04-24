@@ -47,6 +47,28 @@ function switchToBool(switchField) {
   return choice;
 }
 
+async function appendProjectToTags(tagList, projectId) {
+  try {
+    // Update all tags in tagList array
+    await Promise.all(tagList.map(async (tagId) => {
+        // Update the tag by its ObjectId
+        const updatedTag = await Tag.findOneAndUpdate(
+            { _id: tagId, projects: { $ne: projectId } }, // Query to find the tag and check if projectId is not already present
+            { $addToSet: { projects: projectId } }, // Update operation
+            { new: true } // Return the updated document
+        );
+
+        if (!updatedTag) {
+            console.log(`Project ${projectId} already exists in tag ${tagId} or tag not found.`);
+        } else {
+            console.log(`Project ${projectId} appended to tag ${tagId} successfully.`);
+        }
+    }));
+  } catch (error) {
+      console.error('Error occurred:', error);
+  }
+}
+
 // PROJECT
 
 // Create Project View
@@ -121,20 +143,7 @@ router.post('/project/create', ensureAuth, validateTitles, validateSlug, async (
 
     // Update all tags in linkedTags array to add the new project ID to its projects array
     if (linkedTags) {
-      await Promise.all(linkedTags.map(async (tagId) => {
-        // Update the tag by its ObjectId
-        const updatedTag = await Tag.findOneAndUpdate(
-            { _id: tagId }, // Query to find the tag
-            { $addToSet: { projects: newProject._id } }, // Update operation
-            { new: true } // Return the updated tag
-        );
-
-        if (!updatedTag) {
-            console.log(`Tag with ID ${tagId} not found.`);
-        } else {
-            console.log(`Project ${projectId} appended to tag ${tagId} successfully.`);
-        }
-      }));
+      appendProjectToTags(linkedTags, newProject._id);
     }
 
     // Render the new project
@@ -195,11 +204,7 @@ router.post(
   validateSlug,
   async (req, res) => {
     // TODO: Implement
-    // Apply same middleware as in project/create to validate form fields
-    // Convert description field Markdown to HTML
-    // Get form fields from request
     // Validate input, flash error message and reload if any errors
-    // Update object with new data
 
     const projectId = req.params.id;
     const {
@@ -223,11 +228,9 @@ router.post(
       // Convert description Markdown to HTML
       const descriptionHTML = marked.parse(description);
 
-      // Get public value
-      let publicChoice = false;
-      if (isPublic === "on") {
-        publicChoice = true;
-      }
+      let publicChoice = switchToBool(isPublic);
+      let loginChoice = switchToBool(noLogin);
+      let dupChoice = switchToBool(canDuplicate);
 
       // Update the project fields
       project.title = title || project.title;
@@ -256,10 +259,14 @@ router.post(
       project.tags = linkedTags;
 
       // Update permissions based on form input
-      project.permissions.set("noLogin", noLogin);
-      project.permissions.set("duplicatable", canDuplicate);
+      project.permissions.set("noLogin", loginChoice);
+      project.permissions.set("duplicatable", dupChoice);
 
-      await project.save();
+      const updProject = await project.save();
+
+      if (linkedTags) {
+        appendProjectToTags(linkedTags, updProject._id);
+      }
 
       res.redirect(`/project/${project.slug}/edit`);
     } catch (err) {
