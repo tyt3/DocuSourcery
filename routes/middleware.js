@@ -162,15 +162,17 @@ function validatePassword(req, res, next) {
 // Validate Slug
 const validateSlug = async (req, res, next) => {
   try {
-    const { slug } = req.body;
+    const { slug, isUpdate } = req.body;
     let valid = true;
     const errors = [];
 
     // Check if any other project uses the same slug
-    const duplicateSlug = await Project.findOne({ slug: slug });
-    if (duplicateSlug) {
-      valid = false;
-      errors.push("Slug must be unique.");
+    if (req.originalUrl === '/project/create') {
+      const duplicateSlug = await Project.findOne({ slug: slug });
+      if (duplicateSlug) {
+        valid = false;
+        errors.push("Slug must be unique.");
+      }
     }
     // Check for valid slug lengths
     if (!slug) {
