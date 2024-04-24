@@ -237,7 +237,7 @@ router.post(
       project.subtitle = subtitle || project.subtitle; // Keep existing subtitle if none provided
       project.slug = slug || project.slug;
       project.description = descriptionHTML || document.description;
-      project.public = publicChoice !== undefined ? isPublic : project.public;
+      project.public = publicChoice !== undefined ? publicChoice : project.public;
 
       // Handle tags similarly as in the project creation
       let linkedTags = [];
