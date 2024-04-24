@@ -87,10 +87,16 @@ router.post('/user/edit/:id', ensureAuth, ensureAdmin, async (req, res) => {
      }
 
     // Hash the password
-    const hashedPassword = null;
+    let hashedPassword = null;
     if (password) {
        hashedPassword = await bcrypt.hash(password, 10);
     } 
+
+    // Get admin status
+    let adminStatus = false;
+    if (admin === "on") {
+      adminStatus = true;
+    }
 
     // Update the usr fields
     usr.firstName = firstName || usr.firstName;
@@ -98,7 +104,7 @@ router.post('/user/edit/:id', ensureAuth, ensureAdmin, async (req, res) => {
     usr.username = username || usr.username;
     usr.email = email || usr.email;
     usr.password = hashedPassword !== null ? hashedPassword : usr.password;
-    usr.admin = admin !== undefined ? admin : usr.admin;
+    usr.admin = adminStatus;
 
     // Save the updated usr
     await usr.save();
