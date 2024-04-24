@@ -293,7 +293,6 @@ router.post("/project/delete/:id", ensureAuth, async (req, res) => {
       slug,
       description,
       tags,
-      trash,
       noLogin,
       canDuplicate,
       isPublic,
@@ -361,6 +360,7 @@ router.post("/project/restore/:id", ensureAuth, async (req, res) => {
 
     // Restore the project by setting `deleted` to false and clearing deletion details
     project.deleted = false;
+    project.trash = false;
     project.deletedDate = null;
     project.deletedBy = null;
 
