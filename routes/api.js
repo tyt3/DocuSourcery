@@ -16,17 +16,148 @@ const Tag = require('../models/tag');
 // USERS
 
 // Get all users 
-router.get("/users", async function(req, res){
-    await User.find({})
-       .then(users => {
-         res.json(users);
-       })
-       .catch(err => {
-         res.status(500).send(err);
-       });
-   });
+router.get("/users", async function(req, res) {
+  await User.find({})
+    .then(users => {
+      res.json(users);
+    })
+    .catch(err => {
+      res.status(500).send(err);
+    });
+});
 
-// // PROJECT
+// Get user by username
+router.get("/projects/:username", async function(req, res) {
+  const userName = req.params.slug;
+  try {
+    const user = await User.findOne({ username: userName });
+    if (user) {
+      res.status(200).json(user);
+    }
+    else {
+      res.status(204).json({'No Response': 'No users exist with the provided username'});
+    }
+  } catch (err) {
+    res.status(500).send(err)
+  }
+});
+
+// PROJECT
+
+// Get all projects
+router.get("/projects", async function(req, res) {
+  await Project.find({})
+    .then(projects => {
+      res.status(200).json(projects);
+    })
+    .catch(err => {
+      res.status(500).send(err);
+    });
+});
+
+// Get project by slug
+router.get("/projects/:slug", async function(req, res) {
+  const projectSlug = req.params.slug;
+  try {
+    const project = await Project.findOne({ slug: projectSlug });
+    if (project) {
+      res.status(200).json(project);
+    }
+    else {
+      res.status(204).json({'No Response': 'No projects exist with the provided slug'});
+    }
+  } catch (err) {
+    res.status(500).send(err)
+  }
+});
+
+// DOCUMENT
+
+// Get all documents
+router.get("/documents", async function(req, res) {
+  await Document.find({})
+    .then(documents => {
+      res.status(200).json(documents);
+    })
+    .catch(err => {
+      res.status(500).send(err);
+    });
+});
+
+// Get document by slug
+router.get("/documents/:slug", async function(req, res) {
+  const documentSlug = req.params.slug;
+  try {
+    const document = await Document.findOne({ slug: documentSlug });
+    if (project) {
+      res.status(200).json(document);
+    }
+    else {
+      res.status(204).json({'No Response': 'No documents exist with the provided slug'});
+    }
+  } catch (err) {
+    res.status(500).send(err)
+  }
+});
+
+// PAGE
+
+// Get all pages
+router.get("/pages", async function(req, res) {
+  await Page.find({})
+    .then(pages => {
+      res.status(200).json(pages);
+    })
+    .catch(err => {
+      res.status(500).send(err);
+    });
+});
+
+// Get page by slug
+router.get("/pages/:slug", async function(req, res) {
+  const pageSlug = req.params.slug;
+  try {
+    const page = await Page.findOne({ slug: pageSlug });
+    if (page) {
+      res.status(200).json(page);
+    }
+    else {
+      res.status(204).json({'No Response': 'No pages exist with the provided slug'});
+    }
+  } catch (err) {
+    res.status(500).send(err)
+  }
+});
+
+// TAG
+
+// Get all tags
+router.get("/tags", async function(req, res) {
+  await Tag.find({})
+    .then(tags => {
+      res.status(200).json(tags);
+    })
+    .catch(err => {
+      res.status(500).send(err);
+    });
+});
+
+// Get tag by slug
+router.get("/tags/:slug", async function(req, res) {
+  const tagSlug = req.params.slug;
+  try {
+    const tag = await Tag.findOne({ slug: pageSlug });
+    if (tag) {
+      res.status(200).json(page);
+    }
+    else {
+      res.status(204).json({'No Response': 'No tags exist with the provided slug'});
+    }
+  } catch (err) {
+    res.status(500).send(err)
+  }
+});
+
 
 // // Create Project
 // router.post('/project/create', checkApiKey, async (req, res) => {
