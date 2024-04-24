@@ -46,7 +46,7 @@ router.get('/users', async (req, res) => {
 
 
 // Add User
-router.post('/user/add', ensureAuth, ensureAdmin, checkUsernameAndEmail, async (req, res) => {
+router.post('/user/add', ensureAuth, ensureAdmin, checkUsernameAndEmail, validatePassword, async (req, res) => {
   const { firstName, lastName, username, email, password, passwordConf, admin } = req.body;
 
   try {
@@ -75,7 +75,7 @@ router.post('/user/add', ensureAuth, ensureAdmin, checkUsernameAndEmail, async (
 
 
 // Edit User
-router.post('/user/edit/:id', ensureAuth, ensureAdmin, checkUsernameAndEmail, validatePassword, async (req, res) => {
+router.post('/user/edit/:id', ensureAuth, ensureAdmin, checkUsernameAndEmail, async (req, res) => {
   const { firstName, lastName, username, email, password, passwordConf, admin } = req.body;
   const userId = req.params.id;
   
