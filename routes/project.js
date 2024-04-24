@@ -460,9 +460,8 @@ router.get('/project/pin/:id', ensureAuth, async (req, res) => {
       { new: true } // Return the updated tag
     );
     
-    // Redirect to referring page
-    const previousPage = req.header('referer') || '/dashbord';
-    res.redirect(previousPage);
+    // Redirect to dashboard
+    res.redirect('/dashboard');
     
   } catch (err) {
     console.error("Failed to pin the selected project:", err);
@@ -490,8 +489,8 @@ router.get('/project/unpin/:id', ensureAuth, async (req, res) => {
       await user.save();
     }
 
-    // Return to the previous page or dashboard
-    res.redirect(req.get('referer') || '/dashboard');
+    // Redirect to dashboard
+    res.redirect('/dashboard');
   } catch (error) {
     console.error('Error unpinning project:', error);
     res.status(500).json({ error: 'Internal server error' });
