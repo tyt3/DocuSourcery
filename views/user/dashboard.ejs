@@ -141,10 +141,10 @@
                       <% if (project.deleted) { %>
                         <tr>
                           <td><%= project.title %></td>
-                          <td><%= project.deletedDate %></td>
-                          <td><%= project.deletedBy %></td>
-                          <td><%= project.createdDate %></td>
-                          <td><%= project.createdBy %></td>
+                          <td><%= moment(project.deletedDate).format('MMM D, YYYY') %></td>
+                          <td><%= project.deletedBy.firstName %> <%= project.deletedBy.lastName %></td>
+                          <td><%= moment(project.createdDate).format('MMM D, YYYY') %></td>
+                          <td><%= project.createdBy.firstName %> <%= project.createdBy.lastName %></td>
                         </tr>
                       <% } %>
                     <% }); %>
