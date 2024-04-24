@@ -5,7 +5,7 @@ const marked = require('marked');
 
 // // Import middleware
 const { checkApiKey, validateTitles, validateSlug } = require('./middleware');
-import { switchToBool, appendProjectToTags } = from './routes/project';
+// import { switchToBool, appendProjectToTags } from './routes/project';
 
 // // Import data models
 const User = require('../models/user');
@@ -13,6 +13,29 @@ const Project = require('../models/project');
 const Document = require('../models/document');
 const Page = require('../models/page');
 const Tag = require('../models/tag');
+
+
+// FUNCTIONS
+function formatModDate(projectList) {
+  projectList.forEach(project => {
+    // Convert the 'modifiedDate' field to a Moment.js object
+    var modifiedDateMoment = moment(project.modifiedDate);
+
+    // Format the Moment.js object as 'MM/DD/YYYY HH:MM:SS'
+    var formattedDate = modifiedDateMoment.format('MM/DD/YYYY HH:mm:ss');
+
+    // Update the 'modifiedDate' field in the project with the formatted date string
+    project.dateModified = formattedDate;
+  });
+  return projectList;
+}
+
+function switchToBool(switchField) {
+  let choice = false;
+  if (switchField === "on") {
+    choice = true;
+  }
+  return choice;
 
 
 // USERS
