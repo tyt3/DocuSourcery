@@ -150,101 +150,102 @@ aria-hidden="true">
         <button type="button" class="btn-close" data-bs-dismiss="modal" 
           aria-label="Close"></button>
       </div>
-      <div class="modal-body">
-        <div class="row">
-          <div class="col">
-            <div class="form-group">
-              <label for="firstName" class="bold">First Name
-                <span class="required-field">*</span>
-              </label>
-              <input 
-                type="text" 
-                class="form-control" 
-                id="firstName" 
-                name="firstName" 
-                value="<%= usr.firstName %>" 
-                required>
+      <form method="POST" target="_parent" action="/admin/user/edit/<%= usr.id %>">
+        <div class="modal-body">
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <label for="firstName" class="bold">First Name
+                  <span class="required-field">*</span>
+                </label>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  id="firstName" 
+                  name="firstName" 
+                  value="<%= usr.firstName %>" 
+                  required>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <label for="lastName" class="bold">Last Name
+                  <span class="required-field">*</span>
+                </label>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  id="lastName" 
+                  name="lastName" 
+                  value="<%= usr.lastName %>" 
+                  required>
+              </div>
             </div>
           </div>
-          <div class="col">
-            <div class="form-group">
-              <label for="lastName" class="bold">Last Name
-                <span class="required-field">*</span>
-              </label>
-              <input 
-                type="text" 
-                class="form-control" 
-                id="lastName" 
-                name="lastName" 
-                value="<%= usr.lastName %>" 
-                required>
-            </div>
+          <div class="form-group">
+            <label for="username" class="bold">Username
+              <span class="required-field">*</span>
+            </label>
+            <input 
+              type="text" 
+              class="form-control" 
+              id="username" 
+              name="username" 
+              value="<%= usr.username %>"
+              maxlength="10">
+          </div>
+          <div class="form-group">
+            <label for="email" class="bold">Email
+              <span class="required-field">*</span>
+            </label>
+            <input 
+              type="email" 
+              class="form-control" 
+              id="email" 
+              name="email" 
+              value="<%= usr.email %>"
+              required>
+          </div>
+          <div class="form-group">
+            <label for="password" class="bold">Current Password</label>
+            <input type="password" class="form-control" id="current_password" name="current_password">
+            <small><span class="fw-medium">Password must</span>
+              <ul class="mb-0">
+                <li>Contain at least 8 characters</li>
+                <li>Contain no more than 20 characters</li>
+                <li>Contain at least 1 upper case letter</li>
+                <li>Contain at least 1 number</li>
+                <li>Contain at least 1 special character</li>
+              </ul>
+            </small>
+          </div>
+          <div class="form-group">
+            <label for="password" class="bold">New Password</label>
+            <input type="password" class="form-control" id="password" name="password" placeholder="">
+          </div>
+          <div class="form-group">
+            <label for="password" class="bold">Confirm Password
+            </label>
+            <input type="password" class="form-control" id="passwordConf" name="passwordConf" placeholder="">
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="admin" name="admin"
+              value="<%= usr.admin %>"
+              <% if (usr.admin) { %>
+                checked
+              <% } %>
+              >
+            <label class="form-check-label" for="admin">
+              Make user an admin
+            </label>
           </div>
         </div>
-        <div class="form-group">
-          <label for="username" class="bold">Username
-            <span class="required-field">*</span>
-          </label>
-          <input 
-            type="text" 
-            class="form-control" 
-            id="username" 
-            name="username" 
-            value="<%= usr.username %>"
-            maxlength="10">
+        <div class="modal-footer">
+          <div class="col-md-12 text-center">
+            <button type="submit" class="btn btn-ds-primary">Save Changes</button>
+          </div>
         </div>
-        <div class="form-group">
-          <label for="email" class="bold">Email
-            <span class="required-field">*</span>
-          </label>
-          <input 
-            type="email" 
-            class="form-control" 
-            id="email" 
-            name="email" 
-            value="<%= usr.email %>"
-            required>
-        </div>
-        <div class="form-group">
-          <label for="password" class="bold">Current Password</label>
-          <input type="password" class="form-control" id="current_password" name="current_password">
-          <small><span class="fw-medium">Password must</span>
-            <ul class="mb-0">
-              <li>Contain at least 8 characters</li>
-              <li>Contain no more than 20 characters</li>
-              <li>Contain at least 1 upper case letter</li>
-              <li>Contain at least 1 number</li>
-              <li>Contain at least 1 special character</li>
-            </ul>
-          </small>
-        </div>
-        <div class="form-group">
-          <label for="password" class="bold">New Password</label>
-          <input type="password" class="form-control" id="password" name="password" placeholder="">
-        </div>
-        <div class="form-group">
-          <label for="password" class="bold">Confirm Password
-          </label>
-          <input type="password" class="form-control" id="passwordConf" name="passwordConf" placeholder="">
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="admin" name="admin"
-            value="<%= usr.admin %>"
-            <% if (usr.admin) { %>
-              checked
-            <% } %>
-            >
-          <label class="form-check-label" for="admin">
-            Make user an admin
-          </label>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <form method="POST" target="_parent"
-          action="/admin/user/edit/<%= usr.id %>">
-          <button type="submit" class="btn btn-ds-primary">Save Changes</button>
-        </form>
-      </div>
+      </form>
     </div>
   </div>
 </div>

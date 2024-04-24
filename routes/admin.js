@@ -87,7 +87,9 @@ router.post('/user/edit/:id', ensureAuth, ensureAdmin, checkUsernameAndEmail, as
      }
 
     // Hash the password
-    const hashedPassword = await bcrypt.hash(password, 10);
+    if (password) {
+      const hashedPassword = await bcrypt.hash(password, 10);
+    }
 
     // Update the usr fields
     usr.firstName = firstName || usr.firstName;
