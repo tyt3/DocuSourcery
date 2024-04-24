@@ -50,8 +50,14 @@ router.post('/user/add', ensureAuth, ensureAdmin, checkUsernameAndEmail, validat
   const { firstName, lastName, username, email, password, passwordConf, admin } = req.body;
 
   try {
-       // Hash the password
+    // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Get admin status
+    let adminStatus = false;
+    if (admin === "on") {
+      adminStatus = true;
+    }
 
     // Create the User document
     const user = new User({
