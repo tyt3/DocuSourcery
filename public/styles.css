@@ -361,6 +361,7 @@ a.badge-tag:link {
   display: flex;
   justify-content: center;
   align-items: center; 
+  overflow: auto
 }
 
 .admin-table,
