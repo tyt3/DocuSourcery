@@ -379,7 +379,7 @@ a.badge-tag:link {
 }
 
 .admin-table th,
-td {
+.admin-table td {
   padding: 10px;
   border-bottom: 1px solid #dddddd;
 }
@@ -389,11 +389,11 @@ td {
   width: auto;
 }
 
-.admin-table td a {
+.admin-table td a,
+.admin-table td button {
   text-decoration: none;
   display: flex;
   align-items: center;
-
 }
 
 /* Branding Palette Items */

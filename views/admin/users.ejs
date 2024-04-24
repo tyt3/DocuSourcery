@@ -24,27 +24,29 @@
         <!-- Users -->
         <% users.forEach(function(usr) { %>
         <tr>
-          <th class="text-white"><%= usr.username %></th>
-          <th class="text-white"><%= usr.firstName %></th>
-          <th class="text-white"><%= usr.lastName %></th>
-          <th class="text-white"><%= usr.email %></th>
-          <th class="text-white"><%= usr.password %></th>
-          <th class="text-white"><%= usr.admin %></th>
-          <th class="text-white">
-            <button type="button" data-bs-toggle="modal" data-bs-target="#editUserModal">
+          <td><%= usr.username %></td>
+          <td><%= usr.firstName %></td>
+          <td><%= usr.lastName %></td>
+          <td><%= usr.email %></td>
+          <td><%= usr.password %></td>
+          <td><%= usr.admin %></td>
+          <td>
+            <button type="button" class="btn"
+              data-bs-toggle="modal" data-bs-target="#editUser<%= usr.id %>">
               <span class="material-symbols-outlined">
                 edit
               </span>
             </button>
-          </th>
-          <% }); %>
-          <th class="text-white">
-            <button type="button" data-bs-toggle="modal" data-bs-target="#deleteUserModal">
+          </td>
+          <td>
+            <button type="button" class="btn"
+              data-bs-toggle="modal" data-bs-target="#deleteUser<%= usr.id %>">
               <span class="material-symbols-outlined">
                 delete
               </span>
             </button>
-          </th>
+          </td>
+          <% }); %>
         </tr>
       </tbody>
     </table>
@@ -153,7 +155,7 @@
 
 <!-- Edit User Modals -->
 <% users.forEach(function(usr) { %>
-<div class="modal fade" id="<%= usr.id %>" name="editUserModal" 
+<div class="modal fade" id="editUser<%= usr.id %>" name="editUserModal" 
   tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -260,7 +262,7 @@
 
 <!-- Delete User Modals -->
 <% users.forEach(function(usr) { %>
-<div class="modal fade" id="<%= usr.id %>" name="deleteUserModal" 
+<div class="modal fade" id="deleteUser<%= usr.id %>" name="deleteUserModal" 
   tabindex="-1" aria-labelledby="deleteUserModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
