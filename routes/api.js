@@ -96,6 +96,23 @@ router.get("/projects/:slug", async function(req, res) {
   }
 });
 
+// Get all documents under a project
+router.get("/projects/:slug/documents", async function(req, res) {
+  const projectSlug = req.params.slug;
+  try {
+    const project = await Project.findOne({ slug: projectSlug });
+    if (project) {
+	  const docs = await Document.find({'_id': { $in: project.documents}}).exec();
+      res.status(200).json(docs);
+    }
+    else {
+      res.status(204).json({'No Response': 'No documents exist with the provided project'});
+    }
+  } catch (err) {
+    res.status(500).send(err)
+  }
+});
+
 // Create Project
 router.post('/projects/create', async (req, res) => {
   const { title, subtitle, slug, description, tags, noLogin, canDuplicate, isPublic } = req.params.body;
