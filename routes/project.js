@@ -707,21 +707,21 @@ router.post('/document/edit/:id', ensureAuth, async (req, res) => {
 });
 
 // Delete Document
-router.delete('/document/:id', ensureAuth, async (req, res) => {
-    // TODO: Implement
-    // If document.deleted=false:
-    // - set to deleted=true
-    // - set deletedDate=now
-    // - set deletedBy=authenticatedUserID
-    // if document.deleted=true: 
-    // - delete object
+router.post("/document/delete/:id", ensureAuth, async (req, res) => {
+  // TODO: Implement
+  // If document.deleted=false:
+  // - set to deleted=true
+  // - set deletedDate=now
+  // - set deletedBy=authenticatedUserID
+  // if document.deleted=true:
+  // - delete object
   const documentId = req.params.id;
   const userId = req.user._id; // Assuming req.user._id holds the authenticated user's ID
 
   try {
     const document = await Document.findById(documentId);
     if (!document) {
-      return res.status(404).send('Document not found.');
+      return res.status(404).send("Document not found.");
     }
 
     if (!document.deleted) {
@@ -730,15 +730,27 @@ router.delete('/document/:id', ensureAuth, async (req, res) => {
       document.deletedDate = new Date(); // Record the deletion date
       document.deletedBy = userId; // Record the user who deleted the document
       await document.save();
-      return res.send({ message: 'Document marked as deleted successfully' });
+
+      const project = await Project.findById(document.projectId);
+      if (!project) {
+        return res.status(404).json({ error: "Project not found" });
+      }
+      // Redirect to edit page view
+      res.redirect(`/project/${project.slug}/${document.slug}/edit`);
     } else {
       // Perform a permanent delete
       await Document.deleteOne({ _id: documentId });
-      return res.send({ message: 'Document permanently deleted successfully' });
+      const project = await Project.findById(document.projectId);
+      if (!project) {
+        return res.status(404).json({ error: "Project not found" });
+      }
+      // Redirect to edit page view
+      res.redirect(`/project/${project.slug}`);
+      //return res.send({ message: "Document permanently deleted successfully" });
     }
   } catch (err) {
-    console.error('Error deleting document:', err);
-    res.status(500).send('Server error while deleting document.');
+    console.error("Error deleting document:", err);
+    res.status(500).send("Server error while deleting document.");
   }
 });
 
