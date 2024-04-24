@@ -62,7 +62,7 @@ router.post('/user/add', ensureAuth, ensureAdmin, checkUsernameAndEmail, validat
       firstName: firstName,
       lastName: lastName,
       password: hashedPassword,
-      admin: admin
+      admin: adminStatus
     });
 
     const newUser = await user.save();
