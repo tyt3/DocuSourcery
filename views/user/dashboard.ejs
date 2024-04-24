@@ -119,39 +119,39 @@
                     Browse Projects
                   </a>
                 </div>
-            </div>
-          </div>
-          <!-- Archived Projects Pane -->
-          <div class="tab-pane fade" id="archived-projects-pane" role="tabpanel" 
-            aria-labelledby="archived-projects-pane">
-            <% if (trash.length > 0) { %>
-              <div class="table-responsive"> 
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th class="bold">Title</th>
-                      <th class="bold">Date Archived</th>
-                      <th class="bold">Deleted by</th>
-                      <th class="bold">Date Created</th>
-                      <th class="bold">Created by</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <% trash.forEach(function(project) { %>
-                      <% if (project.deleted) { %>
-                        <tr>
-                          <td><%= project.title %></td>
-                          <td><%= moment(project.deletedDate).format('MMM D, YYYY') %></td>
-                          <td><%= project.deletedBy.firstName %> <%= project.deletedBy.lastName %></td>
-                          <td><%= moment(project.createdDate).format('MMM D, YYYY') %></td>
-                          <td><%= project.createdBy.firstName %> <%= project.createdBy.lastName %></td>
-                        </tr>
-                      <% } %>
-                    <% }); %>
-                  </tbody>
-                </table>
               </div>
-            <% } %>
+            <!-- Archived Projects Pane -->
+            <div class="tab-pane fade" id="archived-projects-pane" role="tabpanel" 
+              aria-labelledby="archived-projects-pane">
+              <% if (trash.length > 0) { %>
+                <div class="table-responsive"> 
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th class="bold">Title</th>
+                        <th class="bold">Date Archived</th>
+                        <th class="bold">Deleted by</th>
+                        <th class="bold">Date Created</th>
+                        <th class="bold">Created by</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% trash.forEach(function(project) { %>
+                        <% if (project.deleted) { %>
+                          <tr>
+                            <td><%= project.title %></td>
+                            <td><%= moment(project.deletedDate).format('MMM D, YYYY') %></td>
+                            <td><%= project.deletedBy.firstName %> <%= project.deletedBy.lastName %></td>
+                            <td><%= moment(project.createdDate).format('MMM D, YYYY') %></td>
+                            <td><%= project.createdBy.firstName %> <%= project.createdBy.lastName %></td>
+                          </tr>
+                        <% } %>
+                      <% }); %>
+                    </tbody>
+                  </table>
+                </div>
+              <% } %>
+            </div>
           </div>
         </div>
       </div>
