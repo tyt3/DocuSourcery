@@ -915,7 +915,7 @@ router.get("/project/:projectSlug/:documentSlug/", async (req, res) => {
 
 // Create Page View
 router.get(
-  "/project/:projectSlug/:documentSlug/page/edit",
+  "/project/:projectSlug/:documentSlug/page/create",
   ensureAuth,
   async (req, res) => {
     const { projectSlug, documentSlug } = req.params;
