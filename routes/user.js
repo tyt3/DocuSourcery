@@ -232,7 +232,7 @@ router.get('/dashboard', ensureAuth, async (req, res) => {
       deleted: false
     }).populate({
       path: 'createdBy',
-      select: 'username email' // Only fetch the username and email of the creator
+      select: 'username email' // Fetch limited data for the creator
     });
 
     console.log(`Found ${projects.length} projects for user: ${req.user._id}`);
@@ -257,10 +257,10 @@ router.get('/dashboard', ensureAuth, async (req, res) => {
       deleted: true
     }).populate({
       path: 'createdBy',
-      select: 'username firstName lastName email' // Only fetch the username and email of the creator
+      select: 'username firstName lastName email' // Fetch limited data for the creator
     }).populate({
       path: 'deletedBy',
-      select: 'username firstName lastName email' // Only fetch the username and email of the deleter
+      select: 'username firstName lastName email' // Fetch limited data for the deleter
     });
 
     if (trash) {

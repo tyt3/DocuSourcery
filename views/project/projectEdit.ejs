@@ -236,10 +236,10 @@
                           <% if (document.deleted) { %>
                             <tr>
                               <td><%= document.title %></td>
-                              <td><%= document.deletedDate %></td>
-                              <td><%= document.deletedBy %></td>
-                              <td><%= document.createdDate %></td>
-                              <td><%= document.createdBy %></td>
+                              <td><%= moment(document.deletedDate).format('MMM D, YYYY') %></td>
+                              <td><%= document.deletedBy.firstName %> <%= document.deletedBy.lastName %></td>
+                              <td><%= moment(document.createdDate).format('MMM D, YYYY') %></td>
+                              <td><%= document.createdBy.firstName %> <%= document.createdBy.lastName %></td>
                             </tr>
                           <% } %>
                         <% }); %>
@@ -285,6 +285,10 @@
                     </tbody>
                   </table>
                 </div>
+                <button type="button" id="addUserBtn" class="btn btn-12 btn-ds-primary mt-3"
+                  data-bs-toggle="modal" data-bs-target="#addUserModal">
+                  Add User
+                </button>
               </div>
             </div>
           </div>

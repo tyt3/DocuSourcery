@@ -171,14 +171,29 @@ router.get('/project/:projectSlug/edit/', ensureAuth, async (req, res) => {
     })
     .populate({
       path: 'documents',
-      populate: {
-        path: 'pages',
-        model: 'page'
-      }
-    }).populate({
+      populate: [
+        {
+          path: 'createdBy',
+          select: 'username firstName lastName email'
+        },
+        {
+          path: 'deletedBy',
+          select: 'username firstName lastName email'
+        },
+        {
+          path: 'pages',
+          model: 'page',
+          populate: {
+            path: 'createdBy',
+            select: 'username firstName lastName email'
+          }
+        }
+      ]
+    })
+    .populate({
       path: 'tags', 
       model: 'tag'
-    })
+    });
 
     // Convert description field HTML to Markdown
     project.description = turndownService.turndown(project.description);
@@ -196,12 +211,9 @@ router.get('/project/:projectSlug/edit/', ensureAuth, async (req, res) => {
 });
 
 
+
 // Edit Project
-router.post(
-  "/project/edit/:id",
-  ensureAuth,
-  validateTitles,
-  validateSlug,
+router.post("/project/edit/:id", ensureAuth, validateTitles, validateSlug,
   async (req, res) => {
     // TODO: Implement
     // Validate input, flash error message and reload if any errors
