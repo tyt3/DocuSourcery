@@ -1,8 +1,61 @@
 <%- include('../baseHeader') -%>
 <!-- Main Content -->
 <div class="container main-content my-5">
-  <h1>
+    <h1>
     API Documentation
-  </h1>
+    </h1>
+    <p>A valid API key must be included in the header of each request, which can be generated from the admin portal.
+    <br>The expected format is <code>api-key: &#60;key&#62;</code>
+    </p>
+    <h2>Available Routes</h2>
+    <ul>
+      <li>/users</li>
+      <li>/users/:username</li>
+      <li>/projects</li>
+      <li>/projects/:slug</li>
+      <li>/projects/:slug/documents</li>
+      <li>/projects/:slug/pages</li>
+      <li>/create/projects (POST)</li>
+      <li>/projects/:id (PUT)</li>
+      <li>/project/:id (DELETE)</li>
+      <li>/documents</li>
+      <li>/documents/:slug</li>
+      <li>/documents/:slug/pages</li>
+      <li>/create/documents (POST)</li>
+      <li>/documents/:id (PUT)</li>
+      <li>/document/:id (DELETE)</li>
+      <li>/pages</li>
+      <li>/pages/:slug</li>
+      <li>/create/pages (POST)</li>
+      <li>/pages/:id (PUT)</li>
+      <li>/page/:id (DELETE)</li>
+      <li>/tags</li>
+      <li>/tags/:slug</li>
+      <li>/create/tags (POST)</li>
+      <li>/tags/:id (PUT)</li>
+    </ul>
+
+    <h2>Users</h2>
+    <h3>GET /users</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Endpoint</th>
+          <th>Parameters</th>
+          <th>Request Body</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>api/users</td>
+          <td>N/A</td>
+          <td>N/A</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>Response Body: List of all users.</p>
+
+    <!-- Add similar tables for other routes -->
+
 </div>
 <%- include('../baseFooter') -%>
