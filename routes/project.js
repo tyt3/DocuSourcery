@@ -745,6 +745,9 @@ router.post('/document/create/:projectId', ensureAuth, async (req, res) => {
     // Convert description Markdown to HTML
     const descriptionHTML = marked.parse(description);
 
+    // Get landing page choice
+    let landingPageChoice = switchToBool(landingPage);
+
     // Get public value
     let publicChoice = switchToBool(isPublic);
 
@@ -756,7 +759,7 @@ router.post('/document/create/:projectId', ensureAuth, async (req, res) => {
       public: publicChoice,
       createdBy: req.user._id,
       projectId: projectId,
-      landingPage: landingPage
+      landingPage: landingPageChoice
     });
 
     console.log('Document prepared for saving:', newDocument);
@@ -848,6 +851,9 @@ async (req, res) => {
       return res.status(404).send('Document not found.');
     }
 
+    // Get landing page choice
+    let landingPageChoice = switchToBool(landingPage);
+
     // Get public value
     let publicChoice = switchToBool(isPublic);
 
@@ -858,7 +864,7 @@ async (req, res) => {
     document.title = title || document.title;
     document.description = descriptionHTML || document.description;
     document.slug = slug || document.slug;
-    document.landingPage = landingPage !== undefined ? landingPage : document.landingPage;
+    document.landingPage = landingPageChoice !== undefined ? landingPage : document.landingPage;
     document.public = publicChoice !== undefined ? isPublic : document.public;
 		document.modifiedDate = new Date();
 
