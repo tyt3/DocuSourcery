@@ -253,7 +253,7 @@ router.put("/projects/:id", checkApiKey, validateTitles, validateSlug,
 );
 
 // Delete Project
-router.delete("/project/:id", checkApiKey, async (req, res) => {
+router.delete("/projects/:id", checkApiKey, async (req, res) => {
   const projectId = req.params.id;
   try {
     let project = await Project.findById(projectId);
@@ -409,7 +409,7 @@ router.put('/documents/:id', checkApiKey, validateSlug, validateTitles, async (r
 });
 
 // Delete Document
-router.delete("/document/:id", checkApiKey, async (req, res) => {
+router.delete("/documents/:id", checkApiKey, async (req, res) => {
   const documentId = req.params.id;
   try {
     let document = await Document.findById(documentId);
@@ -559,7 +559,7 @@ router.put('/pages/:id', checkApiKey, validateSlug, validateTitles, async (req, 
 });
 
 // Delete Page
-router.delete("/page/:id", checkApiKey, async (req, res) => {
+router.delete("/pages/:id", checkApiKey, async (req, res) => {
   const pageId = req.params.id;
   try {
     let page = await Page.findById(pageId);
