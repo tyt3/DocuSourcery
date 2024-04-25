@@ -49,7 +49,7 @@
               <% } %>
               <div class="card-body">
                 <h5 class="card-title">
-                  <a href="#"><%= project.title %></a>
+                  <a href="/project/<%= project.slug %>"><%= project.title %></a>
                 </h5>
                 <h6 class="card-subtitle">
                   <%= project.subtitle %>
@@ -57,7 +57,7 @@
                 <p class="card-text mt-2">
                   <%= truncate(project.description, 50) %>
                 </p>
-                <% if (project.tags && tags.length > 0) { %>
+                <% if (project.tags && project.tags.length > 0) { %>
                   <div class="my-3">
                     <span class="fw-bold">Tags:</span>
                   <% project.tags.forEach(function(tag) { %>
