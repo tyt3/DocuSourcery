@@ -528,18 +528,21 @@ router.get('/projects/:keywords', async (req, res) => {
 router.get('/project/:projectSlug/document/create', ensureAuth, async (req, res) => {
   const projectSlug = req.params.projectSlug;
 
-  // TODO: add error handling
-  const project = await Project.findOne({ slug: projectSlug });
-
   try {
-    res.render('project/documentEdit.ejs', { 
-      user: req.user,
-      project: project,
-      document: null, // Don't replace
-      page: null // Don't replace
-    });
+    const project = await Project.findOne({ slug: projectSlug });
+    if (project) {
+      res.render('project/documentEdit.ejs', { 
+        user: req.user,
+        project: project,
+        document: null, // Don't replace
+        page: null // Don't replace
+      });
+    }
+    else {
+      return res.status(400).send('Invalid project slug value.');
+    }
   } catch (err) {
-    throw err;
+    return res.status(500).send(err);
   }
 });
 
@@ -655,13 +658,10 @@ router.get('/project/:projectSlug/:documentSlug/edit', ensureAuth, async (req, r
 
 
 // Edit Document
-router.post('/document/edit/:id', ensureAuth, async (req, res) => {
+router.post('/document/edit/:id', ensureAuth, validateSlug, validateTitles, 
+async (req, res) => {
     // TODO: Implement 
-    // Apply same middleware as in project/create to validate form fields
-    // Convert description field Markdown to HTML
-    // Get form fields from request
     // Validate input, flash error message and reload if any errors
-    // Update object with new data
   const documentId = req.params.id;
   const { title, description, slug, landingPage, isPublic } = req.body;
   
@@ -1150,7 +1150,6 @@ router.get('/tag/:slug', async (req, res) => {
 // View User Trash
 router.get('/trash', ensureAuth, async (req, res) => {
   try {
-    // TODO: Get all user projects where role=3 and deleted=true
     trash = await Project.find({
       users: {
         user: req.user._id,

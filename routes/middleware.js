@@ -162,7 +162,7 @@ function validatePassword(req, res, next) {
 // Validate Slug
 const validateSlug = async (req, res, next) => {
   try {
-    const { slug, isUpdate } = req.body;
+    const { slug } = req.body;
     let valid = true;
     const errors = [];
 
@@ -222,11 +222,13 @@ function validateTitles(req, res, next) {
     valid = false;
     errors.push("Title must be less than or equal to 255 characters.");
   }
-  // Subtitle not mandatory, but if it is present, should be <= 255 characters
-  if (subtitle) {
-    if (subtitle.length > 255) {
-      valid = false;
-      errors.push("Subtitle must be less than or equal to 255 characters.");
+  if (req.originalUrl.includes('/project/create')) {
+    // Subtitle not mandatory, but if it is present, should be <= 255 characters
+    if (subtitle) {
+      if (subtitle.length > 255) {
+        valid = false;
+        errors.push("Subtitle must be less than or equal to 255 characters.");
+      }
     }
   }
 
