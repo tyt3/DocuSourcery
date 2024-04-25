@@ -301,6 +301,44 @@ router.get("/documents/:slug/pages", checkApiKey, async function(req, res) {
   }
 });
 
+// Create Document
+router.post('/documents', checkApiKey, validateSlug, validateTitles, async (req, res) => {
+  const { title, description, slug, landingPage, isPublic, projectId, order } = req.body;
+
+  try {
+    let proj = await Project.findOne({ _id: projectId });
+	if (!proj) {
+	  res.status(400).json({'Error': "Invalid project ID provided"})
+	}
+  } catch (err) {
+    console.error(err);
+    res.status(500).send(`An error occurred during project validation: ${err}`);
+  }
+
+  try {
+    // Convert description markdown to HTML
+    const descriptionHTML = marked.parse(description);
+    const document = new Document({
+      slug: slug,
+      title: title,
+      description: descriptionHTML,
+      createdBy: req.user._id,
+      public: projectId,
+      landingPage: landingPage,
+      public: isPublic,
+	  order: order
+    });
+
+    const newDoc = await document.save();
+
+    // Return the new document
+    res.status(200).json(newDoc);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send(`An error occurred during document creation: ${err}`);
+  }
+});
+
 // PAGE
 
 // Get all pages
