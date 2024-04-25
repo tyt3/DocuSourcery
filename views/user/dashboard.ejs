@@ -140,12 +140,22 @@
                       <% trash.forEach(function(project) { %>
                         <% if (project.deleted) { %>
                           <tr>
-                            <td>
+                            <td class="d-flex">
                               <form method="POST" action="/project/restore/<%= project._id %>">
-                                <button type="submit" class="btn py-0">
+                                <button type="submit" class="btn p-0"
+                                  data-bs-toggle="tooltip" data-bs-placement="top" 
+                                  data-bs-title="Restore project">
                                   <span class="material-symbols-outlined">undo</span>
                                 </button>
                               </form>
+                              <button type="button" class="btn p-0"
+                                data-bs-toggle="modal" data-bs-target="#delete<%= project._id %>">
+                                <span 
+                                  data-bs-toggle="tooltip" data-bs-placement="top" 
+                                  data-bs-title="Delete project"
+                                  class="material-symbols-outlined">delete
+                                </span>
+                              </button>
                             </td>
                             <td><%= project.title %></td>
                             <td><%= moment(project.deletedDate).format('MMM D, YYYY') %></td>
@@ -181,4 +191,34 @@
     </div>
   </div>
 </div>
+
+<% trash.forEach(function(project) { %>
+<div class="modal fade" id="delete<%= project._id %>" name="deleteProjectModal" 
+  tabindex="-1" aria-labelledby="deleteProjectModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5"
+          id="deleteProjectModal">Delete Project</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" 
+          aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to delete your project, "<%= project.title %>"? 
+          <% if (project.deleted) { %>
+          <strong>This action cannot be undone.</strong>
+          <% } %>
+        </p>
+      </div>
+      <div class="modal-footer">
+        <form method="POST" target="_parent"
+          action="/project/delete/<%= project.id %>">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-danger">Delete</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<% }); %>
 <%- include('../baseFooter') -%>
