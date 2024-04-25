@@ -253,8 +253,10 @@ router.post("/project/edit/:id", ensureAuth, validateTitles, validateSlug,
       project.public = publicChoice !== undefined ? publicChoice : project.public;
       project.modifiedDate = new Date();
 
-       // Loop through each user ID to be removed
-      for (const userId of remove) {
+      // Loop through each user ID to be removed
+      const removeArray = Array.isArray(remove) ? remove : [remove];
+      
+      for (const userId of removeArray) {
         // Find the index of the user object with the matching ID
         const index = project.users.findIndex(userObj => userObj.user.equals(userId));
         // If found, remove the user object from the project.users array
