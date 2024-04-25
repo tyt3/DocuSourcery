@@ -890,56 +890,7 @@ router.get('/project/:projectSlug/:documentSlug/page/create', ensureAuth, async 
 });
 
 // Create Page
-router.post("/page/create/:docId", ensureAuth, async (req, res) => {
-  const docId = req.params;
-  const { title, slug, body, isPublic } = req.body;
-
-  // Get project and document, error if not found
-  const document = await Document.findById(docId);
-  if (!document) {
-    console.log("No document found with ID:", docId);
-    return res
-      .status(404)
-      .send("Document not found or does not belong to the specified project.");
-  }
-  
-  const project = await Project.findById(document.projectId);
-  if (!project) {
-    console.log("No project found with ID:", project.projectId);
-    return res.status(404).send("Project not found.");
-  }
-
-  // TODO: Validate form fields
-
-  // Convert description field Markdown to HTML
-  const bodyHTML = marked.parse(body);
-
-  // Get order for page
-  const order = document.pages.length + 1;
-
-  // Get public value
-  let publicChoice = switchToBool(isPublic);
-
-  try {
-    // Assuming you have a Page schema with projectId and docId as references
-    const page = new Page({
-      title: title,
-      slug: slug,
-      body: bodyHTML,
-      public: publicChoice,
-      order: order,
-      createdBy: req.user._id,
-      projectId: project.projectId,
-      documentId: docId,
-    });
-
-    const newPage = await page.save();
-    res.status(201).json(newPage); // Return the created page as JSON
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Internal Server Error");
-  }
-});
+newPage
 
 
 // Edit Page View
