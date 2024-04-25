@@ -492,7 +492,7 @@ router.post('/project/restore-documents/:id', ensureAuth, async (req, res) => {
         await document.save();
       }
     }
-    
+
     // Redirect to the project edit page
     res.redirect(`/project/${project.slug}/edit`);
     
@@ -521,6 +521,8 @@ router.post('/project/delete-documents/:id', ensureAuth, async (req, res) => {
     for (const documentId of docsToDelete) {
       // Filter out the document to delete
       project.documents = project.documents.filter(doc => !doc.equals(documentId));
+      // Delete document
+      await Document.findByIdAndDelete(documentId);
     }
 
     // Save the updated project
@@ -949,6 +951,90 @@ router.post('/document/restore/:id', ensureAuth, async (req, res) => {
     // If there is an error during the process, log it and send a 500 response
     console.error('Error restoring document:', err);
     res.status(500).send('Server error while restoring document.');
+  }
+});
+
+
+// Restore pages to document
+router.post('/document/restore-pages/:id', ensureAuth, async (req, res) => {
+  const documentId = req.params.id;
+  const { selectedPages } = req.body;
+
+  try {
+    // Find the document
+    const document = await Document.findById(documentId);
+    if (!document) {
+      return res.status(404).send("Document not found.");
+    }
+
+    // Find the Project 
+    const project = await Project.findById(document.projectId);
+    if (!project) {
+      return res.status(404).send("Project not found.");
+    }
+
+    // Loop through the docIDs in pagesToRestore, get the page from the Page model,
+    // set `deleted` to false, and save the page
+    const pagesToRestore = Array.isArray(selectedPages) ? selectedPages : [selectedPages];
+
+    for (const pageId of pagesToRestore) {
+      // Find the document by ID
+      const page = await Page.findById(pageId);
+      if (page) {
+        // Set `deleted` to false
+        page.deleted = false;
+        // Save the updated document
+        await page.save();
+      }
+    }
+    
+    // Redirect to the document edit page
+    res.redirect(`/project/${project.slug}/${document.slug}/edit`);
+    
+  } catch (err) {
+    console.error("Failed to restore pages to the document:", err);
+    res.status(500).send("Server error occurred while trying to restore a page to the document.");
+  }
+});
+
+
+// Delete pages from project
+router.post('/project/delete-pages/:id', ensureAuth, async (req, res) => {
+  const projectId = req.params.id;
+  const { selectedPages } = req.body;
+
+  try {
+    // Find the document
+    const document = await Document.findById(documentId);
+    if (!document) {
+      return res.status(404).send("Document not found.");
+    }
+
+    // Find the project
+    const project = await Project.findById(document.projectId);
+    if (!project) {
+      return res.status(404).send("Project not found.");
+    }
+
+    // Loop through each page in `selectedPages` and delete it from `project.pages` if it exists
+    const pagesToDelete = Array.isArray(selectedPages) ? selectedPages : [selectedPages];
+
+    for (const pageId of pagesToDelete) {
+      // Filter out the page to delete
+      document.pages = document.pages.filter(page => !page.equals(pageId));
+      // Delete page
+      await Page.findByIdAndDelete(pageId);
+    }
+
+    // Save the updated project
+    await document.save();
+
+    // Redirect to the project edit page
+    res.redirect(`/project/${project.slug}/${document.slug}/edit`);
+    
+  } catch (err) {
+    console.error("Failed to remove page from the project:", err);
+    res.status(500).send("Server error occurred while trying to remove a page from the project.");
   }
 });
 
