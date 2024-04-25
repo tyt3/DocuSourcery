@@ -255,8 +255,12 @@ router.post("/project/edit/:id", ensureAuth, validateTitles, validateSlug,
 
        // Loop through each user ID to be removed
       for (const userId of remove) {
-        // Remove the user from the project
-        project.users = project.users.filter(userObj => !userObj.user.equals(userId));
+        // Find the index of the user object with the matching ID
+        const index = project.users.findIndex(userObj => userObj.user.equals(userId));
+        // If found, remove the user object from the project.users array
+        if (index !== -1) {
+          project.users.splice(index, 1);
+        }
       }
 
       // Handle tags similarly as in the project creation
