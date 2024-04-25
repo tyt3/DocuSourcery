@@ -17,7 +17,7 @@ const bcrypt = require('bcrypt');
 const User = require('../models/user');
 const Project = require('../models/project');
 
-// AUTH
+
 // testing Retrieve all user msg
 router.get('/alllllUsers', async function (req, res) {
   await User.find({})
@@ -39,6 +39,22 @@ router.get('/alllllProfiles', async function (req, res) {
       res.status(500).send(err);
     });
 });
+
+
+// Get all users for frontend
+router.get("/users", ensureAuth, async function(req, res) {
+  await User.find({}, 'firstName lastName username')
+    .then(users => {
+      res.json(users);
+    })
+    .catch(err => {
+      console.log("Error fetching users:", err);
+      res.status(500).send(err);
+    });
+});
+
+
+// AUTH
 
 // Sign Up
 router.get('/signup', ensureNotAuth, async (req, res) => {
