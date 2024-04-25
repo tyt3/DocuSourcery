@@ -341,25 +341,25 @@
       <form method="POST" action="project/add-user">
         <div class="modal-body">
           <div class="form-group">
-            <input 
-              type="user" 
-              class="form-control" 
-              id="user" 
-              name="user" 
+            <label for="user" class="bold">User<span class="required">*</span></label>
+            <input type="user" class="form-control" id="user" name="user" 
               placeholder="Search by username, full name, or email address"
               required>
           </div>
-        </div>
-        <div class="form-group">
-          <select class="form-select" name="role" id="role">
-            <option value="0">Viewer</option>
-            <option value="1">Editor</option>
-            <option value="2">Admin</option>
-            <option value="3">Owner</option>
-          </select>
+          <div class="form-group">
+            <label for="role" class="bold">Role<span class="required">*</span></label>
+            <select class="form-select" name="role" id="role">
+              <option value="0">Viewer</option>
+              <option value="1">Editor</option>
+              <option value="2">Admin</option>
+              <option value="3">Owner</option>
+            </select>
+          </div>
         </div>
         <div class="modal-footer">
-          <button type="submit" class="btn btn-ds-primary">Add User to Project</button>
+          <div class="col-12 text-center">
+            <button type="submit" class="btn btn-ds-primary">Add User to Project</button>
+          </div>
         </div>
       </form>
     </div>
