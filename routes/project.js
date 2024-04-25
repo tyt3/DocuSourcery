@@ -238,6 +238,7 @@ router.post(
       project.slug = slug || project.slug;
       project.description = descriptionHTML || document.description;
       project.public = publicChoice !== undefined ? publicChoice : project.public;
+      project.modifiedDate = new Date();
 
       // Handle tags similarly as in the project creation
       let linkedTags = [];
@@ -315,6 +316,7 @@ router.post("/project/delete/:id", ensureAuth, async (req, res) => {
       project.trash = true;
       project.deletedDate = new Date();
       project.deletedBy = req.user._id; // assuming req.user._id contains the ID of the authenticated user
+      project.modifiedDate = new Date();
       await project.save();
       res.redirect(`/dashboard`);
     }
@@ -363,6 +365,7 @@ router.post("/project/restore/:id", ensureAuth, async (req, res) => {
     project.trash = false;
     project.deletedDate = null;
     project.deletedBy = null;
+		project.modifiedDate = new Date();
 
     await project.save();
     res.redirect(`/project/${project.slug}/edit`);
@@ -685,6 +688,7 @@ async (req, res) => {
     document.slug = slug || document.slug;
     document.landingPage = landingPage !== undefined ? landingPage : document.landingPage;
     document.public = publicChoice !== undefined ? isPublic : document.public;
+		document.modifiedDate = new Date();
 
     // Save the updated document
     await document.save();
@@ -722,6 +726,7 @@ router.post("/document/delete/:id", ensureAuth, async (req, res) => {
       // Perform a soft delete
       document.deleted = true;
       document.deletedDate = new Date(); // Record the deletion date
+      document.modifiedDate = new Date();
       document.deletedBy = userId; // Record the user who deleted the document
       await document.save();
 
@@ -1005,6 +1010,7 @@ router.post("/page/edit/:id", ensureAuth, async (req, res) => {
     page.title = title || page.title;
     page.body = bodyHTML || page.body;
     page.slug = slug || page.slug;
+    page.modifiedDate = new Date();
 
     let publicChoice = isPublic === "on";
     page.public = publicChoice;
@@ -1035,6 +1041,7 @@ router.post("/page/delete/:id", ensureAuth, async (req, res) => {
       page.deleted = true;
       page.deletedDate = new Date(); // Record the deletion date
       page.deletedBy = req.user._id; // Record the user who deleted the document
+      page.modifiedDate = new Date();
       await page.save();
       
       const document = await Document.findById(page.documentId);
