@@ -105,6 +105,16 @@
             </tr>
             <tr>
                 <th>Project</th>
+                <td>/api/projects/:slug/users/:id</td>
+                <td>PUT</td>
+                <td>slug (string) of Project, id (ObjectId) of User</td>
+                <td>&quot;{ role: number }&quot;</td>
+                <td>&quot;Single project record, record updated in database&quot;</td>
+                <td>&quot;Valid API key, project and user exist, role within range [0-3]&quot;</td>
+                <td>U</td>
+            </tr>
+            <tr>
+                <th>Project</th>
                 <td>/api/projects/:id</td>
                 <td>PUT</td>
                 <td>id (ObjectId) of Project</td>
