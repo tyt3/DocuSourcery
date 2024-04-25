@@ -40,10 +40,16 @@ fetchUsers()
 
 // Function to populate user input field with users as someone types
 const userField = document.getElementById('user');
+const dropdown = document.createElement('select');
+dropdown.id = 'userList';
+dropdown.style.display = 'none'; // Hide the dropdown initially
+userField.parentNode.insertBefore(dropdown, userField.nextSibling);
+
 userField.addEventListener('input', async function() {
   const inputValue = userField.value.trim();
   if (inputValue.length > 1) {
     const users = await fetchUsers();
+    
     const filteredUsers = users.filter(user => {
       // Filter users based on username, full name, or email address
       return (
@@ -52,48 +58,61 @@ userField.addEventListener('input', async function() {
         user.email.toLowerCase().includes(inputValue.toLowerCase())
       );
     });
+    
     // Clear previous options
-    userField.innerHTML = '';
+    dropdown.innerHTML = '';
+    
     // Create and append new options
     filteredUsers.forEach(user => {
       const option = document.createElement('option');
-      option.value = user.username; // Assuming username is unique
-      userField.appendChild(option);
+      option.value = user.username;
+      option.textContent = `${user.firstName} ${user.lastName} (${user.username})`;
+      dropdown.appendChild(option);
     });
+
+    // Show the dropdown if options are available
+    if (filteredUsers.length > 0) {
+      dropdown.style.display = 'block';
+    } else {
+      dropdown.style.display = 'none'; // Hide the dropdown if no options are available
+    }
+  } else {
+    dropdown.style.display = 'none'; // Hide the dropdown if input is empty
   }
 });
 
 
 
+
 //Add a JavaScript event listener to detect when the user types in the text field
-const userSearchField = document.getElementById("search-field")
+// const userSearchField = document.getElementById("search-field")
 
-if (userSearchField) {
-  userSearchField.addEventListener("input", function () {
-  const query = this.value;
-    if (query.length > 2) { // Trigger when the user types at least 3 characters
-        fetchSuggestions(query);
-    }
-  });
-}
+// if (userSearchField) {
+//   userSearchField.addEventListener("input", function () {
+//   const query = this.value;
+//     if (query.length > 2) { // Trigger when the user types at least 3 characters
+//         fetchSuggestions(query);
+//     }
+//   });
+// }
 
-// fetchSuggestions function
-function fetchSuggestions(query) {
-  // This is a simulated list of suggestions. In practice, you would get this from a backend service.
-  const allUsers = ["alice@example.com", "bob@example.com", "charlie@example.com", "david@example.com"];
+// // fetchSuggestions function
+// function fetchSuggestions(query) {
+//   // This is a simulated list of suggestions. In practice, you would get this from a backend service.
+//   const allUsers = ["alice@example.com", "bob@example.com", "charlie@example.com", "david@example.com"];
   
-  const filteredSuggestions = allUsers.filter(user => user.includes(query));
+//   const filteredSuggestions = allUsers.filter(user => user.includes(query));
 
-  const dropdown = document.getElementById("suggestions");
-  dropdown.innerHTML = ""; // Clear existing suggestions
+//   const dropdown = document.getElementById("suggestions");
+//   dropdown.innerHTML = ""; // Clear existing suggestions
   
-  filteredSuggestions.forEach(suggestion => {
-      const option = document.createElement("option");
-      option.value = suggestion;
-      option.textContent = suggestion;
-      dropdown.appendChild(option);
-  });
-}
+//   filteredSuggestions.forEach(suggestion => {
+//       const option = document.createElement("option");
+//       option.value = suggestion;
+//       option.textContent = suggestion;
+//       dropdown.appendChild(option);
+//   });
+// }
 
 // ///////////////////////////
 // VIEWPORT HEIGHT STYLING //
@@ -191,101 +210,101 @@ if (dropdowns) {
 
 
 // implement  drop 
-function allowDrop(ev) {
-  ev.preventDefault(); // Prevent default behavior (prevent it from being dropped in some other element)
-}
+// function allowDrop(ev) {
+//   ev.preventDefault(); // Prevent default behavior (prevent it from being dropped in some other element)
+// }
 
-function drag(ev) {
-  ev.dataTransfer.setData("text", ev.target.id); // Get the id of the draggable item
-}
+// function drag(ev) {
+//   ev.dataTransfer.setData("text", ev.target.id); // Get the id of the draggable item
+// }
 
-function drop(ev) {
-  ev.preventDefault();
-  var data = ev.dataTransfer.getData("text");
-  ev.target.appendChild(document.getElementById(data));
-  updateBackend(data); // Call the function to update the backend after dropping
-}
+// function drop(ev) {
+//   ev.preventDefault();
+//   var data = ev.dataTransfer.getData("text");
+//   ev.target.appendChild(document.getElementById(data));
+//   updateBackend(data); // Call the function to update the backend after dropping
+// }
 
-//   drag
-function allowDrop(ev) {
-  ev.preventDefault(); // Prevent default behavior (prevent it from being dropped in some other element)
-}
+// //   drag
+// function allowDrop(ev) {
+//   ev.preventDefault(); // Prevent default behavior (prevent it from being dropped in some other element)
+// }
 
-function drag(ev) {
-  ev.dataTransfer.setData("text", ev.target.id); // Get the id of the draggable item
-}
+// function drag(ev) {
+//   ev.dataTransfer.setData("text", ev.target.id); // Get the id of the draggable item
+// }
 
-function drop(ev) {
-  ev.preventDefault();
-  var data = ev.dataTransfer.getData("text");
-  ev.target.appendChild(document.getElementById(data));
-  updateBackend(data); // Call the function to update the backend after dropping
-}
+// function drop(ev) {
+//   ev.preventDefault();
+//   var data = ev.dataTransfer.getData("text");
+//   ev.target.appendChild(document.getElementById(data));
+//   updateBackend(data); // Call the function to update the backend after dropping
+// }
 
-//   update backend
-function updateBackend(itemId) {
-  var xhr = new XMLHttpRequest();
-  xhr.open("POST", "your-backend-url", true);
-  xhr.setRequestHeader("Content-Type", "application/json");
-  xhr.onreadystatechange = function () {
-    if (xhr.readyState === 4 && xhr.status === 200) {
-      console.log('Response from server: ', this.responseText); // Handle the response from the server
-    }
-  };
-  var data = JSON.stringify({ item_id: itemId });
-  xhr.send(data);
-}
-
-
-///////////////////////
-// form submission  //
-/////////////////////
-document.getElementById("updateProjectForm").addEventListener("submit", function (event) {
-  event.preventDefault(); // Prevent the default form submission behavior
-
-  const projectId = document.getElementById("projectId").value;
-  const projectName = document.getElementById("projectName").value;
-  const projectDescription = document.getElementById("projectDescription").value;
-
-  const updateData = {
-    name: projectName,
-    description: projectDescription,
-  };
-
-  // Using AJAX request using Fetch API to update project
-  fetch(`/api/projects/${projectId}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(updateData), // Convert data to JSON string
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.success) {
-        console.log("Project updated successfully");
-      } else {
-        console.error("Failed to update project", data.error);
-      }
-    })
-    .catch((error) => {
-      console.error("Error updating project:", error);
-    });
-});
+// //   update backend
+// function updateBackend(itemId) {
+//   var xhr = new XMLHttpRequest();
+//   xhr.open("POST", "your-backend-url", true);
+//   xhr.setRequestHeader("Content-Type", "application/json");
+//   xhr.onreadystatechange = function () {
+//     if (xhr.readyState === 4 && xhr.status === 200) {
+//       console.log('Response from server: ', this.responseText); // Handle the response from the server
+//     }
+//   };
+//   var data = JSON.stringify({ item_id: itemId });
+//   xhr.send(data);
+// }
 
 
-//backend handling
-app.put("/api/projects/:id", (req, res) => {
-  const projectId = req.params.id;
-  const updatedData = req.body;
+// ///////////////////////
+// // form submission  //
+// /////////////////////
+// document.getElementById("updateProjectForm").addEventListener("submit", function (event) {
+//   event.preventDefault(); // Prevent the default form submission behavior
+
+//   const projectId = document.getElementById("projectId").value;
+//   const projectName = document.getElementById("projectName").value;
+//   const projectDescription = document.getElementById("projectDescription").value;
+
+//   const updateData = {
+//     name: projectName,
+//     description: projectDescription,
+//   };
+
+//   // Using AJAX request using Fetch API to update project
+//   fetch(`/api/projects/${projectId}`, {
+//     method: "PUT",
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//     body: JSON.stringify(updateData), // Convert data to JSON string
+//   })
+//     .then((response) => response.json())
+//     .then((data) => {
+//       if (data.success) {
+//         console.log("Project updated successfully");
+//       } else {
+//         console.error("Failed to update project", data.error);
+//       }
+//     })
+//     .catch((error) => {
+//       console.error("Error updating project:", error);
+//     });
+// });
 
 
-Project.update(projectId, updatedData)
-    .then(() => {
-      res.json({ success: true });
-    })
-    .catch((error) => {
-      res.status(500).json({ success: false, error });
-    });
-});
+// //backend handling
+// app.put("/api/projects/:id", (req, res) => {
+//   const projectId = req.params.id;
+//   const updatedData = req.body;
+
+
+// Project.update(projectId, updatedData)
+//     .then(() => {
+//       res.json({ success: true });
+//     })
+//     .catch((error) => {
+//       res.status(500).json({ success: false, error });
+//     });
+// });
 

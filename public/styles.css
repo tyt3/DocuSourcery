@@ -206,6 +206,24 @@ span.required {
   
 }
 
+/* Add User to Project Form */
+#userList {
+  font-family: Arial, sans-serif;
+  color: #333333;
+  background-color: #ffffff;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  padding: 5px;
+  width: 100%;
+}
+
+#userList option {
+  font-family: Arial, sans-serif;
+  color: #333333;
+  background-color: #ffffff;
+}
+
+
 
 /* Buttons */
 

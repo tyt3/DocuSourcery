@@ -36,7 +36,7 @@ router.get("/users/:username", checkApiKey, async function(req, res) {
       res.status(200).json(user);
     }
     else {
-      res.status(204).json({'No Response': 'No users exist with the provided username'});
+      res.status(204).json({'No Response': 'No users exist with the provided username' });
     }
   } catch (err) {
     res.status(500).send(err)
@@ -65,7 +65,7 @@ router.get("/projects/:slug", checkApiKey, async function(req, res) {
       res.status(200).json(project);
     }
     else {
-      res.status(204).json({'No Response': 'No projects exist with the provided slug'});
+      res.status(204).json({'No Response': 'No projects exist with the provided slug' });
     }
   } catch (err) {
     res.status(500).send(err)
@@ -82,7 +82,7 @@ router.get("/projects/:slug/documents", checkApiKey, async function(req, res) {
       res.status(200).json(docs);
     }
     else {
-      res.status(204).json({'No Response': 'No documents exist under the provided project'});
+      res.status(204).json({'No Response': 'No documents exist under the provided project' });
     }
   } catch (err) {
     res.status(500).send(err)
@@ -99,7 +99,7 @@ router.get("/projects/:slug/pages", checkApiKey, async function(req, res) {
       res.status(200).json(pages);
     }
     else {
-      res.status(204).json({'No Response': 'No pages exist under the provided project'});
+      res.status(204).json({'No Response': 'No pages exist under the provided project' });
     }
   } catch (err) {
     res.status(500).send(err)
@@ -265,7 +265,7 @@ router.delete("/project/:id", checkApiKey, async (req, res) => {
     if (project.deleted) {
       // Optional: Allow hard delete if the project is already marked as deleted.
       await Project.deleteOne({ _id: projectId });
-      res.status(204).json("Message": `Project with ID ${projectId} deleted successfully.`);
+      res.status(204).json({message: `Project with ID ${projectId} deleted successfully.`});
     } else {
       // Soft delete: mark the project as deleted.
       project.deleted = true;
@@ -274,7 +274,7 @@ router.delete("/project/:id", checkApiKey, async (req, res) => {
       project.deletedBy = req.user._id;
       project.modifiedDate = new Date();
       await project.save();
-      res.status(200).json("Message": `Project with ID ${projectId} soft-deleted successfully.`);
+      res.status(200).json({message: `Project with ID ${projectId} soft-deleted successfully.`});
     }
   } catch (err) {
     console.error("Error deleting project:", err);
@@ -304,7 +304,7 @@ router.get("/documents/:slug", async function(req, res) {
       res.status(200).json(document);
     }
     else {
-      res.status(204).json({'No Response': 'No documents exist with the provided slug'});
+      res.status(204).json({'No Response': 'No documents exist with the provided slug' });
     }
   } catch (err) {
     res.status(500).send(err)
@@ -321,10 +321,10 @@ router.get("/documents/:slug/pages", checkApiKey, async function(req, res) {
 		const pages = await Page.find({'_id': { $in: document.pages}}).exec();
 		res.status(200).json(pages);
 	  }
-	  res.status(204).json({'No Response': 'No pages exist under the provided document'}); 
+	  res.status(204).json({'No Response': 'No pages exist under the provided document' }); 
     }
     else {
-      res.status(404).json({'Error': 'Document not found'});
+      res.status(404).json({ error: 'Document not found' });
     }
   } catch (err) {
     res.status(500).send(err)
@@ -338,7 +338,7 @@ router.post('/create/documents', checkApiKey, validateSlug, validateTitles, asyn
   try {
     let proj = await Project.findById(projectId);
 	if (!proj) {
-	  res.status(400).json({'Error': "Invalid project ID provided"})
+	  res.status(400).json({ error: "Invalid project ID provided"})
 	} else {
 	  const descriptionHTML = marked.parse(description);
 	  const document = new Document({
@@ -377,7 +377,7 @@ router.put('/documents/:id', checkApiKey, validateSlug, validateTitles, async (r
       proj = true;
     }
 	if (!proj) {
-	  res.status(400).json({'Error': "Invalid project ID provided"})
+	  res.status(400).json({ error: "Invalid project ID provided"})
 	} else {
 	  let document = await Document.findById(docId);
 	  if (!document) {
@@ -421,7 +421,7 @@ router.delete("/document/:id", checkApiKey, async (req, res) => {
     if (document.deleted) {
       // Optional: Allow hard delete if the delete is already marked as deleted.
       await Document.deleteOne({ _id: documentId });
-      res.status(204).json("Message": `Document with ID ${documentId} deleted successfully.`);
+      res.status(204).json({Message: `Document with ID ${documentId} deleted successfully.`});
     } else {
       // Soft delete: mark the document as deleted.
       document.deleted = true;
@@ -429,7 +429,7 @@ router.delete("/document/:id", checkApiKey, async (req, res) => {
       document.deletedBy = req.user._id;
       document.modifiedDate = new Date();
       await document.save();
-      res.status(200).json("Message": `Document with ID ${documentId} soft-deleted successfully.`);
+      res.status(200).json({ message: `Document with ID ${documentId} soft-deleted successfully.` });
     }
   } catch (err) {
     console.error("Error deleting document:", err);
@@ -459,7 +459,7 @@ router.get("/pages/:slug", checkApiKey, async function(req, res) {
       res.status(200).json(page);
     }
     else {
-      res.status(204).json({'No Response': 'No pages exist with the provided slug'});
+      res.status(204).json({'No Response': 'No pages exist with the provided slug' });
     }
   } catch (err) {
     res.status(500).send(err)
@@ -474,7 +474,7 @@ router.post('/create/pages', checkApiKey, validateSlug, validateTitles, async (r
     let proj = await Project.findById(projectId);
     let doc = await Document.findById(documentId);
 	if (!proj || !doc) {
-	  res.status(400).json({'Error': "Invalid project or document ID provided"})
+	  res.status(400).json({ error: "Invalid project or document ID provided"})
 	} else {
 	  const bodyHTML = marked.parse(body);
 	  const page = new Page({
@@ -550,7 +550,7 @@ router.put('/pages/:id', checkApiKey, validateSlug, validateTitles, async (req, 
       res.status(200).json(updPage);
 
 	} else {
-	  res.status(400).json({'Error': "Invalid project or page ID provided"})
+	  res.status(400).json({ error: "Invalid project or page ID provided"})
 	}
   } catch (err) {
     console.error(err);
@@ -571,7 +571,7 @@ router.delete("/page/:id", checkApiKey, async (req, res) => {
     if (page.deleted) {
       // Optional: Allow hard delete if the page is already marked as deleted.
       await Page.deleteOne({ _id: pageId });
-      res.status(204).json("Message": `Page with ID ${pageId} deleted successfully.`);
+      res.status(204).json({ message: `Page with ID ${pageId} deleted successfully.` });
     } else {
       // Soft delete: mark the page as deleted.
       page.deleted = true;
@@ -579,7 +579,7 @@ router.delete("/page/:id", checkApiKey, async (req, res) => {
       page.deletedBy = req.user._id;
       page.modifiedDate = new Date();
       await page.save();
-      res.status(200).json("Message": `Page with ID ${pageId} soft-deleted successfully.`);
+      res.status(200).json({ message: `Page with ID ${pageId} soft-deleted successfully.` });
     }
   } catch (err) {
     console.error("Error deleting page:", err);
@@ -609,7 +609,7 @@ router.get("/tags/:slug", checkApiKey, async function(req, res) {
       res.status(200).json(tag);
     }
     else {
-      res.status(204).json({'No Response': 'No tags exist with the provided slug'});
+      res.status(204).json({'No Response': 'No tags exist with the provided slug' });
     }
   } catch (err) {
     res.status(500).send(err)
@@ -624,7 +624,7 @@ router.post("/create/tags", checkApiKey, validateSlug, async (req, res) => {
       for (let projId of projects) {
         let proj = await Project.findById(projId);
         if (!proj) {
-          res.status(400).json({'Error': "Invalid project ID provided"})
+          res.status(400).json({ error: "Invalid project ID provided"})
         }
       }
     }
@@ -646,7 +646,7 @@ router.post("/create/tags", checkApiKey, validateSlug, async (req, res) => {
       res.status(200).json(newTag);
     }
     else {
-      res.status(400).json({'Error': 'Could not create a tag with the provided values'});
+      res.status(400).json({ error: 'Could not create a tag with the provided values' });
     }
   } catch (err) {
     res.status(500).send(err)
@@ -663,11 +663,11 @@ router.put("/tags/:id", checkApiKey, validateSlug, validateTitles, async (req, r
         for (let projId of projects) {
           let proj = await Project.findById(projId);
           if (!proj) {
-            res.status(400).json({'Error': "Invalid project ID provided"})
+            res.status(400).json({ error: "Invalid project ID provided"})
           }
         }
       } else {
-        res.status(400).json({'Error': "Project IDs must be provided as an array"})
+        res.status(400).json({ error: "Project IDs must be provided as an array"})
       }
     }
   } catch (err) {
