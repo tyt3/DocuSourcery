@@ -894,72 +894,46 @@ newPage
 
 
 // Edit Page View
-router.get('/project/:projectSlug/:documentSlug/:pageSlug/edit', ensureAuth, async (req, res) => {
-  const { projectId, docId } = req.params;
-  const { title, slug, body, isPublic } = req.body;
+router.get("/project/:projectSlug/:documentSlug/:pageSlug/edit", ensureAuth, async (req, res) => {
+    try {
+      // Assuming params are passed correctly via the URL
+      const { projectSlug, documentSlug, pageSlug } = req.params;
 
-  // Validation: Check required fields
-  if (!title || !slug || !body) {
-    return res
-      .status(400)
-      .send("Missing required fields: title, slug, or body must not be empty.");
-  }
+      // Find project, document, and page
+      const project = await Project.findOne({ slug: projectSlug });
+      if (!project) {
+        return res.status(404).send("Project not found.");
+      }
 
-  try {
-    // Get project and document, error if not found
-    const project = await Project.findById(projectId);
-    if (!project) {
-      console.log("No project found with ID:", projectId);
-      return res.status(404).send("Project not found.");
+      const document = await Document.findOne({
+        slug: documentSlug,
+        projectId: project._id,
+      });
+      if (!document) {
+        return res.status(404).send("Document not found.");
+      }
+
+      const page = await Page.findOne({
+        slug: pageSlug,
+        documentId: document._id,
+      });
+      if (!page) {
+        return res.status(404).send("Page not found.");
+      }
+
+      // Render the edit page view with page data
+      res.render("project/pageEdit.ejs", {
+        user: req.user,
+        page: page,
+        project: project,
+        document: document,
+      });
+    } catch (err) {
+      console.error("Error loading the edit page view:", err);
+      res.status(500).send("Internal Server Error");
     }
-
-    // Confirm that document is in project
-    const document = await Document.findOne({
-      _id: docId,
-      projectId: project._id,
-    });
-    if (!document) {
-      console.log("No document found with ID:", docId);
-      return res
-        .status(404)
-        .send(
-          "Document not found or does not belong to the specified project."
-        );
-    }
-
-    // Convert description field Markdown to HTML
-    const bodyHTML = marked.parse(body);
-
-    // Determine the order for the new page
-    const order = document.pages ? document.pages.length + 1 : 1;
-
-    // Get public value
-    let publicChoice = switchToBool(isPublic);
-
-    // Create and save the new page
-    const newPage = await Page.create({
-      title: title,
-      slug: slug,
-      body: bodyHTML,
-      public: publicChoice,
-      order: order,
-      createdBy: req.user._id,
-      projectId: projectId,
-      documentId: docId,
-    });
-
-    // update the document to include the page reference
-    document.pages.push(newPage._id);
-    await document.save();
-
-    console.log("Project updated with new page:", project);
-
-    res.redirect(`/project/${project.slug}/${Document.slug}/${newPage.slug}`);
-  } catch (err) {
-    console.error("Error creating page:", err);
-    res.status(500).send("Internal Server Error");
   }
-});
+);
 
 
 // Edit Page
