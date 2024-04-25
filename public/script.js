@@ -30,6 +30,33 @@ fetchUsers()
   });
 
 
+// Function to populate user input field with users as someone types
+const userField = document.getElementById('user');
+userField.addEventListener('input', async function() {
+  const inputValue = userField.value.trim();
+  if (inputValue.length > 1) {
+    const users = await fetchUsers();
+    const filteredUsers = users.filter(user => {
+      // Filter users based on username, full name, or email address
+      return (
+        user.username.toLowerCase().includes(inputValue.toLowerCase()) ||
+        (user.firstName + ' ' + user.lastName).toLowerCase().includes(inputValue.toLowerCase()) ||
+        user.email.toLowerCase().includes(inputValue.toLowerCase())
+      );
+    });
+    // Clear previous options
+    userField.innerHTML = '';
+    // Create and append new options
+    filteredUsers.forEach(user => {
+      const option = document.createElement('option');
+      option.value = user.username; // Assuming username is unique
+      userField.appendChild(option);
+    });
+  }
+});
+
+
+
 //Add a JavaScript event listener to detect when the user types in the text field
 const userSearchField = document.getElementById("search-field")
 

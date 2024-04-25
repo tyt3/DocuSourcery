@@ -338,23 +338,30 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" 
           aria-label="Close"></button>
       </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <input 
-            type="user" 
-            class="form-control" 
-            id="user" 
-            name="user" 
-            placeholder="Search by username, full name, or email address"
-            required>
+      <form method="POST" action="project/add-user">
+        <div class="modal-body">
+          <div class="form-group">
+            <input 
+              type="user" 
+              class="form-control" 
+              id="user" 
+              name="user" 
+              placeholder="Search by username, full name, or email address"
+              required>
+          </div>
         </div>
-      </div>
-      <div class="modal-footer">
-        <!-- <form method="POST" target="_parent" action="#"> -->
-        <form>
+        <div class="form-group">
+          <select class="form-select" name="role" id="role">
+            <option value="0">Viewer</option>
+            <option value="1">Editor</option>
+            <option value="2">Admin</option>
+            <option value="3">Owner</option>
+          </select>
+        </div>
+        <div class="modal-footer">
           <button type="submit" class="btn btn-ds-primary">Add User to Project</button>
-        </form>
-      </div>
+        </div>
+      </form>
     </div>
   </div>
 </div>
