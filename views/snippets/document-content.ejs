@@ -10,7 +10,7 @@
   <% if (user && user.id ) { %>
     <% const minRole = 1; %>
     <% const userFound = project.users.some(userObj => {
-      return userObj.user.toString() === user.id.toString() && userObj.role >= minRole;
+      return userObj.user.id.toString() === user.id.toString() && userObj.role >= minRole;
     }); %>
   
     <% if (userFound) { %>
@@ -25,7 +25,7 @@
 <% } %>
 </div>
 <div>
-  <%= document.description %>
+  <%- document.description %>
 </div>
 <hr>
 <h2 class="fs-6 text-uppercase light">

@@ -1,4 +1,4 @@
-<h1 class="fs-6 text-start mb-2">
+<h1 class="fs-5 text-start mb-2">
   <%= project.title %>
 </h1>
 <!-- Check there are documents -->
@@ -7,24 +7,26 @@
     <!-- Check that document has more than one page -->
     <% if (doc.pages && doc.pages.length > 0) { %>
       <!-- Check that document is active -->
-      <% if (document && document.id.toString() === doc.id.toString()) { %>
-        <a href="/project/<%= project.slug %>/<%= doc.slug %>" role="button" class="dropdown-btn ml-auto active">
-      <% } else { %>
-        <a href="/project/<%= project.slug %>/<%= doc.slug %>" role="button" class="dropdown-btn ml-auto">
-      <% } %>
-        <div class="row">
-          <div class="col-10">
+      <div class="row dropdown-btn">
+        <div class="col-10">
+          <% if (document && !page && document.id.toString() === doc.id.toString()) { %>
+            <a href="/project/<%= project.slug %>/<%= doc.slug %>" role="button" class="ml-auto active-page">
+            <% } else if (document && document.id.toString() === doc.id.toString()) { %>
+            <a href="/project/<%= project.slug %>/<%= doc.slug %>" role="button" class="ml-auto active-doc"> 
+          <% } else { %>
+          <a href="/project/<%= project.slug %>/<%= doc.slug %>" role="button" class="ml-auto">
+          <% } %>
             <%= doc.title %>
-          </div>
-          <div class="col-2 d-flex justify-content-end">
-            <i class="fa fa-caret-down align-top"></i>
-          </div>
+          </a>
         </div>
-      </a>
+        <div class="col-2 d-flex justify-content-end">
+          <i class="fa fa-caret-down align-top"></i>
+        </div>
+      </div>
       <div class="dropdown-container">
         <% doc.pages.forEach(function(pg) { %>
           <% if (page && page.id.toString() === pg.id.toString()) { %>
-            <a href="/project/<%= project.slug %>/<%= doc.slug %>/<%= pg.slug %>" active>
+            <a href="/project/<%= project.slug %>/<%= doc.slug %>/<%= pg.slug %>" class="active-page">
           <% } else { %>
             <a href="/project/<%= project.slug %>/<%= doc.slug %>/<%= pg.slug %>">
           <% } %>
@@ -36,7 +38,7 @@
       <!-- Single-page document -->
       <!-- Check that document is active -->
       <% if (document && document.id.toString() === doc.id.toString()) { %>
-        <a href="/project/<%= project.slug %>/<%= doc.slug %>" active>
+        <a href="/project/<%= project.slug %>/<%= doc.slug %>" class="active-page">
       <% } else { %>
         <a href="/project/<%= project.slug %>/<%= doc.slug %>">
       <% } %>

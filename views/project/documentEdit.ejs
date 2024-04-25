@@ -41,7 +41,12 @@
         </li>
         <% } %>
       </ul>
-      <form>
+      <% if (document) { %>
+        <form id="documentForm" method="POST" action="/document/edit/<%= document.id %>">
+      <% } else { %>
+        <form id="documentForm" method="POST" 
+        action="/document/create/<%= project.id %>">
+      <% } %>
         <div class="row gy-4">
           <!-- Tab Panels -->
           <div class="col-12 col-md-8 col-xxl-9">
@@ -65,8 +70,8 @@
                     Slug<span class="required">*</span></label>
                   <div class="col-sm-10">
                     <input type="text" class="form-control" id="slug" name="slug" 
-                    <% if (project)  { %>
-                      value="<%= project.slug %>"
+                    <% if (document)  { %>
+                      value="<%= document.slug %>"
                     <% }; %>
                     placeholder="Enter slug">
                   </div>
@@ -88,12 +93,12 @@
                   <label for="landingPage" class="col-sm-2 col-form-label bold">Landing Page</label>
                   <div class="col-sm-10">
                     <div class="form-check">
-                      <input class="form-check-input" type="checkbox" id="summaryPage" name="landingPage"
+                      <input class="form-check-input" type="checkbox" id="landingPage" name="landingPage"
                       <% if (document && document.landingPage) { %>
                         checked
                       <% } %>
                       >
-                      <label class="form-check-label" for="summaryPage">
+                      <label class="form-check-label" for="landingPage">
                         Start the document on a summary page. If unchecked, the 
                         document's landing page will be the first page of the 
                         document.
@@ -194,8 +199,8 @@
                   </a>
                 </div>
                 <div class="form-check form-switch mt-2">
-                  <input class="form-check-input" type="checkbox" role="switch" id="public">
-                  <label class="form-check-label bold" for="public">Make document public</label>
+                  <input class="form-check-input" type="checkbox" role="switch" id="isPublic" name="isPublic">
+                  <label class="form-check-label bold" for="isPublic">Make document public</label>
                 </div>
               </div>
             </div>

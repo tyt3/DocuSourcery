@@ -30,6 +30,15 @@ function ensureNotAuth(req, res, next) {
   }
 };
 
+// Check if the user is authenticated\
+function ensureAdmin(req, res, next) {
+  if (req.user.admin) {
+    return next();
+  } else {
+    // Store the original requested URL in the session
+    req.status(401).json({ error: 'You must be a system administrator to access this page.' });
+  }
+};
 
 // Validate API key before allowing API request
 const checkApiKey = async (req, res, next) => {
@@ -153,15 +162,17 @@ function validatePassword(req, res, next) {
 // Validate Slug
 const validateSlug = async (req, res, next) => {
   try {
-    const { slug } = req.body;
+    const { slug, isUpdate } = req.body;
     let valid = true;
     const errors = [];
 
     // Check if any other project uses the same slug
-    const duplicateSlug = await Project.findOne({ slug: slug });
-    if (duplicateSlug) {
-      valid = false;
-      errors.push("Slug must be unique.");
+    if (req.originalUrl === '/project/create') {
+      const duplicateSlug = await Project.findOne({ slug: slug });
+      if (duplicateSlug) {
+        valid = false;
+        errors.push("Slug must be unique.");
+      }
     }
     // Check for valid slug lengths
     if (!slug) {
@@ -250,6 +261,7 @@ function populateCurrentUser(req, res, next) {
 module.exports = {
   ensureAuth: ensureAuth,
   ensureNotAuth: ensureNotAuth,
+  ensureAdmin: ensureAdmin,
   validatePassword: validatePassword,
   checkUsernameAndEmail: checkUsernameAndEmail,
   checkAuthUsernameAndEmail: checkAuthUsernameAndEmail,

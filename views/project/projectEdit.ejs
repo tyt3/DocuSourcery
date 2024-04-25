@@ -48,7 +48,11 @@
         </li>
         <% } %> 
       </ul>
-      <form id="projectForm" method="POST" action="/project/create">
+      <% if (project) { %>
+        <form id="projectForm" method="POST" action="/project/edit/<%= project.id %>">
+      <% } else { %>
+        <form id="projectForm" method="POST" action="/project/create">
+      <% } %>
         <div class="row gy-4">
           <!-- Tab Panels -->
           <div class="col-12 col-md-8 col-xxl-9">
@@ -281,6 +285,10 @@
                     </tbody>
                   </table>
                 </div>
+                <button type="button" id="addUserBtn" class="btn btn-12 btn-ds-primary mt-3"
+                  data-bs-toggle="modal" data-bs-target="#addUserModal">
+                  Add User
+                </button>
               </div>
             </div>
           </div>
@@ -292,8 +300,8 @@
                     Save Project
                   </button>
                   <% if (project) { %>
-                  <button type="button" id="addUserBtn" class="btn btn-block btn-outline-danger"
-                    data-bs-toggle="modal" data-bs-target="#addUserModal">
+                  <button type="button" id="deleteProjectBtn" class="btn btn-block btn-outline-danger"
+                    data-bs-toggle="modal" data-bs-target="#deleteProjectModal">
                     Delete Project
                   </button>
                   <a href="/project/<%= project.slug %>"
@@ -308,7 +316,7 @@
                       checked
                     <% } %>
                     >
-                  <label class="form-check-label bold" for="public">Make project public</label>
+                  <label class="form-check-label bold" for="isPublic">Make project public</label>
                 </div>
               </div>
             </div>

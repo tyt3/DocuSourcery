@@ -1,9 +1,11 @@
 // // Route handlers
 const express = require('express');
 const router = express.Router();
+const marked = require('marked');
 
 // // Import middleware
-const { checkApiKey } = require('./middleware');
+const { checkApiKey, validateTitles, validateSlug } = require('./middleware');
+// import { switchToBool, appendProjectToTags } from './routes/project';
 
 // // Import data models
 const User = require('../models/user');
@@ -13,20 +15,296 @@ const Page = require('../models/page');
 const Tag = require('../models/tag');
 
 
+// FUNCTIONS
+function formatModDate(projectList) {
+  projectList.forEach(project => {
+    // Convert the 'modifiedDate' field to a Moment.js object
+    var modifiedDateMoment = moment(project.modifiedDate);
+
+    // Format the Moment.js object as 'MM/DD/YYYY HH:MM:SS'
+    var formattedDate = modifiedDateMoment.format('MM/DD/YYYY HH:mm:ss');
+
+    // Update the 'modifiedDate' field in the project with the formatted date string
+    project.dateModified = formattedDate;
+  });
+  return projectList;
+}
+
+function switchToBool(switchField) {
+  let choice = false;
+  if (switchField === "on") {
+    choice = true;
+  }
+  return choice;
+}
+
 // USERS
 
 // Get all users 
-router.get("/users", async function(req, res){
-    await User.find({})
-       .then(users => {
-         res.json(users);
-       })
-       .catch(err => {
-         res.status(500).send(err);
-       });
-   });
+router.get("/users", async function(req, res) {
+  await User.find({})
+    .then(users => {
+      res.json(users);
+    })
+    .catch(err => {
+      res.status(500).send(err);
+    });
+});
 
-// // PROJECT
+// Get user by username
+router.get("/users/:username", async function(req, res) {
+  const userName = req.params.username;
+  try {
+    const user = await User.findOne({ username: userName });
+    if (user) {
+      res.status(200).json(user);
+    }
+    else {
+      res.status(204).json({'No Response': 'No users exist with the provided username'});
+    }
+  } catch (err) {
+    res.status(500).send(err)
+  }
+});
+
+// PROJECT
+
+// Get all projects
+router.get("/projects", async function(req, res) {
+  await Project.find({})
+    .then(projects => {
+      res.status(200).json(projects);
+    })
+    .catch(err => {
+      res.status(500).send(err);
+    });
+});
+
+// Get project by slug
+router.get("/projects/:slug", async function(req, res) {
+  const projectSlug = req.params.slug;
+  try {
+    const project = await Project.findOne({ slug: projectSlug });
+    if (project) {
+      res.status(200).json(project);
+    }
+    else {
+      res.status(204).json({'No Response': 'No projects exist with the provided slug'});
+    }
+  } catch (err) {
+    res.status(500).send(err)
+  }
+});
+
+// Get all documents under a project
+router.get("/projects/:slug/documents", async function(req, res) {
+  const projectSlug = req.params.slug;
+  try {
+    const project = await Project.findOne({ slug: projectSlug });
+    if (project) {
+	  const docs = await Document.find({'_id': { $in: project.documents}}).exec();
+      res.status(200).json(docs);
+    }
+    else {
+      res.status(204).json({'No Response': 'No documents exist under the provided project'});
+    }
+  } catch (err) {
+    res.status(500).send(err)
+  }
+});
+
+// Get all pages under a project
+router.get("/projects/:slug/pages", async function(req, res) {
+  const projectSlug = req.params.slug;
+  try {
+    const project = await Project.findOne({ slug: projectSlug });
+    if (project) {
+	  const pages = await Page.find({'projectId': project._id }).exec();
+      res.status(200).json(pages);
+    }
+    else {
+      res.status(204).json({'No Response': 'No pages exist under the provided project'});
+    }
+  } catch (err) {
+    res.status(500).send(err)
+  }
+});
+
+// Create Project
+router.post('/projects/create', async (req, res) => {
+  const { title, subtitle, slug, description, tags, noLogin, canDuplicate, isPublic } = req.params.body;
+
+  let linkedTags = [];
+  try {
+    if (tags) {
+      const tagsArray = tags.split(',').map(tag => tag.trim());
+
+      for (const tagTitle of tagsArray) {
+        let tag = await Tag.findOne({ title: tagTitle });
+
+        if (!tag) {
+          // Create a new tag if it doesn't exist
+          tag = new Tag({
+            title: tagTitle,
+            slug: tagTitle.replace(/\s+/g, '-').toLowerCase(), // Replace whitespace with hyphens
+            createdBy: req.user._id
+          });
+          await tag.save();
+        }
+        linkedTags.push(tag._id);
+      }
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).send(`An error occurred during tag handling: ${err}`);
+  }
+
+  try {
+    let publicChoice = switchToBool(isPublic);
+    let loginChoice = switchToBool(noLogin);
+    let dupChoice = switchToBool(canDuplicate);
+
+    // Convert description markdown to HTML
+    const descriptionHTML = marked.parse(description);
+    const project = new Project({
+      slug: slug,
+      title: title,
+      subtitle: subtitle,
+      description: descriptionHTML,
+      createdBy: req.user._id,
+      public: publicChoice,
+      tags: linkedTags,
+      permissions: {noLogin: loginChoice, duplicatable: dupChoice},
+      users: [
+        {
+          user: req.user._id,
+          role: 3
+        }
+      ]
+    });
+
+    const newProject = await project.save();
+
+    // Update all tags in linkedTags array to add the new project ID to its projects array
+    if (linkedTags) {
+      appendProjectToTags(linkedTags, newProject._id);
+    }
+
+    // Return the new project
+    res.json(newProject);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send(`An error occurred during project creation: ${err}`);
+  }
+});
+
+// DOCUMENT
+
+// Get all documents
+router.get("/documents", async function(req, res) {
+  await Document.find({})
+    .then(documents => {
+      res.status(200).json(documents);
+    })
+    .catch(err => {
+      res.status(500).send(err);
+    });
+});
+
+// Get document by slug
+router.get("/documents/:slug", async function(req, res) {
+  const documentSlug = req.params.slug;
+  try {
+    const document = await Document.findOne({ slug: documentSlug });
+    if (document) {
+      res.status(200).json(document);
+    }
+    else {
+      res.status(204).json({'No Response': 'No documents exist with the provided slug'});
+    }
+  } catch (err) {
+    res.status(500).send(err)
+  }
+});
+
+// Get all pages under a document
+router.get("/documents/:slug/pages", async function(req, res) {
+  const documentSlug = req.params.slug;
+  try {
+    const document = await Document.findOne({ slug: documentSlug });
+    if (document) {
+	  if (document.pages) {
+		const pages = await Page.find({'_id': { $in: document.pages}}).exec();
+		res.status(200).json(pages);
+	  }
+	  res.status(204).json({'No Response': 'No pages exist under the provided document'}); 
+    }
+    else {
+      res.status(400).json({'Error': 'Document not found'});
+    }
+  } catch (err) {
+    res.status(500).send(err)
+  }
+});
+
+// PAGE
+
+// Get all pages
+router.get("/pages", async function(req, res) {
+  await Page.find({})
+    .then(pages => {
+      res.status(200).json(pages);
+    })
+    .catch(err => {
+      res.status(500).send(err);
+    });
+});
+
+// Get page by slug
+router.get("/pages/:slug", async function(req, res) {
+  const pageSlug = req.params.slug;
+  try {
+    const page = await Page.findOne({ slug: pageSlug });
+    if (page) {
+      res.status(200).json(page);
+    }
+    else {
+      res.status(204).json({'No Response': 'No pages exist with the provided slug'});
+    }
+  } catch (err) {
+    res.status(500).send(err)
+  }
+});
+
+// TAG
+
+// Get all tags
+router.get("/tags", async function(req, res) {
+  await Tag.find({})
+    .then(tags => {
+      res.status(200).json(tags);
+    })
+    .catch(err => {
+      res.status(500).send(err);
+    });
+});
+
+// Get tag by slug
+router.get("/tags/:slug", async function(req, res) {
+  const tagSlug = req.params.slug;
+  try {
+    const tag = await Tag.findOne({ slug: tagSlug });
+    if (tag) {
+      res.status(200).json(page);
+    }
+    else {
+      res.status(204).json({'No Response': 'No tags exist with the provided slug'});
+    }
+  } catch (err) {
+    res.status(500).send(err)
+  }
+});
+
 
 // // Create Project
 // router.post('/project/create', checkApiKey, async (req, res) => {

@@ -16,7 +16,7 @@
     <% console.log('User ID:', user.id); %>
     <% console.log('Project Users:', project.users); %>
     <% const userFound = project.users.some(userObj => {
-        return userObj.user.toString() === user.id.toString() && userObj.role >= minRole;
+        return userObj.user.id.toString() === user.id.toString() && userObj.role >= minRole;
     }); %>
     <% console.log('User Found:', userFound); %>
     <% if (userFound) { %>
@@ -31,7 +31,7 @@
 <% } %>
 </div>
 <div class="mt-4">
-  <%= project.description %>
+  <%- project.description %>
 </div>
 <p class="mt-4">
   <span class="bold">Collaborators</span>:

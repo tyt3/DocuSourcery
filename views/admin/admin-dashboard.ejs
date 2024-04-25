@@ -1,0 +1,147 @@
+<%- include('../baseHeader') -%>
+  <div class="container main-content my-5">
+    <!-- Title -->
+    <h1 class="mb-4">
+      Site Administration
+    </h1>
+
+    <!-- Models Table -->
+    <div class="table-container mt-5">
+      <table class="table admin-table table-striped table-hover">
+        <thead>
+          <tr class="bg-ds-secondary">
+            <th colspan="2" class="text-center text-white">Models</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Models -->
+          <tr>
+            <td class="w-75"><a href="/admin/users">Users</a></td>
+            <td>
+              <button type="button" data-bs-toggle="modal" data-bs-target="#addUserModal" class="btn p-0">
+                <span class="material-symbols-outlined fs-6 fw-bold">add</span>
+                Add
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td><a href="#">Projects</a></td>
+            <td>
+              <a href="#">
+                <span class="material-symbols-outlined fs-6 fw-bold">add</span>
+                Add
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td><a href="#">Documents</a></td>
+            <td>
+              <a href="#">
+                <span class="material-symbols-outlined fs-6 fw-bold">add</span>
+                Add
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td><a href="#">Pages</a></td>
+            <td>
+              <a href="#">
+                <span class="material-symbols-outlined fs-6 fw-bold">add</span>
+                Add
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td><a href="#">Tags</a></td>
+            <td>
+              <a href="#">
+                <span class="material-symbols-outlined fs-6 fw-bold">add</span>
+                Add
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Add User Modal -->
+  <div class="modal fade" id="addUserModal" name="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="addUserModal">Add User</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form method="POST" target="_parent" action="/admin/user/add">
+          <div class="modal-body">
+            <div class="row">
+              <div class="col">
+                <div class="form-group">
+                  <label for="firstName" class="bold">First Name
+                    <span class="required-field">*</span>
+                  </label>
+                  <input type="text" class="form-control" id="firstName" name="firstName" required>
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-group">
+                  <label for="lastName" class="bold">Last Name
+                    <span class="required-field">*</span>
+                  </label>
+                  <input type="text" class="form-control" id="lastName" name="lastName" required>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="username" class="bold">Username
+                <span class="required-field">*</span>
+              </label>
+              <input type="text" class="form-control" id="username" name="username" maxlength="10">
+            </div>
+            <div class="form-group">
+              <label for="email" class="bold">Email
+                <span class="required-field">*</span>
+              </label>
+              <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+              <label for="password" class="bold">Password
+                <span class="required-field">*</span>
+              </label>
+              <input type="password" class="form-control" id="password" name="password" placeholder="">
+              <small><span class="fw-medium">Password must</span>
+                <ul class="mb-0">
+                  <li>Contain at least 8 characters</li>
+                  <li>Contain no more than 20 characters</li>
+                  <li>Contain at least 1 upper case letter</li>
+                  <li>Contain at least 1 number</li>
+                  <li>Contain at least 1 special character</li>
+                </ul>
+              </small>
+            </div>
+            <div class="form-group">
+              <label for="password" class="bold">Confirm Password
+                <span class="required-field">*</span>
+              </label>
+              <input type="password" class="form-control" id="passwordConf" name="passwordConf" placeholder="">
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="admin" name="admin">
+              <label class="form-check-label" for="admin">
+                Make user a system admininistrator
+              </label>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <div class="col-12 text-center">
+              <button type="submit" class="btn btn-ds-primary">Add User</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+<%- include('../baseFooter') -%>

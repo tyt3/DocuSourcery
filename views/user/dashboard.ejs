@@ -49,13 +49,21 @@
                 <ul class="list-group">
                   <li class="list-group-item">
                     <div class="row">
-                      <div class="col-md-3 col-xxl-2 d-none d-md-block">
-                        <a  href="/project/pin/<%= project.id %>"><span 
-                        class="material-symbols-outlined">keep</span></a>
+                      <div class="col-md-2 d-none d-md-block d-flex align-items-md-center">
+                        <% const isPinned = user.pinnedProjects.includes(project._id)  %>
+                        <% if (isPinned) { %>
+                        <a href="/unpin/<%= project._id %>" data-bs-toggle="tooltip" 
+                          data-bs-placement="top" data-bs-title="Unpin project"><span 
+                          class="material-symbols-outlined">keep_off</span></a>
+                        <% } else { %>
+                        <a href="/pin/<%= project._id %>" data-bs-toggle="tooltip" 
+                          data-bs-placement="top" data-bs-title="Pin project"><span 
+                          class="material-symbols-outlined">keep</span></a>
+                        <% } %>
                         <a href="/project/<%= project.slug %>/edit"><span 
                           class="material-symbols-outlined">edit</span></a>
                       </div>
-                      <div class="col-12 col-md-9 col-xxl-10">
+                      <div class="col-12 col-md-10">
                         <a href="/project/<%= project.slug %>">
                           <%= project.title %>
                         </a>
@@ -82,11 +90,19 @@
                 <ul class="list-group">
                   <li class="list-group-item">
                     <div class="row">
-                      <div class="col-3 col-md-2 d-none d-md-block">
-                        <a href="/project/pin/<%= project.id %>"><span 
+                      <div class="col-md-2 d-none d-md-block">
+                        <% const isPinned = user.pinnedProjects.includes(project._id)  %>
+                        <% if (isPinned) { %>
+                        <a href="/unpin/<%= project._id %>" data-bs-toggle="tooltip" 
+                          data-bs-placement="top" data-bs-title="Unpin project"><span 
+                          class="material-symbols-outlined">keep_off</span></a>
+                        <% } else { %>
+                        <a href="/pin/<%= project._id %>" data-bs-toggle="tooltip" 
+                          data-bs-placement="top" data-bs-title="Pin project"><span 
                           class="material-symbols-outlined">keep</span></a>
+                        <% } %>
                       </div>
-                      <div class="col-12 col-md-9 col-xxl-10">
+                      <div class="col-12 col-md-10">
                         <a href="/project/<%= project.slug %>">
                           <%= project.title %>
                         </a>
@@ -103,39 +119,39 @@
                     Browse Projects
                   </a>
                 </div>
-            </div>
-          </div>
-          <!-- Archived Projects Pane -->
-          <div class="tab-pane fade" id="archived-projects-pane" role="tabpanel" 
-            aria-labelledby="archived-projects-pane">
-            <% if (trash) { %>
-              <div class="table-responsive"> 
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th class="bold">Title</th>
-                      <th class="bold">Date Archived</th>
-                      <th class="bold">Deleted by</th>
-                      <th class="bold">Date Created</th>
-                      <th class="bold">Created by</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <% projects.forEach(function(project) { %>
-                      <% if (project.deleted) { %>
-                        <tr>
-                          <td><%= project.title %></td>
-                          <td><%= project.deletedDate %></td>
-                          <td><%= project.deletedBy %></td>
-                          <td><%= project.createdDate %></td>
-                          <td><%= project.createdBy %></td>
-                        </tr>
-                      <% } %>
-                    <% }); %>
-                  </tbody>
-                </table>
               </div>
-            <% } %>
+            <!-- Archived Projects Pane -->
+            <div class="tab-pane fade" id="archived-projects-pane" role="tabpanel" 
+              aria-labelledby="archived-projects-pane">
+              <% if (trash.length > 0) { %>
+                <div class="table-responsive"> 
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th class="bold">Title</th>
+                        <th class="bold">Date Archived</th>
+                        <th class="bold">Deleted by</th>
+                        <th class="bold">Date Created</th>
+                        <th class="bold">Created by</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% trash.forEach(function(project) { %>
+                        <% if (project.deleted) { %>
+                          <tr>
+                            <td><%= project.title %></td>
+                            <td><%= moment(project.deletedDate).format('MMM D, YYYY') %></td>
+                            <td><%= project.deletedBy.firstName %> <%= project.deletedBy.lastName %></td>
+                            <td><%= moment(project.createdDate).format('MMM D, YYYY') %></td>
+                            <td><%= project.createdBy.firstName %> <%= project.createdBy.lastName %></td>
+                          </tr>
+                        <% } %>
+                      <% }); %>
+                    </tbody>
+                  </table>
+                </div>
+              <% } %>
+            </div>
           </div>
         </div>
       </div>

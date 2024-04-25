@@ -1,8 +1,31 @@
 
-<h1 class="text-start light">
-  <%= page.title %>
-</h1>
+
+<div class="row">
+  <!-- Title -->
+  <div class="col">
+    <h1 class="text-start light">
+      <%= page.title %>
+    </h1>
+  </div>
+  <!-- Edit Button -->
+  <% if (user && user.id ) { %>
+    <% const minRole = 1; %>
+    <% const userFound = project.users.some(userObj => {
+      return userObj.user.id.toString() === user.id.toString() && userObj.role >= minRole;
+    }); %>
+  
+    <% if (userFound) { %>
+    <div class="col-auto">
+      <a href="/project/<%= project.slug %>/<%= document.slug %>/<%= page.slug %>/edit" class="text-decoration-none">
+        <span class="material-symbols-outlined">
+          edit
+        </span>
+      </a>
+    </div>
+    <% } %>
+<% } %>
+</div>
 <div>
-  <%= page.body %>
+  <%- page.body %>
 </div>
 

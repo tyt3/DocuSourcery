@@ -179,7 +179,7 @@ router.get('/profile/:username', ensureAuth, async (req, res) => {
   try {
     // Find user profile based on username
     const userProfile = await User.findOne({ username: username });
-    const userProjects = await Project.find({ 'users.id': userProfile._id });
+    const userProjects = await Project.find({ 'users.user': userProfile._id });
 
     if (!userProfile) {
       return res.redirect('/');
@@ -206,7 +206,7 @@ router.post('/profile', ensureAuth, async (req, res) => {
       { new: true, runValidators: true }
     );
 
-    const userProjects = await Project.find({ 'users.id': req.user._id });
+    const userProjects = await Project.find({ 'users.user': req.user._id });
     // Render profile page
     res.render('user/profile.ejs', {
       profile: updatedProfile,
@@ -237,7 +237,40 @@ router.get('/dashboard', ensureAuth, async (req, res) => {
 
     console.log(`Found ${projects.length} projects for user: ${req.user._id}`);
 
-    // Render the dashboard page with the list of projects
+    // Find pinned project list
+    const pinnedIds = req.user.pinnedProjects.map(project => project._id);
+    var pinnedProjs;
+
+    if (pinnedIds) {
+      pinnedProjs = await Project.find({ _id: { $in: pinnedIds } });
+      pinnedProjs = pinnedProjs.map(project => ({
+        ...project.toObject(),
+        canEdit: project.users.some(u => u.user === req.user._id && u.role > 1),
+        isCreator: project.createdBy._id === req.user._id
+      }))
+    }
+
+    // Find trash
+    var trash = await Project.find({
+      'users.user': req.user._id,
+      'users.role': 3,
+      deleted: true
+    }).populate({
+      path: 'createdBy',
+      select: 'username firstName lastName email' // Only fetch the username and email of the creator
+    }).populate({
+      path: 'deletedBy',
+      select: 'username firstName lastName email' // Only fetch the username and email of the deleter
+    });
+
+    if (trash) {
+      trash = trash.map(project => ({
+        ...project.toObject(),
+        canEdit: project.users.some(u => u.user === req.user._id && u.role > 1),
+        isCreator: project.deletedBy._id === req.user._id
+      }))
+    }
+
     res.render('user/dashboard.ejs', {
       user: req.user,
       projects: projects.map(project => ({
@@ -245,8 +278,8 @@ router.get('/dashboard', ensureAuth, async (req, res) => {
         canEdit: project.users.some(u => u.user === req.user._id && u.role > 1),
         isCreator: project.createdBy._id === req.user._id
       })),
-      pins: null, // TODO: Implement
-      trash: null, // TODO: Implement
+      pins: pinnedProjs,
+      trash: trash
     });
   } catch (err) {
     console.error('Error fetching dashboard data:', err);

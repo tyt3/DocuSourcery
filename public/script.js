@@ -2,23 +2,19 @@
 //  AJAX requests //
 ///////////////////
 
-function fetchUsers() {
-  return fetch('/api/users')
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return response.json();
-    })
-    .then(users => {
-      // Return the list of users
-      return users;
-    })
-    .catch(error => {
-      // Handle errors
-      console.error('There was a problem with the fetch operation:', error.message);
-      throw error; // Re-throw the error to propagate it to the caller
-    });
+async function fetchUsers() {
+  try {
+    const response = await fetch('/api/users');
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    const users = await response.json();
+    return users;
+  } catch (error) {
+    // Handle errors
+    console.error('There was a problem with the fetch operation:', error.message);
+    throw error; // Re-throw the error to propagate it to the caller
+  }
 }
 
 // Example usage:
@@ -130,12 +126,19 @@ window.addEventListener('resize', calculateViewportHeight);
 /////////////////////
 
 /* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
-var dropdown = document.getElementsByClassName("dropdown-btn");
-var i;
+var dropdowns = document.getElementsByClassName("dropdown-btn");
 
-if (dropdown) {
-  for (i = 0; i < dropdown.length; i++) {
-    dropdown[i].addEventListener("click", function() {
+if (dropdowns) {
+  Array.from(dropdowns).forEach(function(dropdown) {
+    var dropdownContent = dropdown.nextElementSibling;   
+    var isActivePage = dropdown.querySelector('a').classList.contains('active-page');
+    var isActiveDoc = dropdown.querySelector('a').classList.contains('active-doc');
+      
+    if (isActivePage || isActiveDoc) {
+      dropdownContent.style.display = "block";
+    }
+    
+    dropdown.addEventListener("click", function() {
       var dropdownContent = this.nextElementSibling;
       if (dropdownContent.style.display === "block") {
         dropdownContent.style.display = "none";
@@ -143,7 +146,7 @@ if (dropdown) {
         dropdownContent.style.display = "block";
       }
     });
-  }
+  });
 }
 
 
@@ -197,3 +200,57 @@ function updateBackend(itemId) {
   var data = JSON.stringify({ item_id: itemId });
   xhr.send(data);
 }
+
+
+///////////////////////
+// form submission  //
+/////////////////////
+document.getElementById("updateProjectForm").addEventListener("submit", function (event) {
+  event.preventDefault(); // Prevent the default form submission behavior
+
+  const projectId = document.getElementById("projectId").value;
+  const projectName = document.getElementById("projectName").value;
+  const projectDescription = document.getElementById("projectDescription").value;
+
+  const updateData = {
+    name: projectName,
+    description: projectDescription,
+  };
+
+  // Using AJAX request using Fetch API to update project
+  fetch(`/api/projects/${projectId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(updateData), // Convert data to JSON string
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.success) {
+        console.log("Project updated successfully");
+      } else {
+        console.error("Failed to update project", data.error);
+      }
+    })
+    .catch((error) => {
+      console.error("Error updating project:", error);
+    });
+});
+
+
+//backend handling
+app.put("/api/projects/:id", (req, res) => {
+  const projectId = req.params.id;
+  const updatedData = req.body;
+
+
+Project.update(projectId, updatedData)
+    .then(() => {
+      res.json({ success: true });
+    })
+    .catch((error) => {
+      res.status(500).json({ success: false, error });
+    });
+});
+

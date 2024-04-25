@@ -9,6 +9,8 @@ const session = require('express-session');
 const passport = require('passport');
 const flash = require('connect-flash');
 const { connectDB } = require('./DBconnect');
+const moment = require('moment');
+
 
 const app = express();
 
@@ -18,6 +20,7 @@ connectDB();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
+app.locals.moment = moment;
 
 // Load passport related session
 app.use(session({
@@ -49,11 +52,13 @@ const staticRouter = require("./routes/static");
 const userRouter = require("./routes/user");
 const projectRouter = require("./routes/project");
 const apiRouter = require("./routes/api");
+const adminRouter = require("./routes/admin");
 
 app.use("/", staticRouter);
 app.use("/", userRouter);
 app.use("/", projectRouter);
 app.use("/api", apiRouter);
+app.use("/admin", adminRouter);
 
 // listen for requests :)
 const listener = app.listen(process.env.PORT, function() {
