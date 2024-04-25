@@ -265,6 +265,7 @@ module.exports = {
   ensureNotAuth: ensureNotAuth,
   ensureAdmin: ensureAdmin,
   validatePassword: validatePassword,
+  checkApiKey: checkApiKey,
   checkUsernameAndEmail: checkUsernameAndEmail,
   checkAuthUsernameAndEmail: checkAuthUsernameAndEmail,
   populateCurrentUser: populateCurrentUser,
