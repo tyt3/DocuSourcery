@@ -981,30 +981,77 @@ router.post("/page/edit/:id", ensureAuth, async (req, res) => {
 });
 
 // Delete Page
-router.delete('/page/:id', ensureAuth, async (req, res) => {
+router.post("/page/delete/:id", ensureAuth, async (req, res) => {
   const pageId = req.params.id;
   try {
-    // TODO: Implement
-    // If page.deleted=false:
-    // - set to deleted=true
-    // - set deletedDate=now
-    // - set deletedBy=authenticatedUserID
-    // if page.deleted=true: 
-    // - delete object
+    const page = await Page.findById(pageId);
+    if (!page) {
+      return res.status(404).send("Document not found.");
+    }
+
+    if (!page.deleted) {
+      page.deleted = true;
+      page.deletedDate = new Date(); // Record the deletion date
+      page.deletedBy = req.user._id; // Record the user who deleted the document
+      await page.save();
+      
+      const document = await Document.findById(page.documentId);
+      const project = await Project.findById(page.projectId);
+      if (!document) {
+        return res.status(404).json({ error: "Document not found" });
+      }
+      // Redirect to edit page view
+      res.redirect(`/project/${project.slug}/${document.slug}/edit`);
+    } else {
+      // Perform a permanent delete
+      await Page.deleteOne({ _id: pageId });
+      const document = await Document.findById(page.documentId);
+      if (!document) {
+        return res.status(404).json({ error: "Document not found" });
+      }
+      // Redirect to edit page view
+      const project = await Project.findById(page.projectId);
+      res.redirect(`/project/${project.slug}/${document.slug}/edit`);
+    }
   } catch (err) {
-    throw err;
+    console.error("Error deleting page:", err);
+    res.status(500).send("Server error while deleting page.");
   }
 });
 
+
 // Restore Page
-router.post('/page/restore/:id', ensureAuth, async (req, res) => {
+router.post("/page/restore/:id", ensureAuth, async (req, res) => {
   const pageId = req.params.id;
   try {
-    // TODO: Implement
-    // Get page by ID
-    // Set deleted to false
+    const page = await Page.findById(pageId);
+    if (!page) {
+      // If the page is not found, send a 404 response
+      return res.status(404).send("Page not found.");
+    }
+
+    if (!page.deleted) {
+      // If the page is not deleted, send a 400 response
+      return res
+        .status(400)
+        .send("Page is already active and not marked as deleted.");
+    }
+
+    // Restore the page by setting 'deleted' to false
+    page.deleted = false;
+    page.deletedDate = null; // Optionally clear the deletion date
+    page.deletedBy = null;  // Optionally clear the user who marked it as deleted
+    page.modifiedDate = new Date(); // Update the modified date
+    
+     // Save the updated page
+    await page.save();
+    
+    // Send a success response indicating the page has been restored
+    res.send({ message: "Page restored successfully" });
   } catch (err) {
-    throw err;
+    // If there is an error during the process, log it and send a 500 response
+    console.error("Error restoring page：", err);
+    res.status(500).send("Server error while restoring page.");
   }
 });
 
