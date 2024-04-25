@@ -15,6 +15,26 @@ const Page = require('../models/page');
 const Tag = require('../models/tag');
 
 
+// Functions
+//Credit: ChatGPT
+function generateRandomString(length) {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let result = '';
+  
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    result += characters[randomIndex];
+  }
+  
+  return result;
+}
+
+function generateApiKey(minLength, maxLength) {
+  const length = Math.floor(Math.random() * (maxLength - minLength + 1)) + minLength;
+  return generateRandomString(length);
+}
+
+
 // Admin Dashboard
 router.get('/', ensureAuth, ensureAdmin, async (req, res) => {
   try {
@@ -51,8 +71,10 @@ router.post('/user/add', ensureAuth, ensureAdmin, checkUsernameAndEmail, validat
 
     // Get admin status
     let adminStatus = false;
+    let apiKey;
     if (admin === "on") {
       adminStatus = true;
+      apiKey = generateApiKey(20, 128);
     }
 
     // Create the User document
@@ -62,7 +84,8 @@ router.post('/user/add', ensureAuth, ensureAdmin, checkUsernameAndEmail, validat
       firstName: firstName,
       lastName: lastName,
       password: hashedPassword,
-      admin: adminStatus
+      admin: adminStatus,
+      apiKey: apiKey
     });
 
     const newUser = await user.save();
@@ -100,6 +123,7 @@ router.post('/user/edit/:id', ensureAuth, ensureAdmin, async (req, res) => {
     let adminStatus = false;
     if (admin === "on") {
       adminStatus = true;
+      usr.apiKey = generateApiKey(20, 128);
     }
 
     // Update the usr fields
