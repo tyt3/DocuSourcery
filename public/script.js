@@ -4,18 +4,26 @@
 
 async function fetchUsers() {
   try {
-    const response = await fetch('/api/users');
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    const users = await response.json();
-    return users;
+      // Check if the current URL contains "project" and "edit"
+      if (window.location.pathname.includes('project') && window.location.pathname.includes('edit')) {
+          // Fetch users only if the URL matches the condition
+          const response = await fetch('/users');
+          if (!response.ok) {
+              throw new Error('Network response was not ok');
+          }
+          const users = await response.json();
+          return users;
+      } else {
+          // If the URL doesn't match the condition, return an empty array
+          return [];
+      }
   } catch (error) {
-    // Handle errors
-    console.error('There was a problem with the fetch operation:', error.message);
-    throw error; // Re-throw the error to propagate it to the caller
+      // Handle errors
+      console.error('There was a problem with the fetch operation:', error.message);
+      throw error; // Re-throw the error to propagate it to the caller
   }
 }
+
 
 // Example usage:
 fetchUsers()
