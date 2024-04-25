@@ -178,79 +178,109 @@ router.post('/create/projects', checkApiKey, async (req, res) => {
 
 // Edit Project
 router.put("/projects/:id", checkApiKey, validateTitles, validateSlug,
-	async (req, res) => {
-	  const projectId = req.params.id;
-	  const {
-		title,
-		subtitle,
-		slug,
-		description,
-		tags,
-		noLogin,
-		canDuplicate,
-		isPublic,
-	  } = req.body;
+  async (req, res) => {
+    const projectId = req.params.id;
+	const {
+	  title,
+	  subtitle,
+	  slug,
+	  description,
+	  tags,
+	  noLogin,
+	  canDuplicate,
+	  isPublic,
+	} = req.body;
   
-	  try {
-		const project = await Project.findById(projectId);
-		if (!project) {
-		  res.status(404).send("Project not found.");
-		}
-  
-		// Convert description Markdown to HTML
-		const descriptionHTML = marked.parse(description);
-  
-		// Update the project fields
-		project.title = title || project.title;
-		project.subtitle = subtitle || project.subtitle; // Keep existing subtitle if none provided
-		project.slug = slug || project.slug;
-		project.description = descriptionHTML || project.description;
-		project.public = isPublic !== undefined ? isPublic : project.public;
-		project.modifiedDate = new Date;
-  
-		// Handle tags similarly as in the project creation
-		let linkedTags = [];
-		if (tags) {
-		  const tagsArray = tags.split(",").map((tag) => tag.trim());
-		  for (const tagTitle of tagsArray) {
-			let tag = await Tag.findOne({ title: tagTitle });
-			if (!tag) {
-			  tag = new Tag({
-				title: tagTitle,
-				slug: tagTitle.replace(/\s+/g, "-").toLowerCase(),
-				createdBy: req.user._id,
-			  });
-			  await tag.save();
-			}
-			linkedTags.push(tag._id);
-		  }
-		}
-		project.tags = linkedTags;
-  
-		// Update permissions based on form input
-		project.permissions.set("noLogin", noLogin);
-		project.permissions.set("duplicatable", canDuplicate);
-  
-		const updProject = await project.save();
-  
-		if (linkedTags) {
-		  // Update all tags in tagList array
-		  await Promise.all(linkedTags.map(async (tagId) => {
-			// Update the tag by its ObjectId
-			await Tag.findOneAndUpdate(
-			  { _id: tagId, projects: { $ne: updProject._id } }, // Query to find the tag and check if projectId is not already present
-			  { $addToSet: { projects: updProject._id } } // Update operation
-			);
-		  }));
-		}
-		res.status(200).json(updProject);
-
-	  } catch (err) {
-		console.error("Error updating project:", err);
-		res.status(500).send(`Server error while updating project: ${err}`);
+	try {
+	  const project = await Project.findById(projectId);
+	  if (!project) {
+	    res.status(404).send("Project not found.");
 	  }
+  
+	  // Convert description Markdown to HTML
+	  const descriptionHTML = marked.parse(description);
+  
+	  // Update the project fields
+	  project.title = title || project.title;
+	  project.subtitle = subtitle || project.subtitle; // Keep existing subtitle if none provided
+	  project.slug = slug || project.slug;
+	  project.description = descriptionHTML || project.description;
+	  project.public = isPublic !== undefined ? isPublic : project.public;
+	  project.modifiedDate = new Date();
+  
+	  // Handle tags similarly as in the project creation
+	  let linkedTags = [];
+	  if (tags) {
+	    const tagsArray = tags.split(",").map((tag) => tag.trim());
+		for (const tagTitle of tagsArray) {
+		  let tag = await Tag.findOne({ title: tagTitle });
+		  if (!tag) {
+			tag = new Tag({
+			  title: tagTitle,
+			  slug: tagTitle.replace(/\s+/g, "-").toLowerCase(),
+			  createdBy: req.user._id,
+			});
+			await tag.save();
+		  }
+		  linkedTags.push(tag._id);
+		}
+	  }
+	  project.tags = linkedTags;
+  
+	  // Update permissions based on form input
+	  project.permissions.set("noLogin", noLogin);
+	  project.permissions.set("duplicatable", canDuplicate);
+  
+	  const updProject = await project.save();
+  
+	  if (linkedTags) {
+		// Update all tags in tagList array
+		await Promise.all(linkedTags.map(async (tagId) => {
+		  // Update the tag by its ObjectId
+		  await Tag.findOneAndUpdate(
+			{ _id: tagId, projects: { $ne: updProject._id } }, // Query to find the tag and check if projectId is not already present
+			{ $addToSet: { projects: updProject._id } } // Update operation
+		  );
+		}));
+	  }
+	  res.status(200).json(updProject);
+
+	} catch (err) {
+	  console.error("Error updating project:", err);
+	  res.status(500).send(`Server error while updating project: ${err}`);
 	}
-  );
+  }
+);
+
+// Delete Project
+router.delete("/project/:id", checkApiKey, async (req, res) => {
+  const projectId = req.params.id;
+  try {
+    const project = await Project.findById(projectId);
+
+    if (!project) {
+      return res.status(404).send("Project not found.");
+    }
+
+    if (project.deleted) {
+      // Optional: Allow hard delete if the project is already marked as deleted.
+      await Project.deleteOne({ _id: projectId });
+      res.status(204).json("Message": `Project with ID ${projectId} deleted successfully.`);
+    } else {
+      // Soft delete: mark the project as deleted.
+      project.deleted = true;
+      project.trash = true;
+      project.deletedDate = new Date();
+      project.deletedBy = req.user._id;
+      project.modifiedDate = new Date();
+      await project.save();
+      res.status(200).json("Message": `Project with ID ${projectId} soft-deleted successfully.`);
+    }
+  } catch (err) {
+    console.error("Error deleting project:", err);
+    res.status(500).send(`Server error while deleting project: ${err}`);
+  }
+});
 
 // DOCUMENT
 
@@ -365,7 +395,7 @@ router.put('/documents/:id', checkApiKey, validateSlug, validateTitles, async (r
 	  document.public = isPublic !== undefined ? isPublic : document.public;
 	  document.projectId = projectId || document.projectId;
 	  document.order = order || document.order;
-	  document.modifiedDate = new Date;
+	  document.modifiedDate = new Date();
 
       const updDoc = await document.save();
 
@@ -483,7 +513,7 @@ router.put('/pages/:id', checkApiKey, validateSlug, validateTitles, async (req, 
 	  page.public = isPublic !== undefined ? isPublic : page.public;
 	  page.projectId = projectId || page.projectId;
 	  page.order = order || page.order;
-	  page.modifiedDate = new Date;
+	  page.modifiedDate = new Date();
 
       const updPage = await page.save();
 
@@ -602,7 +632,7 @@ router.put("/tags/:id", checkApiKey, validateSlug, validateTitles, async (req, r
 	    tag.projects = [...new Set([...tag.projects, ...projects])];
 	  }
 	}
-	tag.modifiedDate = new Date;
+	tag.modifiedDate = new Date();
 
     const updTag = await tag.save();
 
