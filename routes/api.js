@@ -4,7 +4,7 @@ const router = express.Router();
 const marked = require('marked');
 
 // // Import middleware
-const { checkApiKey, validateTitles, validateSlug } = require('./middleware');
+const { checkApiKey, validateTitles, validateSlug, ensureAuth } = require('./middleware');
 
 // // Import data models
 const User = require('../models/user');
