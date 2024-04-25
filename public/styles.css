@@ -380,7 +380,8 @@ a.badge-tag:link {
 }
 
 .admin-table,
-.model-table {
+.model-table,
+.api-doc {
   width: 100%; 
   border-collapse: collapse;
   border-radius: 15px;
@@ -400,7 +401,9 @@ a.badge-tag:link {
 .admin-table th,
 .admin-table td,
 .model-table th,
-.model-table td {
+.model-table td,
+.api-doc th,
+.api-doc td {
   padding: 10px;
   border-bottom: 1px solid #dddddd;
 }

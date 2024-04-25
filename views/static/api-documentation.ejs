@@ -8,7 +8,285 @@
     <br>The expected format is <code>api-key: &#60;key&#62;</code>
     </p>
     <h2>Available Routes</h2>
-    <ul>
+    <div class="table-container mt-3">
+      <table class="table api-doc table-striped table-hover">
+        <thead class="bg-ds-secondary">
+            <tr>
+                <th>Model</th>
+                <th>Route</th>
+                <th>Method</th>
+                <th>Parameters</th>
+                <th>Request Body</th>
+                <th>Reponse</th>
+                <th>Control Logic</th>
+                <th>CRUD</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th>User</th>
+                <td>/api/users</td>
+                <td>GET</td>
+                <td>N/A</td>
+                <td>N/A</td>
+                <td>List of users</td>
+                <td>Valid API key</td>
+                <td>R</td>
+            </tr>
+            <tr>
+                <th>User</th>
+                <td>/api/users/:username</td>
+                <td>GET</td>
+                <td>username (string) of User</td>
+                <td>N/A</td>
+                <td>Single user record</td>
+                <td>Valid API key</td>
+                <td>R</td>
+            </tr>
+            <tr>
+                <th>Project</th>
+                <td>/api/projects</td>
+                <td>GET</td>
+                <td>N/A</td>
+                <td>N/A</td>
+                <td>List of projects</td>
+                <td>Valid API key</td>
+                <td>R</td>
+            </tr>
+            <tr>
+                <th>Project</th>
+                <td>/api/projects/:slug</td>
+                <td>GET</td>
+                <td>slug (string) of Project</td>
+                <td>N/A</td>
+                <td>Single project record</td>
+                <td>Valid API key</td>
+                <td>R</td>
+            </tr>
+            <tr>
+                <th>Document</th>
+                <td>/api/projects/:slug/documents</td>
+                <td>GET</td>
+                <td>slug (string) of Project</td>
+                <td>N/A</td>
+                <td>List of documents</td>
+                <td>Valid API key</td>
+                <td>R</td>
+            </tr>
+            <tr>
+                <th>Page</th>
+                <td>/api/projects/:slug/pages</td>
+                <td>GET</td>
+                <td>slug (string) of Project</td>
+                <td>N/A</td>
+                <td>List of pages</td>
+                <td>Valid API key</td>
+                <td>R</td>
+            </tr>
+            <tr>
+                <th>Tag</th>
+                <td>/api/projects/:slug/tags</td>
+                <td>GET</td>
+                <td>slug (string) of Project</td>
+                <td>N/A</td>
+                <td>List of tags</td>
+                <td>Valid API key</td>
+                <td>R</td>
+            </tr>
+            <tr>
+                <th>Project</th>
+                <td>/api/create/projects</td>
+                <td>POST</td>
+                <td>N/A</td>
+                <td>&quot;{ title: string, subtitle: string, slug: string, description: string, tags: string (comma separated), noLogin boolean, canDuplicate boolean, isPublic boolean }&quot;</td>
+                <td>&quot;Single project record, record inserted into database&quot;</td>
+                <td>&quot;Valid API key, `slug` required, unique, max length 50 characters; `title` required, max length 255 characters; `subtitle` max length 255 characters&quot;</td>
+                <td>C</td>
+            </tr>
+            <tr>
+                <th>Project</th>
+                <td>/api/projects/:id</td>
+                <td>PUT</td>
+                <td>id (ObjectId) of Project</td>
+                <td>&quot;{ title: string, subtitle: string, slug: string, description: string, tags: string (comma separated), noLogin boolean, canDuplicate boolean, isPublic boolean }&quot;</td>
+                <td>&quot;Single project record, record updated in database&quot;</td>
+                <td>&quot;Valid API key, `slug` required, unique, max length 50 characters; `title` required, max length 255 characters; `subtitle` max length 255 characters&quot;</td>
+                <td>U</td>
+            </tr>
+            <tr>
+                <th>Project</th>
+                <td>/api/projects/:id</td>
+                <td>DELETE</td>
+                <td>id (ObjectId) of Project</td>
+                <td>N/A</td>
+                <td>&quot;Confirmation message, project deleted from database if &#39;deleted&#39; = true, otherwise project updated and &#39;deleted&#39; set to true&quot;</td>
+                <td>Valid API key</td>
+                <td>D</td>
+            </tr>
+            <tr>
+                <th>Document</th>
+                <td>/api/documents</td>
+                <td>GET</td>
+                <td>N/A</td>
+                <td>N/A</td>
+                <td>List of documents</td>
+                <td>Valid API key</td>
+                <td>R</td>
+            </tr>
+            <tr>
+                <th>Document</th>
+                <td>/api/documents/:slug</td>
+                <td>GET</td>
+                <td>slug (string) of Document</td>
+                <td>N/A</td>
+                <td>Single document record</td>
+                <td>Valid API key</td>
+                <td>R</td>
+            </tr>
+            <tr>
+                <th>Page</th>
+                <td>/api/documents/:slug/pages</td>
+                <td>GET</td>
+                <td>slug (string) of Document</td>
+                <td>N/A</td>
+                <td>List of pages</td>
+                <td>Valid API key</td>
+                <td>R</td>
+            </tr>
+            <tr>
+                <th>Document</th>
+                <td>/api/create/documents</td>
+                <td>POST</td>
+                <td>N/A</td>
+                <td>&quot;{ title: string, description: string, slug: string, landingPage: boolean, isPublic: boolean, projectId: objectId, order: number }&quot;</td>
+                <td>&quot;Single document record, record inserted into database&quot;</td>
+                <td>&quot;Valid API key, `slug` required, unique, max length 50 characters; `title` required, max length 255 characters&quot;</td>
+                <td>C</td>
+            </tr>
+            <tr>
+                <th>Document</th>
+                <td>/api/documents/:id</td>
+                <td>PUT</td>
+                <td>id (ObjectId) of Document</td>
+                <td>&quot;{ title: string, description: string, slug: string, landingPage: boolean, isPublic: boolean, projectId: objectId, order: number }&quot;</td>
+                <td>&quot;Single document record, record updated in database&quot;</td>
+                <td>&quot;Valid API key, `slug` required, unique, max length 50 characters; `title` required, max length 255 characters&quot;</td>
+                <td>U</td>
+            </tr>
+            <tr>
+                <th>Document</th>
+                <td>/api/documents/:id</td>
+                <td>DELETE</td>
+                <td>id (ObjectId) of Document</td>
+                <td>N/A</td>
+                <td>&quot;Confirmation message, document deleted from database if &#39;deleted&#39; = true, otherwise document updated and &#39;deleted&#39; set to true&quot;</td>
+                <td>Valid API key</td>
+                <td>D</td>
+            </tr>
+            <tr>
+                <th>Page</th>
+                <td>/api/pages</td>
+                <td>GET</td>
+                <td>N/A</td>
+                <td>N/A</td>
+                <td>List of pages</td>
+                <td>Valid API key</td>
+                <td>R</td>
+            </tr>
+            <tr>
+                <th>Page</th>
+                <td>/api/pages/:slug</td>
+                <td>GET</td>
+                <td>slug (string) of Page</td>
+                <td>N/A</td>
+                <td>Single page record</td>
+                <td>Valid API key</td>
+                <td>R</td>
+            </tr>
+            <tr>
+                <th>Page</th>
+                <td>/api/create/pages</td>
+                <td>POST</td>
+                <td>N/A</td>
+                <td>&quot;{ title: string, slug: string, body: string, order: number, isPublic: boolean, projectId: objectId, documentId: objectId }&quot;</td>
+                <td>&quot;Single page record, record inserted into database&quot;</td>
+                <td>&quot;Valid API key, `slug` required, unique, max length 50 characters; `title` required, max length 255 characters&quot;</td>
+                <td>C</td>
+            </tr>
+            <tr>
+                <th>Page</th>
+                <td>/api/pages/:id</td>
+                <td>PUT</td>
+                <td>id (ObjectId) of Page</td>
+                <td>&quot;{ title: string, slug: string, body: string, order: number, isPublic: boolean, projectId: objectId, documentId: objectId }&quot;</td>
+                <td>&quot;Single page record, record updated database&quot;</td>
+                <td>&quot;Valid API key, `slug` required, unique, max length 50 characters; `title` required, max length 255 characters&quot;</td>
+                <td>U</td>
+            </tr>
+            <tr>
+                <th>Page</th>
+                <td>/api/pages/:id</td>
+                <td>DELETE</td>
+                <td>id (ObjectId) of Page</td>
+                <td>N/A</td>
+                <td>&quot;Confirmation message, page deleted from database if &#39;deleted&#39; = true, otherwise page updated and &#39;deleted&#39; set to true&quot;</td>
+                <td>Valid API key</td>
+                <td>D</td>
+            </tr>
+            <tr>
+                <th>Tag</th>
+                <td>/api/tags</td>
+                <td>GET</td>
+                <td>N/A</td>
+                <td>N/A</td>
+                <td>List of tags</td>
+                <td>Valid API key</td>
+                <td>R</td>
+            </tr>
+            <tr>
+                <th>Tag</th>
+                <td>/api/tags/:slug</td>
+                <td>GET</td>
+                <td>slug (string) of Tag</td>
+                <td>N/A</td>
+                <td>Single tag record</td>
+                <td>Valid API key</td>
+                <td>R</td>
+            </tr>
+            <tr>
+                <th>Project</th>
+                <td>/api/tags/:slug/projects</td>
+                <td>GET</td>
+                <td>slug (string) of Tag</td>
+                <td>N/A</td>
+                <td>List of projects</td>
+                <td>Valid API key</td>
+                <td>R</td>
+            </tr>
+            <tr>
+                <th>Tag</th>
+                <td>/api/create/tags</td>
+                <td>POST</td>
+                <td>N/A</td>
+                <td>&quot;{ title: string, slug: string, description: string, projects: array of objectIds }&quot;</td>
+                <td>&quot;Single tag record, record inserted into database&quot;</td>
+                <td>&quot;Valid API key, `slug` required, unique, max length 50 characters; `title` required, max length 255 characters&quot;</td>
+                <td>C</td>
+            </tr>
+            <tr>
+                <th>Tag</th>
+                <td>/api/tags/:id</td>
+                <td>PUT</td>
+                <td>id (ObjectId) of Tag</td>
+                <td>&quot;{ title: string, slug: string, description: string, projects: array of objectIds }&quot;</td>
+                <td>&quot;Single tag record, record updated in database&quot;</td>
+                <td>&quot;Valid API key, `slug` required, unique, max length 50 characters; `title` required, max length 255 characters&quot;</td>
+                <td>U</td>
+            </tr>
+        </tbody>
+    </table>
+  </div>
+<!--     <ul>
       <li>/users</li>
       <li>/users/:username</li>
       <li>/projects</li>
@@ -33,7 +311,7 @@
       <li>/tags/:slug</li>
       <li>/create/tags (POST)</li>
       <li>/tags/:id (PUT)</li>
-    </ul>
+    </ul> 
 
     <h2>Users</h2>
     <h3>GET /users</h3>
@@ -54,7 +332,7 @@
       </tbody>
     </table>
     <p>Response Body: List of all users.</p>
-
+-->
     <!-- Add similar tables for other routes -->
 
 </div>
