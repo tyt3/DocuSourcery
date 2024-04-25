@@ -633,6 +633,23 @@ router.get("/tags/:slug", checkApiKey, async function(req, res) {
   }
 });
 
+// Get all projects with a tag
+router.get("/tags/:slug/projects", checkApiKey, async function(req, res) {
+  const tagSlug = req.params.slug;
+  try {
+    const tag = await Tag.findOne({ slug: tagSlug });
+    if (tag) {
+	  const projects = await Project.find({tags: tag._id }).exec();
+      res.status(200).json(projects);
+    }
+    else {
+      res.status(204).json({'No Response': 'No projects exist with the provided tag' });
+    }
+  } catch (err) {
+    res.status(500).send(err)
+  }
+});
+
 // Create a tag
 router.post("/create/tags", checkApiKey, validateSlug, async (req, res) => {
   const { title, slug, description, projects } = req.body;

@@ -7,7 +7,7 @@ const TagSchema = new Schema({
   slug: { type: String, required: true, maxLength: 50 },
   description: { type: String },
   projects: [
-    { type: Map }
+    { type: Schema.Types.ObjectId, ref: "project" }
   ],
   createdDate: { type: Date, default: Date.now },
   createdBy: { type: Schema.Types.ObjectId, ref: "user", required: true }
