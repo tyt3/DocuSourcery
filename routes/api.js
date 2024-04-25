@@ -204,7 +204,7 @@ router.put("/projects/:id", checkApiKey, validateTitles, validateSlug,
 		project.title = title || project.title;
 		project.subtitle = subtitle || project.subtitle; // Keep existing subtitle if none provided
 		project.slug = slug || project.slug;
-		project.description = descriptionHTML || document.description;
+		project.description = descriptionHTML || project.description;
 		project.public = isPublic !== undefined ? isPublic : project.public;
 		project.modifiedDate = new Date;
   
@@ -306,36 +306,69 @@ router.post('/create/documents', checkApiKey, validateSlug, validateTitles, asyn
   const { title, description, slug, landingPage, isPublic, projectId, order } = req.body;
 
   try {
-    let proj = await Project.findOne({ _id: projectId });
+    let proj = await Project.findById(projectId)
 	if (!proj) {
 	  res.status(400).json({'Error': "Invalid project ID provided"})
+	} else {
+	  const descriptionHTML = marked.parse(description);
+	  const document = new Document({
+		slug: slug,
+		title: title,
+		description: descriptionHTML,
+		createdBy: req.user._id,
+		public: projectId,
+		landingPage: landingPage,
+		public: isPublic,
+		order: order
+	  });
+	
+	  const newDoc = await document.save();
+	
+	  // Return the new document
+	  res.status(200).json(newDoc);
 	}
   } catch (err) {
     console.error(err);
-    res.status(500).send(`An error occurred during project validation: ${err}`);
+    res.status(500).send(`An error occurred during document creation: ${err}`);
   }
+});
+
+// Edit Document
+router.put('/documents/:id', checkApiKey, validateSlug, validateTitles, async (req, res) => {
+  const docId = req.params.id;
+  const { title, description, slug, landingPage, isPublic, projectId, order } = req.body;
 
   try {
-    // Convert description markdown to HTML
-    const descriptionHTML = marked.parse(description);
-    const document = new Document({
-      slug: slug,
-      title: title,
-      description: descriptionHTML,
-      createdBy: req.user._id,
-      public: projectId,
-      landingPage: landingPage,
-      public: isPublic,
-	  order: order
-    });
+    let proj = await Project.findById(projectId);
+	if (!proj) {
+	  res.status(400).json({'Error': "Invalid project ID provided"})
+	} else {
+	  let document = await Document.findById(docId);
+	  if (!document) {
+	    res.status(404).send("Document not found.");
+	  }
 
-    const newDoc = await document.save();
+      // Convert description markdown to HTML
+	  const descriptionHTML = marked.parse(description);
 
-    // Return the new document
-    res.status(200).json(newDoc);
+	  // Update the project fields
+	  document.title = title || document.title;
+	  document.slug = slug || document.slug;
+	  document.description = descriptionHTML || document.description;
+	  document.landingPage = landingPage !== undefined ? landingPage : document.landingPage;
+	  document.public = isPublic !== undefined ? isPublic : document.public;
+	  document.projectId = projectId || document.projectId;
+	  document.order = order || document.order;
+	  document.modifiedDate = new Date;
+
+      const updDoc = await document.save();
+
+      // Return the new document
+      res.status(200).json(updDoc);
+	}
   } catch (err) {
     console.error(err);
-    res.status(500).send(`An error occurred during document creation: ${err}`);
+    res.status(500).send(`An error occurred during document update: ${err}`);
   }
 });
 
