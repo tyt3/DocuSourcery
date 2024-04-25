@@ -864,7 +864,7 @@ async (req, res) => {
     document.title = title || document.title;
     document.description = descriptionHTML || document.description;
     document.slug = slug || document.slug;
-    document.landingPage = landingPageChoice !== undefined ? landingPage : document.landingPage;
+    document.landingPage = landingPageChoice !== undefined ? landingPageChoice : document.landingPage;
     document.public = publicChoice !== undefined ? isPublic : document.public;
 		document.modifiedDate = new Date();
 
