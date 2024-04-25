@@ -141,9 +141,11 @@
                         <% if (project.deleted) { %>
                           <tr>
                             <td>
-                              <a href="/project/restore/<%= project.id %>"><span 
-                                class="material-symbols-outlined">undo
-                                </span></a>
+                              <form method="POST" action="/project/restore/<%= project._id %>">
+                                <button type="submit" class="btn py-0">
+                                  <span class="material-symbols-outlined">undo</span>
+                                </button>
+                              </form>
                             </td>
                             <td><%= project.title %></td>
                             <td><%= moment(project.deletedDate).format('MMM D, YYYY') %></td>
