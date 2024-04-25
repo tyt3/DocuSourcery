@@ -805,7 +805,7 @@ router.get('/project/:projectSlug/:documentSlug/edit', ensureAuth, async (req, r
       }
     })
     .exec();
-    
+
     if (!document) {
       return res.status(404).json({ error: 'Document not found' });
     }
@@ -1003,9 +1003,9 @@ router.post('/document/restore-pages/:id', ensureAuth, async (req, res) => {
 });
 
 
-// Delete pages from project
-router.post('/project/delete-pages/:id', ensureAuth, async (req, res) => {
-  const projectId = req.params.id;
+// Delete pages from document
+router.post('/document/delete-pages/:id', ensureAuth, async (req, res) => {
+  const documentId = req.params.id;
   const { selectedPages } = req.body;
 
   try {
