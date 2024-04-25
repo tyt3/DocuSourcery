@@ -769,11 +769,7 @@ router.post('/document/create/:projectId', ensureAuth, async (req, res) => {
     console.log('Document saved successfully:', newDocument);
 
     // Update the project to include this new document
-    project.documents.push({
-      _id: newDocument._id,
-      title: newDocument.title,
-      slug: newDocument.slug
-    });
+    project.documents.push(newDocument._id);
     await project.save();
     console.log('Project updated with new document:', project);
 

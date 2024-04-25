@@ -17,7 +17,7 @@ const Tag = require('../models/tag');
 // USERS
 
 // Get all users 
-router.get("/users", checkApiKey, async function(req, res) {
+router.get("/users", checkApiKey, async function (req, res) {
   await User.find({})
     .then(users => {
       res.json(users);
@@ -28,7 +28,7 @@ router.get("/users", checkApiKey, async function(req, res) {
 });
 
 // Get user by username
-router.get("/users/:username", checkApiKey, async function(req, res) {
+router.get("/users/:username", checkApiKey, async function (req, res) {
   const userName = req.params.username;
   try {
     const user = await User.findOne({ username: userName });
@@ -36,7 +36,7 @@ router.get("/users/:username", checkApiKey, async function(req, res) {
       res.status(200).json(user);
     }
     else {
-      res.status(204).json({'No Response': 'No users exist with the provided username' });
+      res.status(204).json({ 'No Response': 'No users exist with the provided username' });
     }
   } catch (err) {
     res.status(500).send(err)
@@ -46,7 +46,7 @@ router.get("/users/:username", checkApiKey, async function(req, res) {
 // PROJECT
 
 // Get all projects
-router.get("/projects", checkApiKey, async function(req, res) {
+router.get("/projects", checkApiKey, async function (req, res) {
   await Project.find({})
     .then(projects => {
       res.status(200).json(projects);
@@ -57,7 +57,7 @@ router.get("/projects", checkApiKey, async function(req, res) {
 });
 
 // Get project by slug
-router.get("/projects/:slug", checkApiKey, async function(req, res) {
+router.get("/projects/:slug", checkApiKey, async function (req, res) {
   const projectSlug = req.params.slug;
   try {
     const project = await Project.findOne({ slug: projectSlug });
@@ -65,7 +65,7 @@ router.get("/projects/:slug", checkApiKey, async function(req, res) {
       res.status(200).json(project);
     }
     else {
-      res.status(204).json({'No Response': 'No projects exist with the provided slug' });
+      res.status(204).json({ 'No Response': 'No projects exist with the provided slug' });
     }
   } catch (err) {
     res.status(500).send(err)
@@ -73,16 +73,16 @@ router.get("/projects/:slug", checkApiKey, async function(req, res) {
 });
 
 // Get all documents under a project
-router.get("/projects/:slug/documents", checkApiKey, async function(req, res) {
+router.get("/projects/:slug/documents", checkApiKey, async function (req, res) {
   const projectSlug = req.params.slug;
   try {
     const project = await Project.findOne({ slug: projectSlug });
     if (project) {
-	  const docs = await Document.find({'_id': { $in: project.documents}}).exec();
+      const docs = await Document.find({ '_id': { $in: project.documents } }).exec();
       res.status(200).json(docs);
     }
     else {
-      res.status(204).json({'No Response': 'No documents exist under the provided project' });
+      res.status(204).json({ 'No Response': 'No documents exist under the provided project' });
     }
   } catch (err) {
     res.status(500).send(err)
@@ -90,16 +90,16 @@ router.get("/projects/:slug/documents", checkApiKey, async function(req, res) {
 });
 
 // Get all pages under a project
-router.get("/projects/:slug/pages", checkApiKey, async function(req, res) {
+router.get("/projects/:slug/pages", checkApiKey, async function (req, res) {
   const projectSlug = req.params.slug;
   try {
     const project = await Project.findOne({ slug: projectSlug });
     if (project) {
-	  const pages = await Page.find({'projectId': project._id }).exec();
+      const pages = await Page.find({ 'projectId': project._id }).exec();
       res.status(200).json(pages);
     }
     else {
-      res.status(204).json({'No Response': 'No pages exist under the provided project' });
+      res.status(204).json({ 'No Response': 'No pages exist under the provided project' });
     }
   } catch (err) {
     res.status(500).send(err)
@@ -107,16 +107,16 @@ router.get("/projects/:slug/pages", checkApiKey, async function(req, res) {
 });
 
 // Get all tags under a project
-router.get("/projects/:slug/tags", checkApiKey, async function(req, res) {
+router.get("/projects/:slug/tags", checkApiKey, async function (req, res) {
   const projectSlug = req.params.slug;
   try {
     const project = await Project.findOne({ slug: projectSlug });
     if (project) {
-	  const tags = await Tag.find({projects: project._id }).exec();
+      const tags = await Tag.find({ projects: project._id }).exec();
       res.status(200).json(tags);
     }
     else {
-      res.status(204).json({'No Response': 'No tags exist for the provided project' });
+      res.status(204).json({ 'No Response': 'No tags exist for the provided project' });
     }
   } catch (err) {
     res.status(500).send(err)
@@ -163,7 +163,7 @@ router.post('/create/projects', checkApiKey, validateTitles, validateSlug, async
       createdBy: req.user._id,
       public: isPublic,
       tags: linkedTags,
-      permissions: {noLogin: noLogin, duplicatable: canDuplicate},
+      permissions: { noLogin: noLogin, duplicatable: canDuplicate },
       users: [
         {
           user: req.user._id,
@@ -176,12 +176,12 @@ router.post('/create/projects', checkApiKey, validateTitles, validateSlug, async
 
     // Update all tags in linkedTags array to add the new project ID to its projects array
     if (linkedTags) {
-	  // Update all tags in tagList array
-	  await Promise.all(linkedTags.map(async (tagId) => {
+      // Update all tags in tagList array
+      await Promise.all(linkedTags.map(async (tagId) => {
         // Update the tag by its ObjectId
         await Tag.findOneAndUpdate(
-            { _id: tagId, projects: { $ne: newProject._id } }, // Query to find the tag and check if projectId is not already present
-            { $addToSet: { projects: newProject._id } } // Update operation
+          { _id: tagId, projects: { $ne: newProject._id } }, // Query to find the tag and check if projectId is not already present
+          { $addToSet: { projects: newProject._id } } // Update operation
         );
       }));
     }
@@ -197,77 +197,77 @@ router.post('/create/projects', checkApiKey, validateTitles, validateSlug, async
 router.put("/projects/:id", checkApiKey, validateTitles, validateSlug,
   async (req, res) => {
     const projectId = req.params.id;
-	const {
-	  title,
-	  subtitle,
-	  slug,
-	  description,
-	  tags,
-	  noLogin,
-	  canDuplicate,
-	  isPublic,
-	  views
-	} = req.body;
-  
-	try {
-	  let project = await Project.findById(projectId);
-	  if (!project) {
-	    res.status(404).send("Project not found.");
-	  }
-  
-	  // Convert description Markdown to HTML
-	  const descriptionHTML = marked.parse(description);
-  
-	  // Update the project fields
-	  project.title = title || project.title;
-	  project.subtitle = subtitle || project.subtitle; // Keep existing subtitle if none provided
-	  project.slug = slug || project.slug;
-	  project.description = descriptionHTML || project.description;
-	  project.public = isPublic !== undefined ? isPublic : project.public;
-	  project.views = views || project.views;
-	  project.modifiedDate = new Date();
-  
-	  // Handle tags similarly as in the project creation
-	  let linkedTags = [];
-	  if (tags) {
-	    const tagsArray = tags.split(",").map((tag) => tag.trim());
-		for (const tagTitle of tagsArray) {
-		  let tag = await Tag.findOne({ title: tagTitle });
-		  if (!tag) {
-			tag = new Tag({
-			  title: tagTitle,
-			  slug: tagTitle.replace(/\s+/g, "-").toLowerCase(),
-			  createdBy: req.user._id,
-			});
-			await tag.save();
-		  }
-		  linkedTags.push(tag._id);
-		}
-	  }
-	  project.tags = linkedTags;
-  
-	  // Update permissions based on form input
-	  project.permissions.set("noLogin", noLogin);
-	  project.permissions.set("duplicatable", canDuplicate);
-  
-	  const updProject = await project.save();
-  
-	  if (linkedTags) {
-		// Update all tags in tagList array
-		await Promise.all(linkedTags.map(async (tagId) => {
-		  // Update the tag by its ObjectId
-		  await Tag.findOneAndUpdate(
-			{ _id: tagId, projects: { $ne: updProject._id } }, // Query to find the tag and check if projectId is not already present
-			{ $addToSet: { projects: updProject._id } } // Update operation
-		  );
-		}));
-	  }
-	  res.status(200).json(updProject);
+    const {
+      title,
+      subtitle,
+      slug,
+      description,
+      tags,
+      noLogin,
+      canDuplicate,
+      isPublic,
+      views
+    } = req.body;
 
-	} catch (err) {
-	  console.error("Error updating project:", err);
-	  res.status(500).send(`Server error while updating project: ${err}`);
-	}
+    try {
+      let project = await Project.findById(projectId);
+      if (!project) {
+        res.status(404).send("Project not found.");
+      }
+
+      // Convert description Markdown to HTML
+      const descriptionHTML = marked.parse(description);
+
+      // Update the project fields
+      project.title = title || project.title;
+      project.subtitle = subtitle || project.subtitle; // Keep existing subtitle if none provided
+      project.slug = slug || project.slug;
+      project.description = descriptionHTML || project.description;
+      project.public = isPublic !== undefined ? isPublic : project.public;
+      project.views = views || project.views;
+      project.modifiedDate = new Date();
+
+      // Handle tags similarly as in the project creation
+      let linkedTags = [];
+      if (tags) {
+        const tagsArray = tags.split(",").map((tag) => tag.trim());
+        for (const tagTitle of tagsArray) {
+          let tag = await Tag.findOne({ title: tagTitle });
+          if (!tag) {
+            tag = new Tag({
+              title: tagTitle,
+              slug: tagTitle.replace(/\s+/g, "-").toLowerCase(),
+              createdBy: req.user._id,
+            });
+            await tag.save();
+          }
+          linkedTags.push(tag._id);
+        }
+      }
+      project.tags = linkedTags;
+
+      // Update permissions based on form input
+      project.permissions.set("noLogin", noLogin);
+      project.permissions.set("duplicatable", canDuplicate);
+
+      const updProject = await project.save();
+
+      if (linkedTags) {
+        // Update all tags in tagList array
+        await Promise.all(linkedTags.map(async (tagId) => {
+          // Update the tag by its ObjectId
+          await Tag.findOneAndUpdate(
+            { _id: tagId, projects: { $ne: updProject._id } }, // Query to find the tag and check if projectId is not already present
+            { $addToSet: { projects: updProject._id } } // Update operation
+          );
+        }));
+      }
+      res.status(200).json(updProject);
+
+    } catch (err) {
+      console.error("Error updating project:", err);
+      res.status(500).send(`Server error while updating project: ${err}`);
+    }
   }
 );
 
@@ -278,21 +278,21 @@ router.put("/projects/:slug/users/:id", checkApiKey, async (req, res) => {
   const { role } = req.body;
 
   try {
-	let project = await Project.findOne({ slug: projectSlug });
-	if (!project) {
-	  res.status(404).send("Project not found.");
-	}
+    let project = await Project.findOne({ slug: projectSlug });
+    if (!project) {
+      res.status(404).send("Project not found.");
+    }
 
-	let user = await User.findById(userId);
-	if (!user) {
-	  res.status(404).send("User not found.");
-	}
-	// Validate role value
+    let user = await User.findById(userId);
+    if (!user) {
+      res.status(404).send("User not found.");
+    }
+    // Validate role value
     const parsedRole = parseInt(role);
     if (isNaN(parsedRole) || parsedRole < 0 || parsedRole > 3) {
-        return res.status(400).json({ error: 'Role value must be an integer between 0 and 3' });
+      return res.status(400).json({ error: 'Role value must be an integer between 0 and 3' });
     }
-	const userCreds = { user: userId, role: parsedRole };
+    const userCreds = { user: userId, role: parsedRole };
 
     // Check if the user already exists in the project's 'users' array
     const existingUserIndex = project.users.findIndex(u => u.user.equals(userCreds.user));
@@ -309,11 +309,11 @@ router.put("/projects/:slug/users/:id", checkApiKey, async (req, res) => {
     const credProject = await project.save();
     res.status(200).json(credProject);
 
-	} catch (err) {
-	  console.error("Error updating project:", err);
-	  res.status(500).send(`Server error while updating project: ${err}`);
-	}
+  } catch (err) {
+    console.error("Error updating project:", err);
+    res.status(500).send(`Server error while updating project: ${err}`);
   }
+}
 );
 
 // Delete Project
@@ -329,7 +329,7 @@ router.delete("/projects/:id", checkApiKey, async (req, res) => {
     if (project.deleted) {
       // Optional: Allow hard delete if the project is already marked as deleted.
       await Project.deleteOne({ _id: projectId });
-      res.status(204).json({message: `Project with ID ${projectId} deleted successfully.`});
+      res.status(204).json({ message: `Project with ID ${projectId} deleted successfully.` });
     } else {
       // Soft delete: mark the project as deleted.
       project.deleted = true;
@@ -338,7 +338,7 @@ router.delete("/projects/:id", checkApiKey, async (req, res) => {
       project.deletedBy = req.user._id;
       project.modifiedDate = new Date();
       await project.save();
-      res.status(200).json({message: `Project with ID ${projectId} soft-deleted successfully.`});
+      res.status(200).json({ message: `Project with ID ${projectId} soft-deleted successfully.` });
     }
   } catch (err) {
     console.error("Error deleting project:", err);
@@ -349,7 +349,7 @@ router.delete("/projects/:id", checkApiKey, async (req, res) => {
 // DOCUMENT
 
 // Get all documents
-router.get("/documents", checkApiKey, async function(req, res) {
+router.get("/documents", checkApiKey, async function (req, res) {
   await Document.find({})
     .then(documents => {
       res.status(200).json(documents);
@@ -360,7 +360,7 @@ router.get("/documents", checkApiKey, async function(req, res) {
 });
 
 // Get document by slug
-router.get("/documents/:slug", async function(req, res) {
+router.get("/documents/:slug", async function (req, res) {
   const documentSlug = req.params.slug;
   try {
     const document = await Document.findOne({ slug: documentSlug });
@@ -368,7 +368,7 @@ router.get("/documents/:slug", async function(req, res) {
       res.status(200).json(document);
     }
     else {
-      res.status(204).json({'No Response': 'No documents exist with the provided slug' });
+      res.status(204).json({ 'No Response': 'No documents exist with the provided slug' });
     }
   } catch (err) {
     res.status(500).send(err)
@@ -376,16 +376,16 @@ router.get("/documents/:slug", async function(req, res) {
 });
 
 // Get all pages under a document
-router.get("/documents/:slug/pages", checkApiKey, async function(req, res) {
+router.get("/documents/:slug/pages", checkApiKey, async function (req, res) {
   const documentSlug = req.params.slug;
   try {
     const document = await Document.findOne({ slug: documentSlug });
     if (document) {
-	  if (document.pages.length > 0) {
-		const pages = await Page.find({'_id': { $in: document.pages}}).exec();
-		res.status(200).json(pages);
-	  }
-	  res.status(204).json({'No Response': 'No pages exist under the provided document' }); 
+      if (document.pages.length > 0) {
+        const pages = await Page.find({ '_id': { $in: document.pages } }).exec();
+        res.status(200).json(pages);
+      }
+      res.status(204).json({ 'No Response': 'No pages exist under the provided document' });
     }
     else {
       res.status(404).json({ error: 'Document not found' });
@@ -401,26 +401,31 @@ router.post('/create/documents', checkApiKey, validateSlug, validateTitles, asyn
 
   try {
     let proj = await Project.findById(projectId);
-	if (!proj) {
-	  res.status(400).json({ error: "Invalid project ID provided"})
-	} else {
-	  const descriptionHTML = marked.parse(description);
-	  const document = new Document({
-		slug: slug,
-		title: title,
-		description: descriptionHTML,
-		createdBy: req.user._id,
-		projectId: proj._id,
-		landingPage: landingPage,
-		public: isPublic,
-		order: order
-	  });
-	
-	  const newDoc = await document.save();
-	
-	  // Return the new document
-	  res.status(200).json(newDoc);
-	}
+    if (!proj) {
+      res.status(400).json({ error: "Invalid project ID provided" })
+    } else {
+      const descriptionHTML = marked.parse(description);
+      const document = new Document({
+        slug: slug,
+        title: title,
+        description: descriptionHTML,
+        createdBy: req.user._id,
+        projectId: proj._id,
+        landingPage: landingPage,
+        public: isPublic,
+        order: order
+      });
+
+      const newDoc = await document.save();
+
+      proj.documents.push(
+        newDoc._id
+      );
+      await proj.save();
+
+      // Return the new document
+      res.status(200).json(newDoc);
+    }
   } catch (err) {
     console.error(err);
     res.status(500).send(`An error occurred during document creation: ${err}`);
@@ -440,32 +445,32 @@ router.put('/documents/:id', checkApiKey, async (req, res) => {
     else {
       proj = true;
     }
-	if (!proj) {
-	  res.status(400).json({ error: "Invalid project ID provided"})
-	} else {
-	  let document = await Document.findById(docId);
-	  if (!document) {
-	    res.status(404).send("Document not found.");
-	  }
+    if (!proj) {
+      res.status(400).json({ error: "Invalid project ID provided" })
+    } else {
+      let document = await Document.findById(docId);
+      if (!document) {
+        res.status(404).send("Document not found.");
+      }
 
       // Convert description markdown to HTML
-	  const descriptionHTML = marked.parse(description);
+      const descriptionHTML = marked.parse(description);
 
-	  // Update the document fields
-	  document.title = title || document.title;
-	  document.slug = slug || document.slug;
-	  document.description = descriptionHTML || document.description;
-	  document.landingPage = landingPage !== undefined ? landingPage : document.landingPage;
-	  document.public = isPublic !== undefined ? isPublic : document.public;
-	  document.projectId = projectId || document.projectId;
-	  document.order = order || document.order;
-	  document.modifiedDate = new Date();
+      // Update the document fields
+      document.title = title || document.title;
+      document.slug = slug || document.slug;
+      document.description = descriptionHTML || document.description;
+      document.landingPage = landingPage !== undefined ? landingPage : document.landingPage;
+      document.public = isPublic !== undefined ? isPublic : document.public;
+      document.projectId = projectId || document.projectId;
+      document.order = order || document.order;
+      document.modifiedDate = new Date();
 
       const updDoc = await document.save();
 
       // Return the updated document
       res.status(200).json(updDoc);
-	}
+    }
   } catch (err) {
     console.error(err);
     res.status(500).send(`An error occurred during document update: ${err}`);
@@ -485,7 +490,7 @@ router.delete("/documents/:id", checkApiKey, async (req, res) => {
     if (document.deleted) {
       // Optional: Allow hard delete if the delete is already marked as deleted.
       await Document.deleteOne({ _id: documentId });
-      res.status(204).json({Message: `Document with ID ${documentId} deleted successfully.`});
+      res.status(204).json({ Message: `Document with ID ${documentId} deleted successfully.` });
     } else {
       // Soft delete: mark the document as deleted.
       document.deleted = true;
@@ -504,7 +509,7 @@ router.delete("/documents/:id", checkApiKey, async (req, res) => {
 // PAGE
 
 // Get all pages
-router.get("/pages", checkApiKey, async function(req, res) {
+router.get("/pages", checkApiKey, async function (req, res) {
   await Page.find({})
     .then(pages => {
       res.status(200).json(pages);
@@ -515,7 +520,7 @@ router.get("/pages", checkApiKey, async function(req, res) {
 });
 
 // Get page by slug
-router.get("/pages/:slug", checkApiKey, async function(req, res) {
+router.get("/pages/:slug", checkApiKey, async function (req, res) {
   const pageSlug = req.params.slug;
   try {
     const page = await Page.findOne({ slug: pageSlug });
@@ -523,7 +528,7 @@ router.get("/pages/:slug", checkApiKey, async function(req, res) {
       res.status(200).json(page);
     }
     else {
-      res.status(204).json({'No Response': 'No pages exist with the provided slug' });
+      res.status(204).json({ 'No Response': 'No pages exist with the provided slug' });
     }
   } catch (err) {
     res.status(500).send(err)
@@ -537,26 +542,26 @@ router.post('/create/pages', checkApiKey, validateSlug, validateTitles, async (r
   try {
     let proj = await Project.findById(projectId);
     let doc = await Document.findById(documentId);
-	if (!proj || !doc) {
-	  res.status(400).json({ error: "Invalid project or document ID provided"})
-	} else {
-	  const bodyHTML = marked.parse(body);
-	  const page = new Page({
-		slug: slug,
-		title: title,
-		body: bodyHTML,
-		createdBy: req.user._id,
-		projectId: proj._id,
-		documentId: doc._id,
-		public: isPublic,
-		order: order
-	  });
+    if (!proj || !doc) {
+      res.status(400).json({ error: "Invalid project or document ID provided" })
+    } else {
+      const bodyHTML = marked.parse(body);
+      const page = new Page({
+        slug: slug,
+        title: title,
+        body: bodyHTML,
+        createdBy: req.user._id,
+        projectId: proj._id,
+        documentId: doc._id,
+        public: isPublic,
+        order: order
+      });
 
-	  const newPage = await page.save();
+      const newPage = await page.save();
 
-	  // Return the new page
-	  res.status(200).json(newPage);
-	}
+      // Return the new page
+      res.status(200).json(newPage);
+    }
   } catch (err) {
     console.error(err);
     res.status(500).send(`An error occurred during page creation: ${err}`);
@@ -590,32 +595,32 @@ router.put('/pages/:id', checkApiKey, validateSlug, validateTitles, async (req, 
       docCheck = true;
     }
 
-	if (projCheck && docCheck) {
-	  let page = await Page.findById(pageId);
-	  if (!page) {
-	    res.status(404).send("Page not found.");
-	  }
+    if (projCheck && docCheck) {
+      let page = await Page.findById(pageId);
+      if (!page) {
+        res.status(404).send("Page not found.");
+      }
 
       // Convert body markdown to HTML
-	  const bodyHTML = marked.parse(body);
+      const bodyHTML = marked.parse(body);
 
-	  // Update the page fields
-	  page.title = title || page.title;
-	  page.slug = slug || page.slug;
-	  page.body = bodyHTML || page.body;
-	  page.public = isPublic !== undefined ? isPublic : page.public;
-	  page.projectId = projectId || page.projectId;
-	  page.order = order || page.order;
-	  page.modifiedDate = new Date();
+      // Update the page fields
+      page.title = title || page.title;
+      page.slug = slug || page.slug;
+      page.body = bodyHTML || page.body;
+      page.public = isPublic !== undefined ? isPublic : page.public;
+      page.projectId = projectId || page.projectId;
+      page.order = order || page.order;
+      page.modifiedDate = new Date();
 
       const updPage = await page.save();
 
       // Return the updated page
       res.status(200).json(updPage);
 
-	} else {
-	  res.status(400).json({ error: "Invalid project or page ID provided"})
-	}
+    } else {
+      res.status(400).json({ error: "Invalid project or page ID provided" })
+    }
   } catch (err) {
     console.error(err);
     res.status(500).send(`An error occurred during page update: ${err}`);
@@ -654,7 +659,7 @@ router.delete("/pages/:id", checkApiKey, async (req, res) => {
 // TAG
 
 // Get all tags
-router.get("/tags", checkApiKey, async function(req, res) {
+router.get("/tags", checkApiKey, async function (req, res) {
   await Tag.find({})
     .then(tags => {
       res.status(200).json(tags);
@@ -665,7 +670,7 @@ router.get("/tags", checkApiKey, async function(req, res) {
 });
 
 // Get tag by slug
-router.get("/tags/:slug", checkApiKey, async function(req, res) {
+router.get("/tags/:slug", checkApiKey, async function (req, res) {
   const tagSlug = req.params.slug;
   try {
     const tag = await Tag.findOne({ slug: tagSlug });
@@ -673,7 +678,7 @@ router.get("/tags/:slug", checkApiKey, async function(req, res) {
       res.status(200).json(tag);
     }
     else {
-      res.status(204).json({'No Response': 'No tags exist with the provided slug' });
+      res.status(204).json({ 'No Response': 'No tags exist with the provided slug' });
     }
   } catch (err) {
     res.status(500).send(err)
@@ -681,16 +686,16 @@ router.get("/tags/:slug", checkApiKey, async function(req, res) {
 });
 
 // Get all projects with a tag
-router.get("/tags/:slug/projects", checkApiKey, async function(req, res) {
+router.get("/tags/:slug/projects", checkApiKey, async function (req, res) {
   const tagSlug = req.params.slug;
   try {
     const tag = await Tag.findOne({ slug: tagSlug });
     if (tag) {
-	  const projects = await Project.find({tags: tag._id }).exec();
+      const projects = await Project.find({ tags: tag._id }).exec();
       res.status(200).json(projects);
     }
     else {
-      res.status(204).json({'No Response': 'No projects exist with the provided tag' });
+      res.status(204).json({ 'No Response': 'No projects exist with the provided tag' });
     }
   } catch (err) {
     res.status(500).send(err)
@@ -705,7 +710,7 @@ router.post("/create/tags", checkApiKey, validateSlug, async (req, res) => {
       for (let projId of projects) {
         let proj = await Project.findById(projId);
         if (!proj) {
-          res.status(400).json({ error: "Invalid project ID provided"})
+          res.status(400).json({ error: "Invalid project ID provided" })
         }
       }
     }
@@ -744,11 +749,11 @@ router.put("/tags/:id", checkApiKey, validateSlug, validateTitles, async (req, r
         for (let projId of projects) {
           let proj = await Project.findById(projId);
           if (!proj) {
-            res.status(400).json({ error: "Invalid project ID provided"})
+            res.status(400).json({ error: "Invalid project ID provided" })
           }
         }
       } else {
-        res.status(400).json({ error: "Project IDs must be provided as an array"})
+        res.status(400).json({ error: "Project IDs must be provided as an array" })
       }
     }
   } catch (err) {
@@ -758,20 +763,20 @@ router.put("/tags/:id", checkApiKey, validateSlug, validateTitles, async (req, r
 
   try {
     let tag = await Tag.findById(tagId);
-	if (!tag) {
-	  res.status(404).send("Tag not found.");
-	}
+    if (!tag) {
+      res.status(404).send("Tag not found.");
+    }
 
     // Update the tag fields
-	tag.title = title || tag.title;
-	tag.slug = slug || tag.slug;
-	tag.description = description || tag.description;
-	if (projects) {
+    tag.title = title || tag.title;
+    tag.slug = slug || tag.slug;
+    tag.description = description || tag.description;
+    if (projects) {
       if (Array.isArray(projects)) {
-	    tag.projects = [...new Set([...tag.projects, ...projects])];
-	  }
-	}
-	tag.modifiedDate = new Date();
+        tag.projects = [...new Set([...tag.projects, ...projects])];
+      }
+    }
+    tag.modifiedDate = new Date();
 
     const updTag = await tag.save();
 
