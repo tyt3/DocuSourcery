@@ -107,7 +107,7 @@ router.get("/projects/:slug/pages", checkApiKey, async function(req, res) {
 });
 
 // Create Project
-router.post('/create/projects', checkApiKey, async (req, res) => {
+router.post('/create/projects', checkApiKey, validateTitles, validateSlug, async (req, res) => {
   const { title, subtitle, slug, description, tags, noLogin, canDuplicate, isPublic } = req.body;
 
   let linkedTags = [];
