@@ -43,7 +43,7 @@ router.get('/alllllProfiles', async function (req, res) {
 
 // Get all users for frontend
 router.get("/users", ensureAuth, async function(req, res) {
-  await User.find({}, 'firstName lastName username')
+  await User.find({}, 'firstName lastName username email')
     .then(users => {
       res.json(users);
     })
