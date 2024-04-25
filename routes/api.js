@@ -357,7 +357,7 @@ router.put('/documents/:id', checkApiKey, validateSlug, validateTitles, async (r
       // Convert description markdown to HTML
 	  const descriptionHTML = marked.parse(description);
 
-	  // Update the project fields
+	  // Update the document fields
 	  document.title = title || document.title;
 	  document.slug = slug || document.slug;
 	  document.description = descriptionHTML || document.description;
@@ -369,7 +369,7 @@ router.put('/documents/:id', checkApiKey, validateSlug, validateTitles, async (r
 
       const updDoc = await document.save();
 
-      // Return the new document
+      // Return the updated document
       res.status(200).json(updDoc);
 	}
   } catch (err) {
@@ -476,7 +476,7 @@ router.put('/pages/:id', checkApiKey, validateSlug, validateTitles, async (req, 
       // Convert body markdown to HTML
 	  const bodyHTML = marked.parse(body);
 
-	  // Update the project fields
+	  // Update the page fields
 	  page.title = title || page.title;
 	  page.slug = slug || page.slug;
 	  page.body = bodyHTML || page.body;
@@ -487,7 +487,7 @@ router.put('/pages/:id', checkApiKey, validateSlug, validateTitles, async (req, 
 
       const updPage = await page.save();
 
-      // Return the new page
+      // Return the updated page
       res.status(200).json(updPage);
 
 	} else {
@@ -534,7 +534,7 @@ router.post("/create/tags", checkApiKey, validateSlug, async (req, res) => {
   try {
     if (Array.isArray(projects)) {
       for (let projId of projects) {
-        let proj = await Project.findOne({ _id: projId });
+        let proj = await Project.findById(projId);
         if (!proj) {
           res.status(400).json({'Error': "Invalid project ID provided"})
         }
@@ -560,6 +560,55 @@ router.post("/create/tags", checkApiKey, validateSlug, async (req, res) => {
     else {
       res.status(400).json({'Error': 'Could not create a tag with the provided values'});
     }
+  } catch (err) {
+    res.status(500).send(err)
+  }
+});
+
+// Edit a tag
+router.put("/tags/:id", checkApiKey, validateSlug, validateTitles, async (req, res) => {
+  const tagId = req.params.id;
+  const { title, slug, description, projects } = req.body;
+  try {
+    if (projects) {
+      if (Array.isArray(projects)) {
+        for (let projId of projects) {
+          let proj = await Project.findById(projId);
+          if (!proj) {
+            res.status(400).json({'Error': "Invalid project ID provided"})
+          }
+        }
+      } else {
+        res.status(400).json({'Error': "Project IDs must be provided as an array"})
+      }
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).send(`An error occurred while checking tag's linked projects: ${err}`);
+  }
+
+  try {
+    let tag = await Tag.findById(tagId);
+	if (!tag) {
+	  res.status(404).send("Tag not found.");
+	}
+
+    // Update the tag fields
+	tag.title = title || tag.title;
+	tag.slug = slug || tag.slug;
+	tag.description = description || tag.description;
+	if (projects) {
+      if (Array.isArray(projects)) {
+	    tag.projects = [...new Set([...tag.projects, ...projects])];
+	  }
+	}
+	tag.modifiedDate = new Date;
+
+    const updTag = await tag.save();
+
+    // Return the updated page
+    res.status(200).json(updTag);
+
   } catch (err) {
     res.status(500).send(err)
   }
