@@ -52,7 +52,7 @@
   <% if (project && project.tags && project.tags.length > 0) { %>
     <% project.tags.forEach(function(tag) { %>
       <a href="/tag/<%= tag.slug %>" 
-        class="badge badge-tag bg-ds-primary me-1">
+        class="badge badge-tag bg-ds-secondary me-1">
         <%= tag.title %>
       </a>
     <% }); %>
