@@ -1240,6 +1240,9 @@ router.get("/project/:projectSlug/:documentSlug/:pageSlug/edit", ensureAuth, asy
         return res.status(404).send("Page not found.");
       }
 
+      // Convert body field HTML to Markdown
+      page.body = turndownService.turndown(page.body);
+
       // Render the edit page view with page data
       res.render("project/pageEdit.ejs", {
         user: req.user,
