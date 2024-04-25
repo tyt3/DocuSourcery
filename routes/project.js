@@ -464,7 +464,7 @@ router.get("/projects", async (req, res) => {
     ]);
 
     // Format modified dates
-    formattedProjects = formatModDate(projects);
+    const formattedProjects = formatModDate(projects);
 
     // Render the projects template with sorted projects
     res.render("project/projects.ejs", {
@@ -1118,13 +1118,14 @@ router.post("/page/delete/:id", ensureAuth, async (req, res) => {
       page.deletedDate = new Date(); // Record the deletion date
       page.deletedBy = req.user._id; // Record the user who deleted the document
       await page.save();
-      
+
       const document = await Document.findById(page.documentId);
+      const project = await Project.findById(page.projectId);
       if (!document) {
         return res.status(404).json({ error: "Document not found" });
       }
       // Redirect to edit page view
-      res.redirect(`/document/${document.slug}/edit`);
+      res.redirect(`/project/${project.slug}/${document.slug}/edit`);
     } else {
       // Perform a permanent delete
       await Page.deleteOne({ _id: pageId });
@@ -1133,7 +1134,8 @@ router.post("/page/delete/:id", ensureAuth, async (req, res) => {
         return res.status(404).json({ error: "Document not found" });
       }
       // Redirect to edit page view
-      res.redirect(`/document/${document.slug}/edit`);
+      const project = await Project.findById(page.projectId);
+      res.redirect(`/project/${project.slug}/${document.slug}/edit`);
     }
   } catch (err) {
     console.error("Error deleting page:", err);
@@ -1141,29 +1143,38 @@ router.post("/page/delete/:id", ensureAuth, async (req, res) => {
   }
 });
 
-
 // Restore Page
 router.post("/page/restore/:id", ensureAuth, async (req, res) => {
   const pageId = req.params.id;
   try {
     const page = await Page.findById(pageId);
     if (!page) {
-      return res.status(404).send("页面未找到。");
+      // If the page is not found, send a 404 response
+      return res.status(404).send("Page not found.");
     }
 
     if (!page.deleted) {
-      return res.status(400).send("页面已处于活动状态，未被标记删除。");
+      // If the page is not deleted, send a 400 response
+      return res
+        .status(400)
+        .send("Page is already active and not marked as deleted.");
     }
 
-    // 恢复页面
+    // Restore the page by setting 'deleted' to false
     page.deleted = false;
-    page.deletedDate = null; // 可选操作：清除删除日期
-    page.deletedBy = null;  // 可选操作：清除标记删除的用户
+    page.deletedDate = null; // Optionally clear the deletion date
+    page.deletedBy = null; // Optionally clear the user who marked it as deleted
+    page.modifiedDate = new Date(); // Update the modified date
+
+    // Save the updated page
     await page.save();
-    res.send({ message: "页面已成功恢复。" });
+
+    // Send a success response indicating the page has been restored
+    res.send({ message: "Page restored successfully" });
   } catch (err) {
-    console.error("恢复页面时出错：", err);
-    res.status(500).send("恢复页面时服务器发生错误。");
+    // If there is an error during the process, log it and send a 500 response
+    console.error("Error restoring page：", err);
+    res.status(500).send("Server error while restoring page.");
   }
 });
 
@@ -1250,7 +1261,7 @@ router.get("/tag/:slug", async (req, res) => {
       deleted: false,
     });
 
-    formattedProjects = formatModDate(projects);
+    const formattedProjects = formatModDate(projects);
 
     // Render the projects with formatted dates on the tag viewer page
     res.render("project/tag.ejs", {
