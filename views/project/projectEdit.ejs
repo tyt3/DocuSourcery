@@ -147,6 +147,7 @@
                   <!-- Documents List -->
                   <ul class="list-group">
                     <% project.documents.forEach(function(document) { %>
+                      <% if (!document.deleted) { %>
                       <!-- Document Cards -->
                       <li class="card-list document-card-item mb-3">
                         <div class="card">
@@ -204,6 +205,9 @@
                           </div>
                         </div>
                       </li>
+                      <% } else { %>
+                        <p>There are no documents.</p>
+                      <% } %> 
                     <% }); %>  
                   </ul> 
                 <% } else { %>
