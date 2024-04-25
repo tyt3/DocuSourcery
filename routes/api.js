@@ -192,7 +192,7 @@ router.put("/projects/:id", checkApiKey, validateTitles, validateSlug,
 	} = req.body;
   
 	try {
-	  const project = await Project.findById(projectId);
+	  let project = await Project.findById(projectId);
 	  if (!project) {
 	    res.status(404).send("Project not found.");
 	  }
@@ -256,7 +256,7 @@ router.put("/projects/:id", checkApiKey, validateTitles, validateSlug,
 router.delete("/project/:id", checkApiKey, async (req, res) => {
   const projectId = req.params.id;
   try {
-    const project = await Project.findById(projectId);
+    let project = await Project.findById(projectId);
 
     if (!project) {
       return res.status(404).send("Project not found.");
@@ -405,6 +405,35 @@ router.put('/documents/:id', checkApiKey, validateSlug, validateTitles, async (r
   } catch (err) {
     console.error(err);
     res.status(500).send(`An error occurred during document update: ${err}`);
+  }
+});
+
+// Delete Document
+router.delete("/document/:id", checkApiKey, async (req, res) => {
+  const documentId = req.params.id;
+  try {
+    let document = await Document.findById(documentId);
+
+    if (!document) {
+      return res.status(404).send("Document not found.");
+    }
+
+    if (document.deleted) {
+      // Optional: Allow hard delete if the project is already marked as deleted.
+      await Document.deleteOne({ _id: documentId });
+      res.status(204).json("Message": `Document with ID ${documentId} deleted successfully.`);
+    } else {
+      // Soft delete: mark the document as deleted.
+      document.deleted = true;
+      document.deletedDate = new Date();
+      document.deletedBy = req.user._id;
+      document.modifiedDate = new Date();
+      await document.save();
+      res.status(200).json("Message": `Document with ID ${documentId} soft-deleted successfully.`);
+    }
+  } catch (err) {
+    console.error("Error deleting document:", err);
+    res.status(500).send(`Server error while deleting document: ${err}`);
   }
 });
 
