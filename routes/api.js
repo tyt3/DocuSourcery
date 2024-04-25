@@ -559,6 +559,11 @@ router.post('/create/pages', checkApiKey, validateSlug, validateTitles, async (r
 
       const newPage = await page.save();
 
+      doc.pages.push(
+        newPage._id
+      );
+      await doc.save();
+
       // Return the new page
       res.status(200).json(newPage);
     }
