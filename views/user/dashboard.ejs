@@ -128,6 +128,7 @@
                   <table class="table">
                     <thead>
                       <tr>
+                        <th></th>
                         <th class="bold">Title</th>
                         <th class="bold">Date Archived</th>
                         <th class="bold">Deleted by</th>
@@ -139,6 +140,13 @@
                       <% trash.forEach(function(project) { %>
                         <% if (project.deleted) { %>
                           <tr>
+                            <td>
+                              <form method="POST" action="/project/restore/<%= project._id %>">
+                                <button type="submit" class="btn py-0">
+                                  <span class="material-symbols-outlined">undo</span>
+                                </button>
+                              </form>
+                            </td>
                             <td><%= project.title %></td>
                             <td><%= moment(project.deletedDate).format('MMM D, YYYY') %></td>
                             <td><%= project.deletedBy.firstName %> <%= project.deletedBy.lastName %></td>
