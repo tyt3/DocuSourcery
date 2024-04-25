@@ -428,7 +428,7 @@ router.post('/create/documents', checkApiKey, validateSlug, validateTitles, asyn
 });
 
 // Edit Document
-router.put('/documents/:id', checkApiKey, validateSlug, validateTitles, async (req, res) => {
+router.put('/documents/:id', checkApiKey, async (req, res) => {
   const docId = req.params.id;
   const { title, description, slug, landingPage, isPublic, projectId, order } = req.body;
 
