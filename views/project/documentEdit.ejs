@@ -154,6 +154,7 @@
                 <% } %>          
               </div>
               <!-- Trash -->
+              <% let trash = false; %>
               <div class="tab-pane fade" id="trash-pane" role="tabpanel" 
                 aria-labelledby="trash-pane">
                 <div class="table-responsive"> 
@@ -170,7 +171,6 @@
                     </thead>
                     <tbody>
                       <% if (document && document.pages && document.pages.length > 0) { %>
-                        <% let trash = false; %>
                         <% document.pages.forEach(function(page) { %>
                           <% if (page.deleted) { %>
                             <% trash = true %>
@@ -186,6 +186,7 @@
                             </tr>
                           <% } %>
                         <% }); %>
+                      <% } %>
                     </tbody>
                   </table>
                 </div>
@@ -205,7 +206,6 @@
                     </button>
                   </div>
                 </div>
-                <% } %>
                 <% } %>
               </div>
             </div>

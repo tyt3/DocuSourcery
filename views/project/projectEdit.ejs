@@ -221,6 +221,7 @@
                 <% } %>         
               </div>
               <!-- Trash -->
+              <% let trash = false; %>
               <div class="tab-pane fade" id="trash-pane" role="tabpanel" 
                 aria-labelledby="trash-pane">
                 <div class="table-responsive"> 
@@ -237,7 +238,6 @@
                     </thead>
                     <tbody>
                       <% if (project && project.documents && project.documents.length > 0) { %>
-                        <% let trash = false; %>
                         <% project.documents.forEach(function(document) { %>
                           <% if (document.deleted) { %>
                             <% trash = true %>
@@ -253,6 +253,7 @@
                             </tr>
                           <% } %>
                         <% }); %>
+                        <% } %>
                     </tbody>
                   </table>
                 </div>
@@ -272,7 +273,6 @@
                     </button>
                   </div>
                 </div>
-                <% } %>
                 <% } %>
               </div>
               <!-- Delete Documents Modal -->
@@ -331,9 +331,11 @@
                             </td>
                           </tr>
                         <% }); %>
+                      <% } %>
                     </tbody>
                   </table>
                 </div>
+              <% if (project && project.users && Array.isArray(project.users) && project.users.length > 0) { %>
                 <div class="row gy-3 justify-content-center justify-content-md-start">
                   <div class="col-auto">
                     <button type="button" id="addUserBtn" class="btn btn-12 btn-ds-primary"
