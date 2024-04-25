@@ -259,6 +259,7 @@ function validateTitles(req, res, next) {
   } catch (err) {
     if (!(req.originalUrl.includes('/create'))) {
       next();
+    }
   }
   // If not valid, send error messages
   if (!valid) {
