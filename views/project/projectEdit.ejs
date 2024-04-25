@@ -235,6 +235,9 @@
                         <% project.documents.forEach(function(document) { %>
                           <% if (document.deleted) { %>
                             <tr>
+                              <td>
+                                <input class="form-check-input" type="checkbox" name="selectedDocuments" value="<%= document._id %>">
+                              </td>
                               <td><%= document.title %></td>
                               <td><%= moment(document.deletedDate).format('MMM D, YYYY') %></td>
                               <td><%= document.deletedBy.firstName %> <%= document.deletedBy.lastName %></td>
@@ -382,4 +385,15 @@
 <%- include('../snippets/delete-project-modal.ejs') -%>
 <% } %>  
 
+<script>
+  function restoreDocuments() {
+    document.getElementById('projectForm').action = '/project/restore-documents/<%= project._id %>';
+    document.getElementById('projectForm').submit();
+  }
+  
+  function deleteDocuments() {
+    document.getElementById('projectForm').action = '/project/delete-documents/<%= project._id %>';
+    document.getElementById('projectForm').submit();
+  }  
+</script>
 <%- include('../baseFooter') -%>

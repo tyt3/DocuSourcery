@@ -466,7 +466,39 @@ router.post('/project/remove-user/:id', ensureAuth, async (req, res) => {
   }
 });
 
+// Delete documents from project
+router.post('/project/delete-documents/:id', ensureAuth, async (req, res) => {
+  const projectId = req.params.id;
+  const { selectedDocuments } = req.body;
 
+  try {
+    // Find the project
+    const project = await Project.findById(projectId);
+    if (!project) {
+      return res.status(404).send("Project not found.");
+    }
+
+    // Loop through each document in `selectedDocuments` and delete it from `project.documents` if it exists
+    const docsToDelete = Array.isArray(selectedDocuments) ? selectedDocuments : [selectedDocuments];
+
+    for (const documentId of docsToDelete) {
+      // Convert documentId to ObjectId
+      const docObjectId = mongoose.Types.ObjectId(documentId);
+      // Filter out the document to delete
+      project.documents = project.documents.filter(doc => !doc.equals(docObjectId));
+    }
+
+    // Save the updated project
+    await project.save();
+
+    // Redirect to the project edit page
+    res.redirect(`/project/${project.slug}/edit`);
+    
+  } catch (err) {
+    console.error("Failed to remove user from the project:", err);
+    res.status(500).send("Server error occurred while trying to remove a user from the project.");
+  }
+});
 
 
 // View Project
