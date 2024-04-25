@@ -51,7 +51,7 @@ const checkApiKey = async (req, res, next) => {
 
   try {
     // Query the database to find a user with the provided API key
-    const authUser = await User.findOne({ apiKey });
+    const authUser = await User.findOne({ apiKey: apiKey });
 
     if (!authUser) {
       return res.status(401).json({ error: 'Invalid API key' });
