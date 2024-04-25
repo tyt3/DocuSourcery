@@ -3,6 +3,9 @@
 // Import data models
 const User = require('../models/user');
 const Project = require('../models/project');
+const Document = require('../models/document');
+const Page = require('../models/page');
+const Tag = require('../models/tag');
 
 
 // Check if the user is authenticated\
@@ -168,7 +171,24 @@ const validateSlug = async (req, res, next) => {
 
     // Check if any other record uses the same slug, but only if creating something new
     if (req.originalUrl.includes('/create')) {
-      const duplicateSlug = await Project.findOne({ slug: slug });
+      var duplicateSlug;
+      if (req.originalUrl.includes('/project')) {
+        duplicateSlug = await Project.findOne({ slug: slug });
+      }
+      else if (req.originalUrl.includes('/document')) {
+        duplicateSlug = await Document.findOne({ slug: slug });
+      }
+      else if (req.originalUrl.includes('/page')) {
+        duplicateSlug = await Page.findOne({ slug: slug });
+      }
+      else if (req.originalUrl.includes('/tag')) {
+        duplicateSlug = await Tag.findOne({ slug: slug });
+      }
+      else {
+        valid = false;
+        errors.push("Invalid object model.")
+      }
+
       if (duplicateSlug) {
         valid = false;
         errors.push("Slug must be unique.");
