@@ -937,17 +937,46 @@ router.get("/project/:projectSlug/:documentSlug/:pageSlug/edit", ensureAuth, asy
 
 
 // Edit Page
-router.post('/page/edit/:id', ensureAuth, async (req, res) => {
+router.post("/page/edit/:id", ensureAuth, async (req, res) => {
   const pageId = req.params.id;
+  const { title, body, slug, isPublic } = req.body;
+
   try {
-    // TODO: Implement 
-    // Apply same middleware as in project/create to validate form fields
-    // Convert body field Markdown to HTML
-    // Get form fields from request
-    // Validate input, flash error message and reload if any errors
-    // Update object with new data
+    // Fetch the existing page
+    const page = await Page.findById(pageId);
+    if (!page) {
+      return res.status(404).send("Page not found.");
+    }
+
+    // Convert body Markdown to HTML
+    const bodyHTML = marked.parse(body);
+
+    if (!title || !slug || !body) {
+      req.flash(
+        "error",
+        "Missing required fields: title, slug, or body must not be empty."
+      );
+      return res.redirect(`/page/edit/${pageId}`);
+    }
+
+    // Update the page fields
+    page.title = title || page.title;
+    page.body = bodyHTML || page.body;
+    page.slug = slug || page.slug;
+
+    let publicChoice = isPublic === "on";
+    page.public = publicChoice;
+
+    // Save the updated page
+    await page.save();
+    const document = await Document.findById(page.documentId);
+    const project = await Project.findById(page.projectId);
+
+    // Redirect to the page view or edit page
+    res.redirect(`/project/${project.slug}/${document.slug}/${page.slug}/edit`);
   } catch (err) {
-    throw err;
+    console.error("Error updating page:", err);
+    res.status(500).send("Internal Server Error while updating page.");
   }
 });
 
