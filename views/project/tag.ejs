@@ -1,9 +1,17 @@
+<% function truncate(str, maxLength) {
+  if (str.length > maxLength) {
+      return str.slice(0, maxLength) + '...';
+  } else {
+      return str;
+  }
+} %>
+
 <%- include('../baseHeader') -%>
   <!-- Main Content -->
   <div class="container main-content my-5">
     <!-- Tag Title -->
     <h1 class="mb-4">
-      <%= tag.title %>
+      #<%= tag.title %>
     </h1>
 
     <hr class="mt-4" />
@@ -17,19 +25,55 @@
       <% if (projects && projects.length > 0) { %>
         <% projects.forEach(function(project) { %>
           <div class="col-md-6 col-xl-4">
-            <div class="card h-100 shadow-sm bg-light-gray">
+            <div class="card shadow-sm">
+              <% if (user) { %>
               <div class="card-header">
+                <div class="row">
+                  <div class="col-11">
+                    <span class="bold">Created by: </span> <%= project.createdBy.username %>
+                  </div>
+                  <div class="col-1 text-end">
+                    <% const isPinned = user.pinnedProjects.includes(project._id)  %>
+                    <% if (isPinned) { %>
+                    <a href="/unpin/<%= project._id %>" data-bs-toggle="tooltip" 
+                      data-bs-placement="top" data-bs-title="Unpin project"><span 
+                      class="material-symbols-outlined">keep_off</span></a>
+                    <% } else { %>
+                    <a href="/pin/<%= project._id %>" data-bs-toggle="tooltip" 
+                      data-bs-placement="top" data-bs-title="Pin project"><span 
+                      class="material-symbols-outlined">keep</span></a>
+                    <% } %>
+                  </div>
+                </div>
               </div>
+              <% } %>
               <div class="card-body">
                 <h5 class="card-title">
-                  <a href="/project/<%= project.slug %>"><%= project.title %></a>
+                  <a href="#"><%= project.title %></a>
                 </h5>
-                <h* class="card-subtitle">
-                  <%= project.description %>
-                </h*>
+                <h6 class="card-subtitle">
+                  <%= project.subtitle %>
+                </h6>
                 <p class="card-text mt-2">
-                  <strong>Last modified:</strong> <%= project.dateModified %>
+                  <%= truncate(project.description, 50) %>
                 </p>
+                <% if (project.tags && tags.length > 0) { %>
+                  <div class="my-3">
+                    <span class="fw-bold">Tags:</span>
+                  <% project.tags.forEach(function(tag) { %>
+                    <a href="/tag/<%= tag.slug %>" 
+                      class="badge badge-tag bg-ds-secondary me-1">
+                      <%= tag.title %>
+                    </a>
+                  <% }); %>  
+                  </div>
+                <% } %>
+                <p class="card-text mt-2">
+                  <strong>Last modified</strong>: <%= project.dateModified %>
+                </p>
+              </div>
+              <div class="card-footer border-top-0 mb-2 bg-white">
+                <a class="btn btn-ds-primary" href="/project/<%= project.slug %>">View Project</a>
               </div>
             </div>
           </div>

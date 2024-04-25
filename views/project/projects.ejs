@@ -1,3 +1,11 @@
+<% function truncate(str, maxLength) {
+  if (str.length > maxLength) {
+      return str.slice(0, maxLength) + '...';
+  } else {
+      return str;
+  }
+} %>
+
 <%- include('../baseHeader') -%>
 <!-- Main Content -->
 <div class="container main-content my-5">
@@ -39,7 +47,7 @@
   <div class="row gy-4">
     <% projects.forEach(function(project) { %>
     <div class="col-md-6 col-xl-4">
-      <div class="card h-100 shadow-sm">
+      <div class="card shadow-sm">
         <% if (user) { %>
         <div class="card-header">
           <div class="row">
@@ -65,8 +73,23 @@
           <h5 class="card-title">
             <a href="#"><%= project.title %></a>
           </h5>
-          <h* class="card-subtitle">
+          <h6 class="card-subtitle">
             <%= project.subtitle %>
+          </h6>
+          <p class="card-text mt-2">
+            <%= truncate(project.description, 100) %>
+          </p>
+          <% if (project.tags && tags.length > 0) { %>
+            <div class="my-3">
+              <span class="fw-bold">Tags:</span>
+            <% project.tags.forEach(function(tag) { %>
+              <a href="/tag/<%= tag.slug %>" 
+                class="badge badge-tag bg-ds-secondary me-1">
+                <%= tag.title %>
+              </a>
+            <% }); %>  
+            </div>
+          <% } %>
           <p class="card-text mt-2">
             <strong>Last modified</strong>: <%= project.dateModified %>
           </p>
