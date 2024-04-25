@@ -409,7 +409,7 @@ router.get("/pages/:slug", checkApiKey, async function(req, res) {
 
 // Create Page
 router.post('/create/pages', checkApiKey, validateSlug, validateTitles, async (req, res) => {
-  const { title, slug, body, order, isPublic, projectId, documentId, order } = req.body;
+  const { title, slug, body, order, isPublic, projectId, documentId } = req.body;
 
   try {
     let proj = await Project.findById(projectId);
