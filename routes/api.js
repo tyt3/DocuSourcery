@@ -306,7 +306,7 @@ router.post('/create/documents', checkApiKey, validateSlug, validateTitles, asyn
   const { title, description, slug, landingPage, isPublic, projectId, order } = req.body;
 
   try {
-    let proj = await Project.findById(projectId)
+    let proj = await Project.findById(projectId);
 	if (!proj) {
 	  res.status(400).json({'Error': "Invalid project ID provided"})
 	} else {
@@ -316,7 +316,7 @@ router.post('/create/documents', checkApiKey, validateSlug, validateTitles, asyn
 		title: title,
 		description: descriptionHTML,
 		createdBy: req.user._id,
-		public: projectId,
+		projectId: proj._id,
 		landingPage: landingPage,
 		public: isPublic,
 		order: order
@@ -339,7 +339,13 @@ router.put('/documents/:id', checkApiKey, validateSlug, validateTitles, async (r
   const { title, description, slug, landingPage, isPublic, projectId, order } = req.body;
 
   try {
-    let proj = await Project.findById(projectId);
+    let proj;
+    if (projectId) {
+      proj = await Project.findById(projectId);
+    }
+    else {
+      proj = true;
+    }
 	if (!proj) {
 	  res.status(400).json({'Error': "Invalid project ID provided"})
 	} else {
@@ -398,6 +404,98 @@ router.get("/pages/:slug", checkApiKey, async function(req, res) {
     }
   } catch (err) {
     res.status(500).send(err)
+  }
+});
+
+// Create Page
+router.post('/create/pages', checkApiKey, validateSlug, validateTitles, async (req, res) => {
+  const { title, slug, body, order, isPublic, projectId, documentId, order } = req.body;
+
+  try {
+    let proj = await Project.findById(projectId);
+    let doc = await Document.findById(documentId);
+	if (!proj || !doc) {
+	  res.status(400).json({'Error': "Invalid project or document ID provided"})
+	} else {
+	  const bodyHTML = marked.parse(body);
+	  const page = new Page({
+		slug: slug,
+		title: title,
+		body: bodyHTML,
+		createdBy: req.user._id,
+		projectId: proj._id,
+		documentId: doc._id,
+		public: isPublic,
+		order: order
+	  });
+
+	  const newPage = await page.save();
+
+	  // Return the new page
+	  res.status(200).json(newPage);
+	}
+  } catch (err) {
+    console.error(err);
+    res.status(500).send(`An error occurred during page creation: ${err}`);
+  }
+});
+
+// Edit Page
+router.put('/pages/:id', checkApiKey, validateSlug, validateTitles, async (req, res) => {
+  const pageId = req.params.id;
+  const { title, slug, body, order, isPublic, projectId, documentId, order } = req.body;
+
+  try {
+    var projCheck = false;
+    var docCheck = false;
+    if (projectId) {
+      const proj = await Project.findById(projectId);
+      if (proj) {
+        projCheck = true;
+      }
+    }
+    else {
+      projCheck = true;
+    }
+    if (documentId) {
+      const doc = await Document.findById(documentId);
+      if (doc) {
+        docCheck = true;
+      }
+    }
+    else {
+      docCheck = true;
+    }
+
+	if (projCheck && docCheck) {
+	  let page = await Page.findById(pageId);
+	  if (!page) {
+	    res.status(404).send("Page not found.");
+	  }
+
+      // Convert body markdown to HTML
+	  const bodyHTML = marked.parse(body);
+
+	  // Update the project fields
+	  page.title = title || page.title;
+	  page.slug = slug || page.slug;
+	  page.body = bodyHTML || page.body;
+	  page.public = isPublic !== undefined ? isPublic : page.public;
+	  page.projectId = projectId || page.projectId;
+	  page.order = order || page.order;
+	  page.modifiedDate = new Date;
+
+      const updPage = await page.save();
+
+      // Return the new page
+      res.status(200).json(updPage);
+
+	} else {
+	  res.status(400).json({'Error': "Invalid project or page ID provided"})
+	}
+  } catch (err) {
+    console.error(err);
+    res.status(500).send(`An error occurred during page update: ${err}`);
   }
 });
 
