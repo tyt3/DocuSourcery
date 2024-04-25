@@ -107,7 +107,7 @@ router.get("/projects/:slug/pages", checkApiKey, async function(req, res) {
 });
 
 // Create Project
-router.post('/projects/create', checkApiKey, async (req, res) => {
+router.post('/projects', checkApiKey, async (req, res) => {
   const { title, subtitle, slug, description, tags, noLogin, canDuplicate, isPublic } = req.body;
 
   let linkedTags = [];
@@ -177,7 +177,7 @@ router.post('/projects/create', checkApiKey, async (req, res) => {
 });
 
 // Edit Project
-router.put("/projects/edit/:id", checkApiKey, validateTitles, validateSlug,
+router.put("/projects/:id", checkApiKey, validateTitles, validateSlug,
 	async (req, res) => {
 	  const projectId = req.params.id;
 	  const {
@@ -206,6 +206,7 @@ router.put("/projects/edit/:id", checkApiKey, validateTitles, validateSlug,
 		project.slug = slug || project.slug;
 		project.description = descriptionHTML || document.description;
 		project.public = isPublic !== undefined ? isPublic : project.public;
+		project.modifiedDate = Date.now();
   
 		// Handle tags similarly as in the project creation
 		let linkedTags = [];
@@ -293,7 +294,7 @@ router.get("/documents/:slug/pages", checkApiKey, async function(req, res) {
 	  res.status(204).json({'No Response': 'No pages exist under the provided document'}); 
     }
     else {
-      res.status(400).json({'Error': 'Document not found'});
+      res.status(404).json({'Error': 'Document not found'});
     }
   } catch (err) {
     res.status(500).send(err)
@@ -348,7 +349,7 @@ router.get("/tags/:slug", checkApiKey, async function(req, res) {
   try {
     const tag = await Tag.findOne({ slug: tagSlug });
     if (tag) {
-      res.status(200).json(page);
+      res.status(200).json(tag);
     }
     else {
       res.status(204).json({'No Response': 'No tags exist with the provided slug'});
@@ -358,6 +359,42 @@ router.get("/tags/:slug", checkApiKey, async function(req, res) {
   }
 });
 
+// Create a tag
+router.post("/tags", checkApiKey, validateSlug, async (req, res) => {
+  const { title, slug, description, projects } = req.body;
+  try {
+    if (Array.isArray(projects)) {
+      for (let projId of projects) {
+        let proj = await Project.findOne({ _id: projId });
+        if (!proj) {
+          res.status(400).json({'Error': "Invalid project ID provided"})
+        }
+      }
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).send(`An error occurred while checking tag's linked projects: ${err}`);
+  }
+
+  try {
+    const tag = new Tag({
+      slug: slug,
+      title: title,
+      description: description,
+      createdBy: req.user._id,
+      projects: projects
+    });
+    const newTag = await tag.save();
+    if (newTag) {
+      res.status(200).json(newTag);
+    }
+    else {
+      res.status(400).json({'Error': 'Could not create a tag with the provided values'});
+    }
+  } catch (err) {
+    res.status(500).send(err)
+  }
+});
 
 // Export router
 module.exports = router;
