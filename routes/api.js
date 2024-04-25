@@ -419,7 +419,7 @@ router.delete("/document/:id", checkApiKey, async (req, res) => {
     }
 
     if (document.deleted) {
-      // Optional: Allow hard delete if the project is already marked as deleted.
+      // Optional: Allow hard delete if the delete is already marked as deleted.
       await Document.deleteOne({ _id: documentId });
       res.status(204).json("Message": `Document with ID ${documentId} deleted successfully.`);
     } else {
@@ -555,6 +555,35 @@ router.put('/pages/:id', checkApiKey, validateSlug, validateTitles, async (req, 
   } catch (err) {
     console.error(err);
     res.status(500).send(`An error occurred during page update: ${err}`);
+  }
+});
+
+// Delete Page
+router.delete("/page/:id", checkApiKey, async (req, res) => {
+  const pageId = req.params.id;
+  try {
+    let page = await Page.findById(pageId);
+
+    if (!page) {
+      return res.status(404).send("Page not found.");
+    }
+
+    if (page.deleted) {
+      // Optional: Allow hard delete if the page is already marked as deleted.
+      await Page.deleteOne({ _id: pageId });
+      res.status(204).json("Message": `Page with ID ${pageId} deleted successfully.`);
+    } else {
+      // Soft delete: mark the page as deleted.
+      page.deleted = true;
+      page.deletedDate = new Date();
+      page.deletedBy = req.user._id;
+      page.modifiedDate = new Date();
+      await page.save();
+      res.status(200).json("Message": `Page with ID ${pageId} soft-deleted successfully.`);
+    }
+  } catch (err) {
+    console.error("Error deleting page:", err);
+    res.status(500).send(`Server error while deleting page: ${err}`);
   }
 });
 
