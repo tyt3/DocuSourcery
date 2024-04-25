@@ -585,7 +585,11 @@ router.get('/project/:slug', async (req, res) => {
 router.get('/projects', async (req, res) => {
   try {
     // Retrieve all projects where public === true and sort by views in descending order
-    const projects = await Project.find({ public: true }).sort({ views: -1 });
+    const projects = await Project.find({ public: true }).
+    sort({ views: -1 }).
+    populate('tags')
+    .exec();
+
     // Aggregate query to get all tags and sort by the length of their projects array
     const tags = await Tag.aggregate([
       {$project: {
@@ -1451,10 +1455,12 @@ router.get('/tag/:slug', async (req, res) => {
   try {
     const tag = await Tag.findOne({ slug: tagSlug });
 
+    // Get all projects with tag and populate their tags
     var projects = await Project.find({
       tags: tag._id,
       deleted: false
-    });
+    }).populate('tags').exec();
+
 
     formattedProjects = formatModDate(projects);
 
