@@ -798,9 +798,14 @@ router.get('/project/:projectSlug/:documentSlug/edit', ensureAuth, async (req, r
     })
     .populate({
       path: 'pages',
-      model: 'page' 
+      model: 'page',
+      populate: {
+        path: 'createdBy deletedBy',
+        select: 'username firstName lastName email'
+      }
     })
     .exec();
+    
     if (!document) {
       return res.status(404).json({ error: 'Document not found' });
     }

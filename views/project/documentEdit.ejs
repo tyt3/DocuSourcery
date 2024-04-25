@@ -114,31 +114,33 @@
                   <!-- Pages List -->
                   <ul class="card-list mt-2">
                     <% document.pages.forEach(function(page) { %>
-                      <li class="mb-2">
-                        <div class="card">
-                          <div class="card-body py-1">
-                            <!-- Drag Icon -->
-                            <div class="row gy-2">
-                              <div class="col-1">
-                                <span data-bs-toggle="tooltip" 
-                                  data-bs-title="Drag and drop page to change order" 
-                                  data-bs-custom-class="ds-tooltip" 
-                                  class="material-symbols-outlined">
-                                  drag_handle
-                                </span>
-                              </div>
-                              <!-- Page Title -->
-                              <div class="col-11 d-flex align-items-center">
-                                <span data-bs-toggle="tooltip" data-bs-title="Page" 
-                                  data-bs-custom-class="ds-tooltip" class="material-symbols-outlined me-2">
-                                  description
-                                </span>
-                                <a href="/project/<%= project.slug %>/<%= document.slug %>/<%= page.slug %>/edit"><%= page.title %></a>
+                      <% if (!page.deleted) { %>
+                        <li class="mb-2">
+                          <div class="card">
+                            <div class="card-body py-1">
+                              <!-- Drag Icon -->
+                              <div class="row gy-2">
+                                <div class="col-1">
+                                  <span data-bs-toggle="tooltip" 
+                                    data-bs-title="Drag and drop page to change order" 
+                                    data-bs-custom-class="ds-tooltip" 
+                                    class="material-symbols-outlined">
+                                    drag_handle
+                                  </span>
+                                </div>
+                                <!-- Page Title -->
+                                <div class="col-11 d-flex align-items-center">
+                                  <span data-bs-toggle="tooltip" data-bs-title="Page" 
+                                    data-bs-custom-class="ds-tooltip" class="material-symbols-outlined me-2">
+                                    description
+                                  </span>
+                                  <a href="/project/<%= project.slug %>/<%= document.slug %>/<%= page.slug %>/edit"><%= page.title %></a>
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-                      </li>
+                        </li>
+                      <% }; %>  
                     <% }); %>  
                   </ul> 
                 <% } else { %>
@@ -175,10 +177,10 @@
                                 <input class="form-check-input" type="checkbox" name="selectedPages" value="<%= page._id %>">
                               </td>
                               <td><%= page.title %></td>
-                              <td><%= page.deletedDate %></td>
-                              <td><%= page.deletedBy %></td>
-                              <td><%= page.createdDate %></td>
-                              <td><%= page.createdBy %></td>
+                              <td><%= moment(page.deletedDate).format('MMM D, YYYY') %></td>
+                              <td><%= page.deletedBy.firstName %> <%= page.deletedBy.lastName %></td>
+                              <td><%= moment(page.createdDate).format('MMM D, YYYY') %></td>
+                              <td><%= page.createdBy.firstName %> <%= page.createdBy.lastName %></td>
                             </tr>
                           <% } %>
                         <% }); %>
