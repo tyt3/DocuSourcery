@@ -388,6 +388,7 @@ router.post("/project/restore/:id", ensureAuth, async (req, res) => {
 });
 
 
+// Add user to project
 router.post('/project/add-user/:id', ensureAuth, async (req, res) => {
   const projectId = req.params.id;
   const { username, role } = req.body;
@@ -421,6 +422,38 @@ router.post('/project/add-user/:id', ensureAuth, async (req, res) => {
     res.status(500).send("Server error occurred while trying to add a user to the project.");
   }
 });
+
+// Remove user from project
+router.post('/project/remove-user/:id', ensureAuth, async (req, res) => {
+  const projectId = req.params.id;
+  const { remove } = req.body;
+
+  try {
+    // Find the project
+    const project = await Project.findById(projectId);
+    if (!project) {
+      return res.status(404).send("Project not found.");
+    }
+
+    // Loop through each user ID to be removed
+    for (const userId of remove) {
+      // Remove the user from the project
+      project.users = project.users.filter(userObj => !userObj.user.equals(userId));
+    }
+
+    // Save the updated project
+    await project.save();
+
+    // Redirect to the project edit page
+    res.redirect(`/project/${project.slug}/edit`);
+    
+  } catch (err) {
+    console.error("Failed to remove user from the project:", err);
+    res.status(500).send("Server error occurred while trying to remove a user from the project.");
+  }
+});
+
+
 
 
 // View Project
