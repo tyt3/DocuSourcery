@@ -237,8 +237,10 @@
                     </thead>
                     <tbody>
                       <% if (project && project.documents && project.documents.length > 0) { %>
+                        <% let trash = false; %>
                         <% project.documents.forEach(function(document) { %>
                           <% if (document.deleted) { %>
+                            <% trash = true %>
                             <tr>
                               <td>
                                 <input class="form-check-input" type="checkbox" name="selectedDocuments" value="<%= document._id %>">
@@ -255,6 +257,7 @@
                   </table>
                 </div>
                 <!-- Manage Trash Buttons -->
+                <% if (trash) { %>
                 <div class="row gy-3 justify-content-center justify-content-md-start">
                   <div class="col-auto">
                     <button type="button" id="restoreDocumentBtn" class="btn btn-12 btn-ds-primary"
@@ -269,6 +272,7 @@
                     </button>
                   </div>
                 </div>
+                <% } %>
                 <% } %>
               </div>
               <!-- Delete Documents Modal -->
