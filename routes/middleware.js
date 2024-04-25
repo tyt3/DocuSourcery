@@ -166,8 +166,8 @@ const validateSlug = async (req, res, next) => {
     let valid = true;
     const errors = [];
 
-    // Check if any other project uses the same slug
-    if (req.originalUrl === '/project/create') {
+    // Check if any other record uses the same slug, but only if creating something new
+    if (req.originalUrl.includes('/create')) {
       const duplicateSlug = await Project.findOne({ slug: slug });
       if (duplicateSlug) {
         valid = false;

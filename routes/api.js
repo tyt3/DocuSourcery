@@ -5,7 +5,6 @@ const marked = require('marked');
 
 // // Import middleware
 const { checkApiKey, validateTitles, validateSlug } = require('./middleware');
-// import { switchToBool, appendProjectToTags } from './routes/project';
 
 // // Import data models
 const User = require('../models/user');
@@ -14,29 +13,6 @@ const Document = require('../models/document');
 const Page = require('../models/page');
 const Tag = require('../models/tag');
 
-
-// FUNCTIONS
-function formatModDate(projectList) {
-  projectList.forEach(project => {
-    // Convert the 'modifiedDate' field to a Moment.js object
-    var modifiedDateMoment = moment(project.modifiedDate);
-
-    // Format the Moment.js object as 'MM/DD/YYYY HH:MM:SS'
-    var formattedDate = modifiedDateMoment.format('MM/DD/YYYY HH:mm:ss');
-
-    // Update the 'modifiedDate' field in the project with the formatted date string
-    project.dateModified = formattedDate;
-  });
-  return projectList;
-}
-
-function switchToBool(switchField) {
-  let choice = false;
-  if (switchField === "on") {
-    choice = true;
-  }
-  return choice;
-}
 
 // USERS
 
@@ -132,7 +108,7 @@ router.get("/projects/:slug/pages", async function(req, res) {
 
 // Create Project
 router.post('/projects/create', async (req, res) => {
-  const { title, subtitle, slug, description, tags, noLogin, canDuplicate, isPublic } = req.params.body;
+  const { title, subtitle, slug, description, tags, noLogin, canDuplicate, isPublic } = req.body;
 
   let linkedTags = [];
   try {
@@ -160,10 +136,6 @@ router.post('/projects/create', async (req, res) => {
   }
 
   try {
-    let publicChoice = switchToBool(isPublic);
-    let loginChoice = switchToBool(noLogin);
-    let dupChoice = switchToBool(canDuplicate);
-
     // Convert description markdown to HTML
     const descriptionHTML = marked.parse(description);
     const project = new Project({
@@ -172,9 +144,9 @@ router.post('/projects/create', async (req, res) => {
       subtitle: subtitle,
       description: descriptionHTML,
       createdBy: req.user._id,
-      public: publicChoice,
+      public: isPublic,
       tags: linkedTags,
-      permissions: {noLogin: loginChoice, duplicatable: dupChoice},
+      permissions: {noLogin: noLogin, duplicatable: canDuplicate},
       users: [
         {
           user: req.user._id,
@@ -187,16 +159,97 @@ router.post('/projects/create', async (req, res) => {
 
     // Update all tags in linkedTags array to add the new project ID to its projects array
     if (linkedTags) {
-      appendProjectToTags(linkedTags, newProject._id);
+	  // Update all tags in tagList array
+	  await Promise.all(linkedTags.map(async (tagId) => {
+        // Update the tag by its ObjectId
+        await Tag.findOneAndUpdate(
+            { _id: tagId, projects: { $ne: newProject._id } }, // Query to find the tag and check if projectId is not already present
+            { $addToSet: { projects: newProject._id } } // Update operation
+        );
+      }));
     }
-
     // Return the new project
-    res.json(newProject);
+    res.status(200).json(newProject);
   } catch (err) {
     console.error(err);
     res.status(500).send(`An error occurred during project creation: ${err}`);
   }
 });
+
+// Edit Project
+router.put("/projects/edit/:id", ensureAuth, validateTitles, validateSlug,
+	async (req, res) => {
+	  const projectId = req.params.id;
+	  const {
+		title,
+		subtitle,
+		slug,
+		description,
+		tags,
+		noLogin,
+		canDuplicate,
+		isPublic,
+	  } = req.body;
+  
+	  try {
+		const project = await Project.findById(projectId);
+		if (!project) {
+		  res.status(404).send("Project not found.");
+		}
+  
+		// Convert description Markdown to HTML
+		const descriptionHTML = marked.parse(description);
+  
+		// Update the project fields
+		project.title = title || project.title;
+		project.subtitle = subtitle || project.subtitle; // Keep existing subtitle if none provided
+		project.slug = slug || project.slug;
+		project.description = descriptionHTML || document.description;
+		project.public = isPublic !== undefined ? isPublic : project.public;
+  
+		// Handle tags similarly as in the project creation
+		let linkedTags = [];
+		if (tags) {
+		  const tagsArray = tags.split(",").map((tag) => tag.trim());
+		  for (const tagTitle of tagsArray) {
+			let tag = await Tag.findOne({ title: tagTitle });
+			if (!tag) {
+			  tag = new Tag({
+				title: tagTitle,
+				slug: tagTitle.replace(/\s+/g, "-").toLowerCase(),
+				createdBy: req.user._id,
+			  });
+			  await tag.save();
+			}
+			linkedTags.push(tag._id);
+		  }
+		}
+		project.tags = linkedTags;
+  
+		// Update permissions based on form input
+		project.permissions.set("noLogin", noLogin);
+		project.permissions.set("duplicatable", canDuplicate);
+  
+		const updProject = await project.save();
+  
+		if (linkedTags) {
+		  // Update all tags in tagList array
+		  await Promise.all(linkedTags.map(async (tagId) => {
+			// Update the tag by its ObjectId
+			await Tag.findOneAndUpdate(
+			  { _id: tagId, projects: { $ne: updProject._id } }, // Query to find the tag and check if projectId is not already present
+			  { $addToSet: { projects: updProject._id } } // Update operation
+			);
+		  }));
+		}
+		res.status(200).json(updProject);
+
+	  } catch (err) {
+		console.error("Error updating project:", err);
+		res.status(500).send(`Server error while updating project: ${err}`);
+	  }
+	}
+  );
 
 // DOCUMENT
 
