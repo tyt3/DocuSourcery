@@ -141,6 +141,9 @@ router.post('/project/create', ensureAuth, validateTitles, validateSlug, async (
 
     const newProject = await project.save();
 
+    // Convert description field HTML to Markdown
+    newProject.description = turndownService.turndown(newProject.description);
+
     // Update all tags in linkedTags array to add the new project ID to its projects array
     if (linkedTags) {
       appendProjectToTags(linkedTags, newProject._id);
@@ -775,6 +778,9 @@ router.post('/document/create/:projectId', ensureAuth, async (req, res) => {
     });
     await project.save();
     console.log('Project updated with new document:', project);
+
+    // Convert description field HTML to Markdown
+    // newDocument.description = turndownService.turndown(newDocument.description);
     
     res.redirect(`/project/${project.slug}/${newDocument.slug}`);
     
