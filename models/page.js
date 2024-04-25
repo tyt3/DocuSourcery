@@ -15,7 +15,7 @@ const PageSchema = new Schema({
   modifiedDate: { type: Date, default: Date.now },
   deleted: { type: Boolean, default: false },
   deletedDate: { type: Date, default: null },
-  deletedBy: { type: Schema.Types.ObjectId, ref: "user", default: null },
+  deletedBy: { type: Schema.Types.ObjectId, ref: "user" },
   projectId: { type: Schema.Types.ObjectId, ref: "project", required: true },
   documentId: { type: Schema.Types.ObjectId, ref: "document", required: true }
 });
