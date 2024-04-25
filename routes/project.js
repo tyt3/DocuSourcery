@@ -388,7 +388,7 @@ router.post("/project/restore/:id", ensureAuth, async (req, res) => {
 });
 
 
-router.post('/project/add/:id', ensureAuth, async (req, res) => {
+router.post('/project/add-user/:id', ensureAuth, async (req, res) => {
   const projectId = req.params.id;
   const { username, role } = req.body;
 

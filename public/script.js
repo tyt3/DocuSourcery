@@ -39,7 +39,7 @@ fetchUsers()
 
 
 // Function to populate user input field with users as someone types
-const userField = document.getElementById('user');
+const userField = document.getElementById('username');
 const dropdown = document.createElement('select');
 dropdown.id = 'userList';
 dropdown.style.display = 'none'; // Hide the dropdown initially
