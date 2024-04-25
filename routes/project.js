@@ -388,6 +388,41 @@ router.post("/project/restore/:id", ensureAuth, async (req, res) => {
 });
 
 
+router.post('/project/add/:id', ensureAuth, async (req, res) => {
+  const projectId = req.params.id;
+  const { username, role } = req.body;
+
+  try {
+    // Find the project
+    const project = await Project.findById(projectId);
+    if (!project) {
+      return res.status(404).send("Project not found.");
+    }
+    
+    // Find the user by username
+    const user = await User.findOne({ username: username });
+    if (!user) {
+      return res.status(404).send("User not found.");
+    }
+
+    // Check if the user is already associated with the project
+    const existingUser = project.users.find(u => u.user.equals(user._id));
+    if (!existingUser) {
+      // Add the user to the project with the provided role
+      project.users.push({ user: user._id, role: parseInt(role) });
+      await project.save();
+    }
+
+    // Redirect to the project edit page
+    res.redirect(`/project/${project.slug}/edit`);
+    
+  } catch (err) {
+    console.error("Failed to add user to the project:", err);
+    res.status(500).send("Server error occurred while trying to add a user to the project.");
+  }
+});
+
+
 // View Project
 router.get('/project/:slug', async (req, res) => {
   const projectSlug = req.params.slug;

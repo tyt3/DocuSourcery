@@ -45,6 +45,17 @@ dropdown.id = 'userList';
 dropdown.style.display = 'none'; // Hide the dropdown initially
 userField.parentNode.insertBefore(dropdown, userField.nextSibling);
 
+// Add event listener to select element
+dropdown.addEventListener('mousedown', function(event) {
+  event.preventDefault(); // Prevent the default behavior (selecting the option)
+  // Get the selected option
+  const selectedOption = event.target;
+  // Set the value of the input field to the selected option's value
+  userField.value = selectedOption.value;
+  // Hide the dropdown after selecting an option
+  dropdown.style.display = 'none';
+});
+
 userField.addEventListener('input', async function() {
   const inputValue = userField.value.trim();
   if (inputValue.length > 1) {
@@ -65,7 +76,7 @@ userField.addEventListener('input', async function() {
     // Create and append new options
     filteredUsers.forEach(user => {
       const option = document.createElement('option');
-      option.value = user.username;
+      option.value = user.username; 
       option.textContent = `${user.firstName} ${user.lastName} (${user.username})`;
       dropdown.appendChild(option);
     });
@@ -80,6 +91,7 @@ userField.addEventListener('input', async function() {
     dropdown.style.display = 'none'; // Hide the dropdown if input is empty
   }
 });
+
 
 
 
