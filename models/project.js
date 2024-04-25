@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 const ProjectSchema = new Schema({
   slug: { type: String, required: true, maxLength: 50, unique: true },
   title: { type: String, maxLength: 255, required: true },
-  subtitle: { type: String },
+  subtitle: { type: String, maxLength: 255 },
   description: { type: String },
   createdDate: { type: Date, default: Date.now },
   createdBy: { type: Schema.Types.ObjectId, ref: "user", required: true },
