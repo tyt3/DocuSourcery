@@ -16,7 +16,7 @@ const Tag = require('../models/tag');
 
 
 // Functions
-//Credit: ChatGPT
+// Generate API keys (Credit: ChatGPT)
 function generateRandomString(length) {
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   let result = '';
