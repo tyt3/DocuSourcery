@@ -482,10 +482,8 @@ router.post('/project/delete-documents/:id', ensureAuth, async (req, res) => {
     const docsToDelete = Array.isArray(selectedDocuments) ? selectedDocuments : [selectedDocuments];
 
     for (const documentId of docsToDelete) {
-      // Convert documentId to ObjectId
-      const docObjectId = mongoose.Types.ObjectId(documentId);
       // Filter out the document to delete
-      project.documents = project.documents.filter(doc => !doc.equals(docObjectId));
+      project.documents = project.documents.filter(doc => !doc.equals(documentId));
     }
 
     // Save the updated project
@@ -495,8 +493,8 @@ router.post('/project/delete-documents/:id', ensureAuth, async (req, res) => {
     res.redirect(`/project/${project.slug}/edit`);
     
   } catch (err) {
-    console.error("Failed to remove user from the project:", err);
-    res.status(500).send("Server error occurred while trying to remove a user from the project.");
+    console.error("Failed to remove document from the project:", err);
+    res.status(500).send("Server error occurred while trying to remove a document from the project.");
   }
 });
 
