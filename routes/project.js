@@ -938,6 +938,16 @@ router.post("/page/create/:docId", ensureAuth, async (req, res) => {
 
     const newPage = await page.save();
     //res.status(201).json(newPage); // Return the created page as JSON
+    
+    // Update the documents to include this new page
+    document.pages.push({
+      _id: newPage._id,
+      title: newPage.title,
+      slug: newPage.slug,
+    });
+    await document.save();
+    
+    console.log("Document updated with new page:", document);
     // Redirect to edit page view
     res.redirect(`/project/${project.slug}/${document.slug}/${newPage.slug}`);
   } catch (err) {
