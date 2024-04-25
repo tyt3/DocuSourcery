@@ -250,56 +250,54 @@
               </div>
               <!-- Users -->
               <div class="tab-pane fade" id="users-pane" role="tabpanel" aria-labelledby="users-pane">
-                <form method="POST" action="/project/remove-user/<%= project._id %>">
-                  <div class="table-responsive"> 
-                    <table class="table">
-                      <thead>
-                        <tr>
-                          <th class="bold">Username</th>
-                          <th class="bold">Display Name</th>
-                          <th class="bold">Email</th>
-                          <th class="bold">Role</th>
-                          <th class="bold">Remove</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <% if (project && project.users && Array.isArray(project.users) && project.users.length > 0) { %>
-                          <% project.users.forEach(function(usr) { %>
-                            <tr>
-                              <td><%= usr.user?.username %></td>
-                              <td><%= usr.user?.firstName %> <%= usr.user?.lastName %></td>
-                              <td><%= usr.user?.email %></td>
-                              <td>
-                                <select class="form-select" name="role" id="<%= usr.user._id %>">
-                                  <option value="0" <%= usr.role === 0 ? 'selected' : '' %>>Viewer</option>
-                                  <option value="1" <%= usr.role === 1 ? 'selected' : '' %>>Editor</option>
-                                  <option value="2" <%= usr.role === 2 ? 'selected' : '' %>>Admin</option>
-                                  <option value="3" <%= usr.role === 3 ? 'selected' : '' %>>Owner</option>
-                                </select>
-                              </td>
-                              <td>
-                                <input class="form-check-input" type="checkbox" name="remove" value="<%= usr.user._id %>">
-                              </td>
-                            </tr>
-                          <% }); %>
-                        <% } %>
-                      </tbody>
-                    </table>
+                <div class="table-responsive"> 
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th class="bold">Username</th>
+                        <th class="bold">Display Name</th>
+                        <th class="bold">Email</th>
+                        <th class="bold">Role</th>
+                        <th class="bold">Remove</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% if (project && project.users && Array.isArray(project.users) && project.users.length > 0) { %>
+                        <% project.users.forEach(function(usr) { %>
+                          <tr>
+                            <td><%= usr.user?.username %></td>
+                            <td><%= usr.user?.firstName %> <%= usr.user?.lastName %></td>
+                            <td><%= usr.user?.email %></td>
+                            <td>
+                              <select class="form-select" name="role" id="<%= usr.user._id %>">
+                                <option value="0" <%= usr.role === 0 ? 'selected' : '' %>>Viewer</option>
+                                <option value="1" <%= usr.role === 1 ? 'selected' : '' %>>Editor</option>
+                                <option value="2" <%= usr.role === 2 ? 'selected' : '' %>>Admin</option>
+                                <option value="3" <%= usr.role === 3 ? 'selected' : '' %>>Owner</option>
+                              </select>
+                            </td>
+                            <td>
+                              <input class="form-check-input" type="checkbox" name="remove" value="<%= usr.user._id %>">
+                            </td>
+                          </tr>
+                        <% }); %>
+                      <% } %>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="row gy-3 justify-content-center justify-content-md-start">
+                  <div class="col-auto">
+                    <button type="button" id="addUserBtn" class="btn btn-12 btn-ds-primary"
+                      data-bs-toggle="modal" data-bs-target="#addUserModal">
+                      Add User
+                    </button>
                   </div>
-                  <div class="row gy-3 justify-content-center justify-content-md-start">
-                    <div class="col-auto">
-                      <button type="button" id="addUserBtn" class="btn btn-12 btn-ds-primary"
-                        data-bs-toggle="modal" data-bs-target="#addUserModal">
-                        Add User
-                      </button>
-                    </div>
-                    <div class="col-auto">
-                      <button type="submit" id="removeUserBtn" class="btn btn-12 btn-ds-tertiary">
-                        Remove selected
-                      </button>
-                    </div>
+                  <div class="col-auto">
+                    <button type="submit" id="removeUserBtn" class="btn btn-12 btn-ds-tertiary">
+                      Remove selected
+                    </button>
                   </div>
-                </form>
+                </div>
               </div>
             </div>
           </div>

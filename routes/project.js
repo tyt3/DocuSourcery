@@ -228,6 +228,7 @@ router.post("/project/edit/:id", ensureAuth, validateTitles, validateSlug,
       noLogin,
       canDuplicate,
       isPublic,
+      remove
     } = req.body;
 
     console.log(title, slug, isPublic);
@@ -251,6 +252,12 @@ router.post("/project/edit/:id", ensureAuth, validateTitles, validateSlug,
       project.description = descriptionHTML || document.description;
       project.public = publicChoice !== undefined ? publicChoice : project.public;
       project.modifiedDate = new Date();
+
+       // Loop through each user ID to be removed
+      for (const userId of remove) {
+        // Remove the user from the project
+        project.users = project.users.filter(userObj => !userObj.user.equals(userId));
+      }
 
       // Handle tags similarly as in the project creation
       let linkedTags = [];
