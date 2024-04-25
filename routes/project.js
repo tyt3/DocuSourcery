@@ -150,12 +150,7 @@ router.post('/project/create', ensureAuth, validateTitles, validateSlug, async (
     }
 
     // Render the new project
-    res.render('project/projectEdit.ejs', { 
-      user: req.user, 
-      project: newProject,
-      document: null, // Don't replace
-      page: null // Don't replace
-    });
+    res.redirect(`/project/${newProject.slug}/edit`);
   } catch (err) {
     console.error(err);
     res.status(500).send(`An error occurred during project creation: ${err}`);
