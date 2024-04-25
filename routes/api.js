@@ -287,7 +287,12 @@ router.put("/projects/:slug/users/:id", checkApiKey, async (req, res) => {
 	if (!user) {
 	  res.status(404).send("User not found.");
 	}
-	const userCreds = { user: userId, role: parseInt(role) };
+	// Validate role value
+    const parsedRole = parseInt(role);
+    if (isNaN(parsedRole) || parsedRole < 0 || parsedRole > 3) {
+        return res.status(400).json({ error: 'Role value must be an integer between 0 and 3' });
+    }
+	const userCreds = { user: userId, role: parsedRole };
 
     // Check if the user already exists in the project's 'users' array
     const existingUserIndex = project.users.findIndex(u => u.user.equals(userCreds.user));
