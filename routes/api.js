@@ -206,6 +206,7 @@ router.put("/projects/:id", checkApiKey, validateTitles, validateSlug,
 	  noLogin,
 	  canDuplicate,
 	  isPublic,
+	  views
 	} = req.body;
   
 	try {
@@ -223,6 +224,7 @@ router.put("/projects/:id", checkApiKey, validateTitles, validateSlug,
 	  project.slug = slug || project.slug;
 	  project.description = descriptionHTML || project.description;
 	  project.public = isPublic !== undefined ? isPublic : project.public;
+	  project.views = views || project.views;
 	  project.modifiedDate = new Date();
   
 	  // Handle tags similarly as in the project creation
@@ -261,6 +263,46 @@ router.put("/projects/:id", checkApiKey, validateTitles, validateSlug,
 		}));
 	  }
 	  res.status(200).json(updProject);
+
+	} catch (err) {
+	  console.error("Error updating project:", err);
+	  res.status(500).send(`Server error while updating project: ${err}`);
+	}
+  }
+);
+
+// Add User to Project
+router.put("/projects/:slug/users/:id", checkApiKey, async (req, res) => {
+  const projectSlug = req.params.slug;
+  const userId = req.params.id;
+  const { role } = req.body;
+
+  try {
+	let project = await Project.findOne({ slug: projectSlug });
+	if (!project) {
+	  res.status(404).send("Project not found.");
+	}
+
+	let user = await User.findById(userId);
+	if (!user) {
+	  res.status(404).send("User not found.");
+	}
+	const userCreds = { user: userId, role: parseInt(role) };
+
+    // Check if the user already exists in the project's 'users' array
+    const existingUserIndex = project.users.findIndex(u => u.user.equals(userCreds.user));
+
+    // If the user already exists, update their role
+    if (existingUserIndex !== -1) {
+      project.users[existingUserIndex].role = userCreds.role;
+    } else {
+      // Otherwise, add the user to the 'users' array
+      project.users.push(userCreds);
+    }
+
+    // Save the updated project
+    const credProject = await project.save();
+    res.status(200).json(credProject);
 
 	} catch (err) {
 	  console.error("Error updating project:", err);
