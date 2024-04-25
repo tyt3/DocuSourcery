@@ -41,58 +41,61 @@ fetchUsers()
 // Function to populate user input field with users as someone types
 const userField = document.getElementById('username');
 const dropdown = document.createElement('select');
-dropdown.id = 'userList';
-dropdown.style.display = 'none'; // Hide the dropdown initially
-userField.parentNode.insertBefore(dropdown, userField.nextSibling);
 
-// Add event listener to select element
-dropdown.addEventListener('mousedown', function(event) {
-  event.preventDefault(); // Prevent the default behavior (selecting the option)
-  // Get the selected option
-  const selectedOption = event.target;
-  // Set the value of the input field to the selected option's value
-  userField.value = selectedOption.value;
-  // Hide the dropdown after selecting an option
-  dropdown.style.display = 'none';
-});
+if (userField) {
+  
 
-userField.addEventListener('input', async function() {
-  const inputValue = userField.value.trim();
-  if (inputValue.length > 1) {
-    const users = await fetchUsers();
-    
-    const filteredUsers = users.filter(user => {
-      // Filter users based on username, full name, or email address
-      return (
-        user.username.toLowerCase().includes(inputValue.toLowerCase()) ||
-        (user.firstName + ' ' + user.lastName).toLowerCase().includes(inputValue.toLowerCase()) ||
-        user.email.toLowerCase().includes(inputValue.toLowerCase())
-      );
-    });
-    
-    // Clear previous options
-    dropdown.innerHTML = '';
-    
-    // Create and append new options
-    filteredUsers.forEach(user => {
-      const option = document.createElement('option');
-      option.value = user.username; 
-      option.textContent = `${user.firstName} ${user.lastName} (${user.username})`;
-      dropdown.appendChild(option);
-    });
+  dropdown.id = 'userList';
+  dropdown.style.display = 'none'; // Hide the dropdown initially
+  userField.parentNode.insertBefore(dropdown, userField.nextSibling);
 
-    // Show the dropdown if options are available
-    if (filteredUsers.length > 0) {
-      dropdown.style.display = 'block';
+  // Add event listener to select element
+  dropdown.addEventListener('mousedown', function(event) {
+    event.preventDefault(); // Prevent the default behavior (selecting the option)
+    // Get the selected option
+    const selectedOption = event.target;
+    // Set the value of the input field to the selected option's value
+    userField.value = selectedOption.value;
+    // Hide the dropdown after selecting an option
+    dropdown.style.display = 'none';
+  });
+
+  userField.addEventListener('input', async function() {
+    const inputValue = userField.value.trim();
+    if (inputValue.length > 1) {
+      const users = await fetchUsers();
+
+      const filteredUsers = users.filter(user => {
+        // Filter users based on username, full name, or email address
+        return (
+          user.username.toLowerCase().includes(inputValue.toLowerCase()) ||
+          (user.firstName + ' ' + user.lastName).toLowerCase().includes(inputValue.toLowerCase()) ||
+          user.email.toLowerCase().includes(inputValue.toLowerCase())
+        );
+      });
+
+      // Clear previous options
+      dropdown.innerHTML = '';
+
+      // Create and append new options
+      filteredUsers.forEach(user => {
+        const option = document.createElement('option');
+        option.value = user.username; 
+        option.textContent = `${user.firstName} ${user.lastName} (${user.username})`;
+        dropdown.appendChild(option);
+      });
+
+      // Show the dropdown if options are available
+      if (filteredUsers.length > 0) {
+        dropdown.style.display = 'block';
+      } else {
+        dropdown.style.display = 'none'; // Hide the dropdown if no options are available
+      }
     } else {
-      dropdown.style.display = 'none'; // Hide the dropdown if no options are available
+      dropdown.style.display = 'none'; // Hide the dropdown if input is empty
     }
-  } else {
-    dropdown.style.display = 'none'; // Hide the dropdown if input is empty
-  }
-});
-
-
+  });
+};
 
 
 
