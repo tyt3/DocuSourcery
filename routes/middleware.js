@@ -196,8 +196,12 @@ const validateSlug = async (req, res, next) => {
     }
     // Check for valid slug lengths
     if (!slug) {
-      valid = false;
-      errors.push("Slug is required.");
+      if (req.originalUrl.includes('/create')) {
+        valid = false;
+        errors.push("Slug is required.");
+      } else {
+        next();
+      }
     }
     if (slug.length < 1) {
       valid = false;
@@ -234,24 +238,29 @@ function validateTitles(req, res, next) {
   const errors = [];
 
   // Check for valid title/subtitle lengths
-  if (title.length < 1) {
-    valid = false;
-    errors.push("Title must be at least one character.");
-  }
-  if (title.length > 255) {
-    valid = false;
-    errors.push("Title must be less than or equal to 255 characters.");
-  }
-  if (req.originalUrl.includes('/project/create')) {
-    // Subtitle not mandatory, but if it is present, should be <= 255 characters
-    if (subtitle) {
-      if (subtitle.length > 255) {
-        valid = false;
-        errors.push("Subtitle must be less than or equal to 255 characters.");
+  try {
+    if (title.length < 1) {
+      valid = false;
+      errors.push("Title must be at least one character.");
+    }
+    if (title.length > 255) {
+      valid = false;
+      errors.push("Title must be less than or equal to 255 characters.");
+    }
+    if (req.originalUrl.includes('/project/create')) {
+      // Subtitle not mandatory, but if it is present, should be <= 255 characters
+      if (subtitle) {
+        if (subtitle.length > 255) {
+          valid = false;
+          errors.push("Subtitle must be less than or equal to 255 characters.");
+        }
       }
     }
+  } catch (err) {
+    if (!(req.originalUrl.includes('/create'))) {
+      next();
+    }
   }
-
   // If not valid, send error messages
   if (!valid) {
     return res.status(400).json({ errors });
