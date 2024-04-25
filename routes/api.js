@@ -107,7 +107,7 @@ router.get("/projects/:slug/pages", checkApiKey, async function(req, res) {
 });
 
 // Create Project
-router.post('/projects', checkApiKey, async (req, res) => {
+router.post('/create/projects', checkApiKey, async (req, res) => {
   const { title, subtitle, slug, description, tags, noLogin, canDuplicate, isPublic } = req.body;
 
   let linkedTags = [];
@@ -206,7 +206,7 @@ router.put("/projects/:id", checkApiKey, validateTitles, validateSlug,
 		project.slug = slug || project.slug;
 		project.description = descriptionHTML || document.description;
 		project.public = isPublic !== undefined ? isPublic : project.public;
-		project.modifiedDate = Date.now();
+		project.modifiedDate = new Date;
   
 		// Handle tags similarly as in the project creation
 		let linkedTags = [];
@@ -302,7 +302,7 @@ router.get("/documents/:slug/pages", checkApiKey, async function(req, res) {
 });
 
 // Create Document
-router.post('/documents', checkApiKey, validateSlug, validateTitles, async (req, res) => {
+router.post('/create/documents', checkApiKey, validateSlug, validateTitles, async (req, res) => {
   const { title, description, slug, landingPage, isPublic, projectId, order } = req.body;
 
   try {
@@ -398,7 +398,7 @@ router.get("/tags/:slug", checkApiKey, async function(req, res) {
 });
 
 // Create a tag
-router.post("/tags", checkApiKey, validateSlug, async (req, res) => {
+router.post("/create/tags", checkApiKey, validateSlug, async (req, res) => {
   const { title, slug, description, projects } = req.body;
   try {
     if (Array.isArray(projects)) {
