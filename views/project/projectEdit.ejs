@@ -338,7 +338,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" 
           aria-label="Close"></button>
       </div>
-      <form method="POST" action="project/add-user">
+      <form method="POST" action="/project/add-user/<%= project._id %>">
         <div class="modal-body">
           <div class="form-group">
             <label for="user" class="bold">User <span class="required">*</span></label>
