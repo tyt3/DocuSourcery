@@ -43,7 +43,10 @@
         <% if (user) { %>
         <div class="card-header">
           <div class="row">
-            <div class="col text-end">
+            <div class="col-11">
+              <span class="bold">Created by: </span> <%= project.createdBy.username %>
+            </div>
+            <div class="col-1 text-end">
               <% const isPinned = user.pinnedProjects.includes(project._id)  %>
               <% if (isPinned) { %>
               <a href="/unpin/<%= project._id %>" data-bs-toggle="tooltip" 
