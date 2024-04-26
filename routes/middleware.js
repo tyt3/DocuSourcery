@@ -8,7 +8,7 @@ const Page = require('../models/page');
 const Tag = require('../models/tag');
 
 
-// Check if the user is authenticated\
+// Check if the user is authenticated
 function ensureAuth(req, res, next) {
   if (req.isAuthenticated()) {
     return next();
@@ -18,6 +18,19 @@ function ensureAuth(req, res, next) {
     console.log(req.session.returnTo);
     req.flash('error', 'You must be logged in to access this page.');
     res.redirect('/login');
+  }
+};
+
+// Check if the Admin user is authenticated
+function ensureAuthAdmin(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next();
+  } else {
+    // Store the original requested URL in the session
+    req.session.returnTo = req.url;
+    console.log(req.session.returnTo);
+    req.flash('error', 'You must be logged in to access this page.');
+    res.redirect('/admin/login');
   }
 };
 
@@ -291,6 +304,7 @@ function populateCurrentUser(req, res, next) {
 // Export the middleware functions
 module.exports = {
   ensureAuth: ensureAuth,
+  ensureAuthAdmin: ensureAuthAdmin,
   ensureNotAuth: ensureNotAuth,
   ensureAdmin: ensureAdmin,
   validatePassword: validatePassword,

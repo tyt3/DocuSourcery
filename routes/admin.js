@@ -2,9 +2,11 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
+const passport = require('./passportConfig');
+
 
 // Import middleware
-const { ensureAuth, ensureAdmin, checkUsernameAndEmail, validatePassword } = require('./middleware');
+const { ensureAuthAdmin, ensureNotAuth, ensureAdmin, checkUsernameAndEmail, validatePassword } = require('./middleware');
 const bcrypt = require('bcrypt');
 
 // Import data models
@@ -35,8 +37,39 @@ function generateApiKey(minLength, maxLength) {
 }
 
 
+// Log In
+router.get('/login', ensureNotAuth, async (req, res) => {
+  try {
+    const useEmail = req.query.email === 'true';
+    res.render('user/login.ejs', { useEmail: useEmail, user: null });
+  } catch (err) {
+    throw err;
+  }
+});
+
+router.post('/login', ensureNotAuth, (req, res, next) => {
+  passport.authenticate('local', (err, user, info) => {
+    if (err) {
+      console.error('Authentication Error: ', err);
+      return next(err);
+    }
+    if (!user) {
+      console.log('Login Failed: ', info);
+      return res.redirect('/admin/login');
+    }
+    req.logIn(user, (err) => {
+      if (err) {
+        console.error('Login Error: ', err);
+        return next(err);
+      }
+      // Redirect the user back to the original requested URL or /dashboard if no returnTo URL is set
+      return res.redirect('/admin');
+    });
+  })(req, res, next);
+});
+
 // Admin Dashboard
-router.get('/', ensureAuth, ensureAdmin, async (req, res) => {
+router.get('/', ensureAuthAdmin, ensureAdmin, async (req, res) => {
   try {
     res.render('admin/admin-dashboard.ejs', { user: req.user });
   } catch (err) {
@@ -47,7 +80,7 @@ router.get('/', ensureAuth, ensureAdmin, async (req, res) => {
 
 
 // User Management
-router.get('/users', ensureAuth, ensureAdmin, async (req, res) => {
+router.get('/users', ensureAuthAdmin, ensureAdmin, async (req, res) => {
   try {
       // Fetch all users from the database
       const users = await User.find();
@@ -62,7 +95,7 @@ router.get('/users', ensureAuth, ensureAdmin, async (req, res) => {
 
 
 // Add User
-router.post('/user/add', ensureAuth, ensureAdmin, checkUsernameAndEmail, validatePassword, async (req, res) => {
+router.post('/user/add', ensureAuthAdmin, ensureAdmin, checkUsernameAndEmail, validatePassword, async (req, res) => {
   const { firstName, lastName, username, email, password, passwordConf, admin } = req.body;
 
   try {
@@ -100,9 +133,11 @@ router.post('/user/add', ensureAuth, ensureAdmin, checkUsernameAndEmail, validat
 
 
 // Edit User
-router.post('/user/edit/:id', ensureAuth, ensureAdmin, async (req, res) => {
+router.post('/user/edit/:id', ensureAuthAdmin, ensureAdmin, async (req, res) => {
   const { firstName, lastName, username, email, password, passwordConf, admin } = req.body;
   const userId = req.params.id;
+  
+    console.log("admin:" + admin);
   
   try {
      // Fetch the existing user
@@ -125,6 +160,7 @@ router.post('/user/edit/:id', ensureAuth, ensureAdmin, async (req, res) => {
       adminStatus = true;
       usr.apiKey = generateApiKey(20, 128);
     }
+    
 
     // Update the usr fields
     usr.firstName = firstName || usr.firstName;
@@ -147,7 +183,7 @@ router.post('/user/edit/:id', ensureAuth, ensureAdmin, async (req, res) => {
 
 
 // Delete User
-router.post('/user/delete/:id', ensureAuth, ensureAdmin, async (req, res) => {
+router.post('/user/delete/:id', ensureAuthAdmin, ensureAdmin, async (req, res) => {
   const usrId = req.params.id;
 
   try {

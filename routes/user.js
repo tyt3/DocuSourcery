@@ -164,7 +164,6 @@ router.get('/logout', ensureAuth, async (req, res) => {
 });
 
 
-
 // ACCOUNT
 
 // View Account
