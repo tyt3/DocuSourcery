@@ -34,7 +34,7 @@ We have the following models:
 - **Users**: Create accounts/profiles and assets (Projects, Documents, Pages, Tags)
 - **Projects**: Projects contain Documents and are associated with Tags
 - **Documents**: Documents contain Pages
-- **Pages**: Pages are the simplest component of the "Project stack/super-model"
+- **Pages**: Pages are the simplest component of the assets ("Project stack/super-model")
 - **Tags**: Tags are associated with Projects and serve as a way to browse projects currently
 
 
@@ -100,7 +100,7 @@ For future iterations of this course, we think it might be beneficial to include
 
 # Testing the Site
 - You can view the [Home](https://docusourcery.glitch.me/), [About](https://docusourcery.glitch.me/about), [Projects](https://docusourcery.glitch.me/projects), project, tags, and profile pages without signing up for an account. 
-- To access the features of CRUD features, you will have to [sign up for an account](https://docusourcery.glitch.me/signup) and login.
+- To create, update, and delete accounts and assets, you will have to [sign up for an account](https://docusourcery.glitch.me/signup) and login.
 - To access the **admin view**, [login into the admin account](https://docusourcery.glitch.me/admin/login) using the following credentials: 
 ```
 username: admin
