@@ -16,7 +16,7 @@ The objectives of our project include creating an application that is capable of
 During the design and implementation of the project, we aimed to master the practical application of these technologies and address real issues in collaborative project documentation management. In developing this application, we were keen to learn how to integrate multiple technologies into a seamless workflow and tackle the challenges encountered in actual development, such as how to define models, how to design and implement routes, and how to work on platforms like Glitch as a team.
 Beyond the basic requirements, we strove to implement additional features to enhance user experience. For example, we improved UI/UX design and introduced … (need to be more specific). Our goal is to create an app that is both practical and user-friendly.
 
-# Team member’s contributions
+# Team members' contributions
 
 - **Tyrica Kapral**, as the project/product manager, had a multifaceted role. She managed the overall progression of the project and also engaged in full-stack development, including designing the app, developing the views, and implementing routes, to ensure coordination between the front-end and back-end of the product.
 - **Jason Ficorilli** took on the backend responsibilities involving the database and routes. He played a pivotal role in designing the database schema and corresponding Mongoose models, writing the corresponding data handling logic, and ensuring data integrity and security. He also wrote the Rest API routes and middleware for API key validation.
