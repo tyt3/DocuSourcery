@@ -1,5 +1,7 @@
 # Introduction
 
+Our project, **DocuSourcery**, is a lightweight web app for creating, organizing, and publishing project documentation. Using our platform, you can create metadata for your documentation assets with forms, edit content using a Markdown editor, and manage your assets in dashboards. Our platform also enables community building through pinning projects by others and following other users who create and engage with other projects. This creates opportunities to connect and collaborate with like-minded people.
+
 ## Project Team: Open Sourcerers
 
 - Miranda Chen (yac97)
@@ -7,8 +9,6 @@
 - Jason Ficorilli (jmf194)
 - Tyrica Kapral (tyt3)
 - Yue Li (yul478)
-
-Our project, **DocuSourcery**, is a lightweight web app for creating, organizing, and publishing project documentation. Using our platform, you can create metadata for your documentation assets with forms, edit content using a Markdown editor, and manage your assets in dashboards. Our platform also enables community building through pinning projects by others and following other users who create and engage with other projects. This creates opportunities to connect and collaborate with like-minded people.
 
 # Objective
 
