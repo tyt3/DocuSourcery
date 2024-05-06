@@ -5,7 +5,7 @@ Our project, **DocuSourcery**, is a lightweight web app for creating, organizing
 ## Project Team: Open Sourcerers
 
 - Miranda Chen [Mirandayao0](https://github.com/Mirandayao0)
-- Jiani Cheng [ssnganyi]([jic281](https://github.com/ssnganyi)
+- Jiani Cheng [ssnganyi](https://github.com/ssnganyi)
 - Jason Ficorilli [jasonfic](https://github.com/jasonfic)
 - Tyrica Kapral [tyt3](https://github.com/tyt3)
 - Yue Li [liyue4096](https://github.com/liyue4096)
