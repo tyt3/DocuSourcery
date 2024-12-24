@@ -584,8 +584,13 @@ router.get('/projects', async (req, res) => {
   try {
     // Retrieve all projects where public === true and sort by views in descending order
     const projects = await Project.find({ public: true }).
-    sort({ views: -1 }).
-    populate('tags')
+    sort({ views: -1 })
+    .populate({
+      path: 'users.user',
+      model: 'user',
+      select: 'username firstName lastName email'
+    })
+    .populate('tags')
     .exec();
 
     // Aggregate query to get all tags and sort by the length of their projects array
