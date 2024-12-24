@@ -221,7 +221,13 @@ router.post('/profile', ensureAuth, async (req, res) => {
       { new: true, runValidators: true }
     );
 
-    const userProjects = await Project.find({ 'users.user': req.user._id });
+    const userProjects = await Project.find({ 
+      'users.user': req.user._id 
+    }).populate({
+      path: 'createdBy',
+      select: 'username firstName lastName email'
+    })
+    ;
     // Render profile page
     res.render('user/profile.ejs', {
       profile: updatedProfile,

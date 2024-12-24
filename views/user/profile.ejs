@@ -64,7 +64,8 @@
           <div class="card-header">
             <div class="row">
               <div class="col-10">
-                <span class="bold">Created by: </span> <%= project.createdBy.username %>
+                <span class="bold">Created by: </span> 
+                <a href="/profile/<%= project.createdBy.username %>"><%= project.createdBy.username %></a>
               </div>
               <div class="col-2 text-end">
                 <% const isPinned = user.pinnedProjects.includes(project._id)  %>
