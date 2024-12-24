@@ -586,8 +586,7 @@ router.get('/projects', async (req, res) => {
     const projects = await Project.find({ public: true }).
     sort({ views: -1 })
     .populate({
-      path: 'users.user',
-      model: 'user',
+      path: 'createdBy',
       select: 'username firstName lastName email'
     })
     .populate('tags')
