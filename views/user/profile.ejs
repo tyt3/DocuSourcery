@@ -60,10 +60,9 @@
     <% projects.forEach(function(project) { %>
     <div class="col-md-6 col-xl-4">
       <div class="card h-100 shadow-sm">
-        <div class="card shadow-sm">
+        <% if (user) { %>
           <div class="card-header">
             <div class="row">
-              <% if (user) { %>
               <div class="col-10">
                 <span class="bold">Created by: </span> 
                 <a href="/profile/<%= project.createdBy.username %>"><%= project.createdBy.username %></a>
@@ -79,81 +78,75 @@
                   data-bs-placement="top" data-bs-title="Pin project"><span 
                   class="material-symbols-outlined">keep</span></a>
                 <% } %>
-              </div>  
-            <% } else { %>
-              <div class="col">
-                <span class="bold">Created by: </span> 
-                <a href="/profile/<%= project.createdBy.username %>"><%= project.createdBy.username %></a>
               </div>
-            <% } %>
             </div>
           </div>
-          <div class="card-body">
-            <h5 class="card-title">
-              <a href="/project/<%= project.slug %>"><%= project.title %></a>
-            </h5>
-            <h6 class="card-subtitle">
-              <%= project.subtitle %>
-            </h6>
-            <p class="card-text mt-2">
-              <%- truncateHtml(project.description, 250) %>
-            </p>
-            <p class="card-text mt-2">
-              <strong>Last modified</strong>: <%= moment(project.modifiedDate).format('MMM D, YYYY, h:MM A') %>
-            </p>
-          </div>
-          <div class="card-footer border-top-0 mb-2 bg-white">
-            <a class="btn btn-ds-primary" href="/project/<%= project.slug %>">View Project</a>
-          </div>
-        </div>
-      </div>
-      <% }); %>
-    </div>
-    <%  } else { %>
-    <div class="col-md-6 col-xl-3">
-      <div class="card h-100 shadow-sm">
-        <div class="card-header text-center">
-          <% if (profile.id.toString() === user.id.toString()) { %>
-          <p>
-            <em>You haven't published any projects yet.</em>
+        <% } %>
+        <div class="card-body">
+          <h5 class="card-title">
+            <a href="/project/<%= project.slug %>"><%= project.title %></a>
+          </h5>
+          <h6 class="card-subtitle">
+            <%= project.subtitle %>
+          </h6>
+          <p class="card-text mt-2">
+            <%- truncateHtml(project.description, 250) %>
           </p>
-          <div class="d-grid gap-2 d-md-flex mb-2 justify-content-center">
-            <a class="btn btn-ds-primary btn-12" role="button" href="/project/create">
-              Create a Project
-            </a>
-          </div>
-          <% } else { %>
-          <p><em>profile.firstName hasn't published any projects yet.</em></p>
-          <% } %>
+          <p class="card-text mt-2">
+            <strong>Last modified</strong>: <%= moment(project.modifiedDate).format('MMM D, YYYY, h:MM A') %>
+          </p>
+        </div>
+        <div class="card-footer border-top-0 mb-2 bg-white">
+          <a class="btn btn-ds-primary" href="/project/<%= project.slug %>">View Project</a>
         </div>
       </div>
     </div>
-    <% } %>
-   
-    <!-- Update Profile Form Modal -->
-    <div class="modal fade" id="updateProfileModal" name="updateProfileModal" tabindex="-1"
-      aria-labelledby="updateProfileModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h2 class="modal-title fs-5" id="updateProfileModalLabel">Update Profile</h2>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <!-- Profile Form -->
-            <div id="update_profile_form">
-              <form method="POST" target="_self" action="/profile">
-                <%- include('../snippets/profile-form.ejs') -%>
-                <div class="col-12 text-center">
-                  <button type="submit" class="btn btn-ds-primary">Update</button>
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                </div>
-              </form>
-            </div>
-          </div>
+    <% }); %>
+  </div>
+  <%  } else { %>
+  <div class="col-md-6 col-xl-3">
+    <div class="card h-100 shadow-sm">
+      <div class="card-header text-center">
+        <% if (profile.id.toString() === user.id.toString()) { %>
+        <p>
+          <em>You haven't published any projects yet.</em>
+        </p>
+        <div class="d-grid gap-2 d-md-flex mb-2 justify-content-center">
+          <a class="btn btn-ds-primary btn-12" role="button" href="/project/create">
+            Create a Project
+          </a>
         </div>
+        <% } else { %>
+        <p><em>profile.firstName hasn't published any projects yet.</em></p>
+        <% } %>
       </div>
     </div>
+  </div>
+  <% } %>
 
+  <!-- Update Profile Form Modal -->
+  <div class="modal fade" id="updateProfileModal" name="updateProfileModal" tabindex="-1"
+    aria-labelledby="updateProfileModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title fs-5" id="updateProfileModalLabel">Update Profile</h2>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <!-- Profile Form -->
+          <div id="update_profile_form">
+            <form method="POST" target="_self" action="/profile">
+              <%- include('../snippets/profile-form.ejs') -%>
+              <div class="col-12 text-center">
+                <button type="submit" class="btn btn-ds-primary">Update</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 <%- include('../baseFooter') -%>
