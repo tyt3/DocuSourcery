@@ -1516,7 +1516,8 @@ router.get('/tag/:slug', async (req, res) => {
     res.render('project/tag.ejs', { 
       user: req.user,
       tag: tag,
-      projects: formattedProjects
+      projects: formattedProjects,
+      truncateHtml: truncateHtml
     });
   } catch (err) {
     throw err;
