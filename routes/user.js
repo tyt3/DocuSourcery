@@ -201,7 +201,12 @@ router.get('/profile/:username', ensureAuth, async (req, res) => {
   try {
     // Find user profile based on username
     const userProfile = await User.findOne({ username: username });
-    const userProjects = await Project.find({ 'users.user': userProfile._id });
+    const userProjects = await Project.find({ 
+      'users.user': userProfile._id 
+    }).populate({
+      path: 'createdBy',
+      select: 'username firstName lastName email'
+    });
 
     if (!userProfile) {
       return res.redirect('/');
@@ -229,13 +234,7 @@ router.post('/profile', ensureAuth, async (req, res) => {
       { new: true, runValidators: true }
     );
 
-    const userProjects = await Project.find({ 
-      'users.user': req.user._id 
-    }).populate({
-      path: 'createdBy',
-      select: 'username firstName lastName email'
-    })
-    ;
+    const userProjects = await Project.find({ 'users.user': req.user._id });
     // Render profile page
     res.render('user/profile.ejs', {
       profile: updatedProfile,
