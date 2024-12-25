@@ -2,7 +2,8 @@
 const express = require('express');
 const router = express.Router();
 const passport = require('./passportConfig');
-const htmlTruncate = require('html-truncate');
+const { parseDocument } = require('htmlparser2');
+const { getOuterHTML } = require('domutils');
 
 // Import middleware
 const { 
@@ -20,8 +21,41 @@ const Project = require('../models/project');
 
 // FUNCTIONS
 // Truncate HTML text
-function truncateHtml(str, maxLength) {
-  return htmlTruncate(str, maxLength);
+function truncateHtml(html, maxLength) {
+  const document = parseDocument(html, { decodeEntities: true });
+
+  let currentLength = 0;
+  let truncated = false;
+
+  // Recursive function to traverse and truncate nodes
+  function truncateNode(node) {
+    if (truncated) return null; // Stop processing if truncation is done
+
+    if (node.type === 'text') {
+      const text = node.data;
+
+      if (currentLength + text.length > maxLength) {
+        const remaining = maxLength - currentLength;
+        node.data = text.slice(0, remaining) + '...';
+        truncated = true;
+      } else {
+        currentLength += text.length;
+      }
+
+      return node;
+    }
+
+    if (node.children && node.children.length > 0) {
+      node.children = node.children.map(truncateNode).filter(Boolean); // Process children
+    }
+
+    return node;
+  }
+
+  document.children = document.children.map(truncateNode).filter(Boolean);
+
+  // Return valid HTML
+  return getOuterHTML(document);
 }
 
 

@@ -10,7 +10,8 @@ const turndownService = new turndown({
   codeBlockStyle: 'fenced'
 });
 const DOMPurify = require('dompurify');
-const htmlTruncate = require('html-truncate');
+const { parseDocument } = require('htmlparser2');
+const { getOuterHTML } = require('domutils');
 const moment = require('moment');
 
 
@@ -71,8 +72,41 @@ async function appendProjectToTags(tagList, projectId) {
 }
 
 // Truncate HTML text
-function truncateHtml(str, maxLength) {
-  return htmlTruncate(str, maxLength);
+function truncateHtml(html, maxLength) {
+  const document = parseDocument(html, { decodeEntities: true });
+
+  let currentLength = 0;
+  let truncated = false;
+
+  // Recursive function to traverse and truncate nodes
+  function truncateNode(node) {
+    if (truncated) return null; // Stop processing if truncation is done
+
+    if (node.type === 'text') {
+      const text = node.data;
+
+      if (currentLength + text.length > maxLength) {
+        const remaining = maxLength - currentLength;
+        node.data = text.slice(0, remaining) + '...';
+        truncated = true;
+      } else {
+        currentLength += text.length;
+      }
+
+      return node;
+    }
+
+    if (node.children && node.children.length > 0) {
+      node.children = node.children.map(truncateNode).filter(Boolean); // Process children
+    }
+
+    return node;
+  }
+
+  document.children = document.children.map(truncateNode).filter(Boolean);
+
+  // Return valid HTML
+  return getOuterHTML(document);
 }
 
 // PROJECT
@@ -610,14 +644,14 @@ router.get('/projects', async (req, res) => {
     ]);
 
     // Format modified dates
-    formattedProjects = formatModDate(projects);
+    const formattedProjects = formatModDate(projects);
 
     // Render the projects template with sorted projects
     res.render('project/projects.ejs', {
       user: req.user,
       projects: formattedProjects,
       tags: tags,
-      truncateHtml: htmlTruncate
+      truncateHtml: truncateHtml
     });
   } catch (err) {
     // Handle errors
