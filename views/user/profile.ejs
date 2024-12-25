@@ -90,7 +90,7 @@
             <%= project.subtitle %>
           </h6>
           <p class="card-text mt-2">
-            <%= truncateHtml(project.description, 500) %>
+            <%- truncateHtml(project.description, 250) %>
           </p>
           <p class="card-text mt-2">
             <strong>Last modified</strong>: <%= moment(project.modifiedDate).format('MMM D, YYYY, h:MM A') %>
