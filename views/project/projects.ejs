@@ -23,7 +23,7 @@
       <% tags.forEach(function(tag) { %>
         <% if (tag.numProjects > 0) { %>
         <a href="/tag/<%= tag.slug %>" 
-          class="badge badge-tag bg-ds-secondary me-1">
+          class="badge badge-tag bg-ds-secondary">
           <%= tag.title %>
           <span class="badge bg-ds-tertiary"><%= tag.numProjects %></span>
         </a>
