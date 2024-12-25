@@ -26,13 +26,14 @@
         <% projects.forEach(function(project) { %>
           <div class="col-md-6 col-xl-4">
             <div class="card shadow-sm">
-              <% if (user) { %>
               <div class="card-header">
                 <div class="row">
-                  <div class="col-11">
-                    <span class="bold">Created by: </span> <%= project.createdBy.username %>
+                  <% if (user) { %>
+                  <div class="col-10">
+                    <span class="bold">Created by: </span> 
+                    <a href="/profile/<%= project.createdBy.username %>"><%= project.createdBy.username %></a>
                   </div>
-                  <div class="col-1 text-end">
+                  <div class="col-2 text-end">
                     <% const isPinned = user.pinnedProjects.includes(project._id)  %>
                     <% if (isPinned) { %>
                     <a href="/unpin/<%= project._id %>" data-bs-toggle="tooltip" 
@@ -43,10 +44,15 @@
                       data-bs-placement="top" data-bs-title="Pin project"><span 
                       class="material-symbols-outlined">keep</span></a>
                     <% } %>
+                  </div>  
+                <% } else { %>
+                  <div class="col">
+                    <span class="bold">Created by: </span> 
+                    <a href="/profile/<%= project.createdBy.username %>"><%= project.createdBy.username %></a>
                   </div>
+                <% } %>
                 </div>
               </div>
-              <% } %>
               <div class="card-body">
                 <h5 class="card-title">
                   <a href="/project/<%= project.slug %>"><%= project.title %></a>
