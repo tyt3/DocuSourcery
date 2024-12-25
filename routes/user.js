@@ -250,7 +250,7 @@ router.get('/profile/:username', ensureAuth, async (req, res) => {
       profile: userProfile,
       user: req.user,
       projects: userProjects,
-      truncateHtml: htmlTruncate
+      truncateHtml: truncateHtml
     });
   } catch (err) {
     console.error(err);
