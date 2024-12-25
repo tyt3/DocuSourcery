@@ -48,9 +48,9 @@
     <% projects.forEach(function(project) { %>
     <div class="col-md-6 col-xl-4">
       <div class="card shadow-sm">
-        <% if (user) { %>
         <div class="card-header">
           <div class="row">
+            <% if (user) { %>
             <div class="col-10">
               <span class="bold">Created by: </span> 
               <a href="/profile/<%= project.createdBy.username %>"><%= project.createdBy.username %></a>
@@ -66,10 +66,15 @@
                 data-bs-placement="top" data-bs-title="Pin project"><span 
                 class="material-symbols-outlined">keep</span></a>
               <% } %>
+            </div>  
+          <% } else { %>
+            <div class="col">
+              <span class="bold">Created by: </span> 
+              <a href="/profile/<%= project.createdBy.username %>"><%= project.createdBy.username %></a>
             </div>
+          <% } %>
           </div>
         </div>
-        <% } %>
         <div class="card-body">
           <h5 class="card-title">
             <a href="/project/<%= project.slug %>"><%= project.title %></a>
@@ -85,7 +90,7 @@
               <span class="fw-bold">Tags:</span>
             <% project.tags.forEach(function(tag) { %>
               <a href="/tag/<%= tag.slug %>" 
-                class="badge badge-tag bg-ds-secondary me-1">
+                class="badge badge-tag bg-ds-secondary">
                 <%= tag.title %>
               </a>
             <% }); %>  
