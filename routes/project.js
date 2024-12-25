@@ -1507,7 +1507,13 @@ router.get('/tag/:slug', async (req, res) => {
     var projects = await Project.find({
       tags: tag._id,
       deleted: false
-    }).populate('tags').exec();
+    })
+    .populate({
+      path: 'createdBy',
+      select: 'username firstName lastName email'
+    })
+    .populate('tags')
+    .exec();
 
 
     formattedProjects = formatModDate(projects);
