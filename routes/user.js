@@ -2,6 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const passport = require('./passportConfig');
+const htmlTruncate = require('html-truncate');
 
 // Import middleware
 const { 
@@ -16,6 +17,12 @@ const bcrypt = require('bcrypt');
 // Import data model
 const User = require('../models/user');
 const Project = require('../models/project');
+
+// FUNCTIONS
+// Truncate HTML text
+function truncateHtml(str, maxLength) {
+  return htmlTruncate(str, maxLength);
+}
 
 
 // testing Retrieve all user msg
@@ -203,7 +210,8 @@ router.get('/profile/:username', ensureAuth, async (req, res) => {
     res.render('user/profile.ejs', {
       profile: userProfile,
       user: req.user,
-      projects: userProjects
+      projects: userProjects,
+      truncateHtml: htmlTruncate
     });
   } catch (err) {
     console.error(err);

@@ -10,6 +10,7 @@ const turndownService = new turndown({
   codeBlockStyle: 'fenced'
 });
 const DOMPurify = require('dompurify');
+const htmlTruncate = require('html-truncate');
 const moment = require('moment');
 
 
@@ -67,6 +68,11 @@ async function appendProjectToTags(tagList, projectId) {
   } catch (error) {
       console.error('Error occurred:', error);
   }
+}
+
+// Truncate HTML text
+function truncateHtml(str, maxLength) {
+  return htmlTruncate(str, maxLength);
 }
 
 // PROJECT
@@ -611,6 +617,7 @@ router.get('/projects', async (req, res) => {
       user: req.user,
       projects: formattedProjects,
       tags: tags,
+      truncateHtml: htmlTruncate
     });
   } catch (err) {
     // Handle errors
