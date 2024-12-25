@@ -129,32 +129,31 @@
       </div>
     </div>
     <% } %>
-  </div>
    
-  <!-- Update Profile Form Modal -->
-  <div class="modal fade" id="updateProfileModal" name="updateProfileModal" tabindex="-1"
-    aria-labelledby="updateProfileModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h2 class="modal-title fs-5" id="updateProfileModalLabel">Update Profile</h2>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <!-- Profile Form -->
-          <div id="update_profile_form">
-            <form method="POST" target="_self" action="/profile">
-              <%- include('../snippets/profile-form.ejs') -%>
-              <div class="col-12 text-center">
-                <button type="submit" class="btn btn-ds-primary">Update</button>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-              </div>
-            </form>
+    <!-- Update Profile Form Modal -->
+    <div class="modal fade" id="updateProfileModal" name="updateProfileModal" tabindex="-1"
+      aria-labelledby="updateProfileModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="modal-title fs-5" id="updateProfileModalLabel">Update Profile</h2>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <!-- Profile Form -->
+            <div id="update_profile_form">
+              <form method="POST" target="_self" action="/profile">
+                <%- include('../snippets/profile-form.ejs') -%>
+                <div class="col-12 text-center">
+                  <button type="submit" class="btn btn-ds-primary">Update</button>
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
 </div>
 <%- include('../baseFooter') -%>
