@@ -4,11 +4,11 @@ Our project, **DocuSourcery**, is a lightweight web app for creating, organizing
 
 ## Project Team: Open Sourcerers
 
-- Miranda Chen ([Mirandayao0](https://github.com/Mirandayao0))
-- Jiani Cheng ([ssnganyi](https://github.com/ssnganyi))
-- Jason Ficorilli ([jasonfic](https://github.com/jasonfic))
-- Tyrica Kapral ([tyt3](https://github.com/tyt3))
-- Yue Li ([liyue4096](https://github.com/liyue4096))
+- Miranda Chen ([Mirandayao0](https://github.com/Mirandayao0)): Frontend Developer
+- Jiani Cheng ([ssnganyi](https://github.com/ssnganyi)): Backend Developer
+- Jason Ficorilli ([jasonfic](https://github.com/jasonfic)): Backend Developer
+- Tyrica Kapral ([tyt3](https://github.com/tyt3)): Product Manager, Full-stack Developer
+- Yue Li ([liyue4096](https://github.com/liyue4096)): Backend Developer
 
 # Objective
 
@@ -45,6 +45,7 @@ We developed the views using **HTML/EJS**, **CSS** and **Bootstrap**, and **Java
 For the most part, our project uses HTML forms to get input and send data to the backend, and receives data from the response object. In some cases, we have JavaScript functions to fetch data from the server. 
 
 We also used **Moment.js** for parsing, manipulating, and displaying date time values more cleanly/simply.
+
 
 ## Controllers
 
